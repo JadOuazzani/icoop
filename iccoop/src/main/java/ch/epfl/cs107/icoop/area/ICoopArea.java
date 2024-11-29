@@ -26,7 +26,6 @@ public abstract class ICoopArea extends Area {
     /**
      * @return the player's spawn position in the area
      */
-    public abstract DiscreteCoordinates getPlayerSpawnPosition();
 
     /**
      * Callback to initialise the instance of the area

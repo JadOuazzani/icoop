@@ -15,11 +15,6 @@ import java.util.List;
 public class Spawn extends ICoopArea {
 
     @Override
-    public DiscreteCoordinates getPlayerSpawnPosition() {
-        return new DiscreteCoordinates(2, 10);
-    }
-
-    @Override
     protected void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));

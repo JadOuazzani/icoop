@@ -9,15 +9,18 @@ import ch.epfl.cs107.play.areagame.AreaGame;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Window;
+
+import static ch.epfl.cs107.icoop.KeyBindings.RED_PLAYER_KEY_BINDINGS;
 
 
 public class ICoop extends AreaGame {
     private final String[] areas = {"Spawn", "OrbWay"};
-    private ICoopPlayer player;
     private int areaIndex;
-    private ICoopPlayer redPlayer;
     private ICoopPlayer bluePlayer;
+    private ICoopPlayer redPlayer;
+
 
 
     @Override
@@ -53,8 +56,9 @@ public class ICoop extends AreaGame {
 
     private void initArea(String areaKey) {
         ICoopArea area = (ICoopArea) setCurrentArea(areaKey, true);
-        DiscreteCoordinates coords = area.getPlayerSpawnPosition();
-
+        DiscreteCoordinates coords = area.getStartPositions().getFirst();
+        redPlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords, "Icoop/player", "fire", RED_PLAYER_KEY_BINDINGS);
+        redPlayer.enterArea(getCurrentArea(), coords);
     }
 
 

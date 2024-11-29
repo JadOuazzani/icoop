@@ -13,10 +13,6 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import java.util.List;
 
 public class OrbWay extends ICoopArea {
-    @Override
-    public DiscreteCoordinates getPlayerSpawnPosition() {
-        return new DiscreteCoordinates(2, 10);
-    }
 
     @Override
     protected void createArea() {
