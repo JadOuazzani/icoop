@@ -25,7 +25,6 @@ public final class Tuto2Behavior extends AreaBehavior {
     }
 
     public enum Tuto2CellType {
-        //https://stackoverflow.com/questions/25761438/understanding-bufferedimage-getrgb-output-values
         NULL(0, false),
         WALL(-16777216, false),
         IMPASSABLE(-8750470, false),
