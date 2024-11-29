@@ -75,6 +75,14 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
         moveIfPressed(RIGHT, keyboard.get(Keyboard.RIGHT));
         moveIfPressed(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
         super.update(deltaTime);
+        if (isDisplacementOccurs()) {
+            dessinBleu.update(deltaTime);
+            dessinRouge.update(deltaTime);
+        }
+        else {
+            dessinRouge.reset();
+            dessinBleu.reset();
+        }
 
     }
 
