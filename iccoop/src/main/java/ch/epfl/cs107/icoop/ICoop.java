@@ -1,6 +1,7 @@
 package ch.epfl.cs107.icoop;
 
 
+import ch.epfl.cs107.icoop.actor.CenterOfMass;
 import ch.epfl.cs107.icoop.actor.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.area.OrbWay;
@@ -9,11 +10,13 @@ import ch.epfl.cs107.play.areagame.AreaGame;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Window;
 
 import static ch.epfl.cs107.icoop.KeyBindings.BLUE_PLAYER_KEY_BINDINGS;
 import static ch.epfl.cs107.icoop.KeyBindings.RED_PLAYER_KEY_BINDINGS;
+import static java.lang.reflect.Array.getLength;
 
 
 public class ICoop extends AreaGame {
@@ -47,7 +50,10 @@ public class ICoop extends AreaGame {
     @Override
     public void update(float deltaTime) {
         switchArea();
+        bluePlayer.centerCamera(redPlayer, bluePlayer);
         super.update(deltaTime);
+        ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
+        System.out.println();
     }
 
     @Override
@@ -63,15 +69,20 @@ public class ICoop extends AreaGame {
         redPlayer.enterArea(getCurrentArea(), coords1);
         bluePlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords2, "Icoop/player2", "water", BLUE_PLAYER_KEY_BINDINGS);
         bluePlayer.enterArea(getCurrentArea(), coords2);
+        bluePlayer.centerCamera(redPlayer, bluePlayer);
     }
 
-    private void switchArea() {
-        if (redPlayer.isContactPorte()) {
-            redPlayer.leaveArea();
-            setCurrentArea(redPlayer.getAreaKey(), true);
-            redPlayer.enterArea(getCurrentArea(), redPlayer.getJoueurPosition().get(0));
-        }
 
+    private void switchArea() {
+        ICoopPlayer contactPlayer = redPlayer.isContactPorte() ? redPlayer : bluePlayer;
+        ICoopPlayer nonContactPlayer = !redPlayer.isContactPorte() ? redPlayer : bluePlayer;
+        if (contactPlayer.isContactPorte()) {
+            contactPlayer.leaveArea();
+            nonContactPlayer.leaveArea();
+            setCurrentArea(contactPlayer.getAreaKey(), true);
+            redPlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().getFirst());
+            bluePlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().get(1));
+        }
     }
 
 

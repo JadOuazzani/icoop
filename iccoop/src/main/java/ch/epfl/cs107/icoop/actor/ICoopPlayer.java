@@ -149,8 +149,9 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     }
 
 
-    public void centerCamera() {
-        getOwnerArea().setViewCandidate(this);
+    public void centerCamera(ICoopPlayer redPlayer, ICoopPlayer bluePlayer) {
+        CenterOfMass centerOfMass = new CenterOfMass(redPlayer, bluePlayer);
+        getOwnerArea().setViewCandidate(centerOfMass);
     }
 
     @Override

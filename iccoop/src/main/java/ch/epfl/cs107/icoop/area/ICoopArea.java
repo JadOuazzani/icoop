@@ -12,9 +12,13 @@ import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.area.AreaBehavior;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Window;
 
 import java.util.List;
+
+import static java.lang.Math.max;
+import static java.lang.reflect.Array.getLength;
 
 public abstract class ICoopArea extends Area {
     public final static float DEFAULT_SCALE_FACTOR = 13.f;
@@ -46,11 +50,21 @@ public abstract class ICoopArea extends Area {
         return false;
     }
 
+    private float distance(Vector position_playerA, Vector position_playerB) {
+        return position_playerA.sub(position_playerB).getLength();
+    }
+
     /**
      * Getter for Tuto2's scale factor
      *
      * @return Scale factor in both the x-direction and the y-direction
      */
+
+
+    public void setCameraScaleFactor(Vector position_playerA, Vector position_playerB) {
+        this.cameraScaleFactor = (float) max(DEFAULT_SCALE_FACTOR, DEFAULT_SCALE_FACTOR * 0.75 + distance(position_playerA, position_playerB) / 2);
+    }
+
     @Override
     public final float getCameraScaleFactor() {
         return cameraScaleFactor;
@@ -62,6 +76,5 @@ public abstract class ICoopArea extends Area {
     }
 
     public abstract List<DiscreteCoordinates> getStartPositions();
-
 
 }
