@@ -12,6 +12,7 @@ import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Window;
 
+import static ch.epfl.cs107.icoop.KeyBindings.BLUE_PLAYER_KEY_BINDINGS;
 import static ch.epfl.cs107.icoop.KeyBindings.RED_PLAYER_KEY_BINDINGS;
 
 
@@ -56,9 +57,12 @@ public class ICoop extends AreaGame {
 
     private void initArea(String areaKey) {
         ICoopArea area = (ICoopArea) setCurrentArea(areaKey, true);
-        DiscreteCoordinates coords = area.getStartPositions().getFirst();
-        redPlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords, "Icoop/player", "fire", RED_PLAYER_KEY_BINDINGS);
-        redPlayer.enterArea(getCurrentArea(), coords);
+        DiscreteCoordinates coords1 = area.getStartPositions().getFirst();
+        DiscreteCoordinates coords2 = area.getStartPositions().getLast();
+        redPlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords1, "Icoop/player", "fire", RED_PLAYER_KEY_BINDINGS);
+        redPlayer.enterArea(getCurrentArea(), coords1);
+        bluePlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords2, "Icoop/player2", "water", BLUE_PLAYER_KEY_BINDINGS);
+        bluePlayer.enterArea(getCurrentArea(), coords2);
     }
 
     private void switchArea() {
