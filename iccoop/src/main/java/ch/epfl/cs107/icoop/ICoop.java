@@ -45,8 +45,8 @@ public class ICoop extends AreaGame {
 
     @Override
     public void update(float deltaTime) {
-        super.update(deltaTime);
         switchArea();
+        super.update(deltaTime);
     }
 
     @Override
@@ -67,6 +67,8 @@ public class ICoop extends AreaGame {
             setCurrentArea(redPlayer.getAreaKey(), true);
             redPlayer.enterArea(getCurrentArea(), redPlayer.getJoueurPosition().get(0));
         }
+
     }
+
 
 }

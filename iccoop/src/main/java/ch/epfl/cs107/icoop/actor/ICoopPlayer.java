@@ -145,6 +145,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
         resetMotion();
+        contactPorte = false;
     }
 
 
@@ -171,9 +172,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 areaKey = door.getAirTransitoire();
             }
         }
-
-
     }
+
 
 
     public String getAreaKey() {
