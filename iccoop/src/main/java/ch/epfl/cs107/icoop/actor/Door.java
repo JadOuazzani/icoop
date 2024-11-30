@@ -22,12 +22,16 @@ public class Door extends AreaEntity {
     private String airTransitoire;
     private List<DiscreteCoordinates> coordArrive;
     private Logic signal;
+    private List<DiscreteCoordinates> coordAdditionelles;
+    private DiscreteCoordinates positionPrincipale;
+
 
     public Door(String airTransitoire, Logic signal, List<DiscreteCoordinates> coordArrive, Area area, DiscreteCoordinates positionPrincipale, Orientation orientation) {
         super(area, orientation, positionPrincipale);
         this.airTransitoire = airTransitoire;
         this.coordArrive = coordArrive;
         this.signal = signal;
+        this.positionPrincipale = positionPrincipale;
     }
 
     public Door(String airTransitoire, Logic signal, List<DiscreteCoordinates> coordArrive, Area area, DiscreteCoordinates positionPrincipale, Orientation orientation, DiscreteCoordinates... coordAdditionelles) {
@@ -37,7 +41,8 @@ public class Door extends AreaEntity {
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
-        return List.of() + positionPrinci;
+        coordAdditionelles.add(positionPrincipale);
+        return coordAdditionelles ;
     }
 
     @Override
