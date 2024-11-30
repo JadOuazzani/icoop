@@ -22,7 +22,6 @@ public class ICoop extends AreaGame {
     private ICoopPlayer redPlayer;
 
 
-
     @Override
     public String getTitle() {
         return "ICoop";
@@ -47,6 +46,7 @@ public class ICoop extends AreaGame {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        switchArea();
     }
 
     @Override
@@ -61,5 +61,12 @@ public class ICoop extends AreaGame {
         redPlayer.enterArea(getCurrentArea(), coords);
     }
 
+    private void switchArea() {
+        if (redPlayer.isContactPorte()) {
+            redPlayer.leaveArea();
+            setCurrentArea(redPlayer.getAreaKey(), true);
+            redPlayer.enterArea(getCurrentArea(), redPlayer.getJoueurPosition().get(0));
+        }
+    }
 
 }

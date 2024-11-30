@@ -6,6 +6,7 @@ package ch.epfl.cs107.icoop;
  *	Date:
  */
 
+import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.AreaBehavior;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
@@ -81,12 +82,12 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         protected boolean canEnter(Interactable entity) {
+            if(!type.canWalk)
+                return false;
+
             if (entity.takeCellSpace()) {
-                if (!type.canWalk) {
-                    return false;
-                }
-                for (Interactable entities : entities) {
-                    if (!entities.takeCellSpace()) {
+                for (Interactable other : entities ) {
+                    if (other.takeCellSpace()) {
                         return false;
                     }
                 }
@@ -94,6 +95,8 @@ public class ICoopBehavior extends AreaBehavior {
 
             return true;
         }
+
+
 
         @Override
         public boolean isCellInteractable() {
@@ -112,6 +115,7 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+            ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
         }
 
     }

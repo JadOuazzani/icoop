@@ -7,7 +7,9 @@ package ch.epfl.cs107.icoop.area;
  */
 
 import ch.epfl.cs107.icoop.ICoopBehavior;
+import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.area.Area;
+import ch.epfl.cs107.play.areagame.area.AreaBehavior;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
@@ -55,7 +57,11 @@ public abstract class ICoopArea extends Area {
     }
 
     @Override
-    public boolean isViewCentered() {return true;}
+    public boolean isViewCentered() {
+        return true;
+    }
 
     public abstract List<DiscreteCoordinates> getStartPositions();
+
+
 }

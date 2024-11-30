@@ -21,6 +21,24 @@ public class OrbWay extends ICoopArea {
     protected void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));
+        Door door1 = new Door("Spawn", Logic.TRUE, List.of(
+                new DiscreteCoordinates(18, 16),
+                new DiscreteCoordinates(18, 15)),
+                this,
+                new DiscreteCoordinates(0, 14),
+                Orientation.DOWN,
+                new DiscreteCoordinates(0, 13), new DiscreteCoordinates(0, 12), new DiscreteCoordinates(0, 11), new DiscreteCoordinates(0, 10));
+
+        Door door2 = new Door("Spawn", Logic.TRUE, List.of(
+                new DiscreteCoordinates(18, 16),
+                new DiscreteCoordinates(18, 15)),
+                this,
+                new DiscreteCoordinates(0, 8),
+                Orientation.DOWN,
+                new DiscreteCoordinates(0, 7), new DiscreteCoordinates(0, 6), new DiscreteCoordinates(0, 5), new DiscreteCoordinates(0, 4));
+        registerActor(door1);
+        registerActor(door2);
+
     }
 
     @Override
@@ -33,12 +51,5 @@ public class OrbWay extends ICoopArea {
         return List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5));
     }
 
-    Door door1 = new Door("Spawn", Logic.TRUE, List.of(
-            new DiscreteCoordinates(18, 16),
-            new DiscreteCoordinates(18, 15)),
-            this,
-            new DiscreteCoordinates(0, 14),
-            Orientation.DOWN,
-            List.of(new DiscreteCoordinates(0, 13), new DiscreteCoordinates(0, 12), new DiscreteCoordinates(0, 11), new DiscreteCoordinates(0, 10)));
 
 }

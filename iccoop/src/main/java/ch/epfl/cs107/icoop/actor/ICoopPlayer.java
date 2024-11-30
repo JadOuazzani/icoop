@@ -1,6 +1,9 @@
 package ch.epfl.cs107.icoop.actor;
 
 import ch.epfl.cs107.icoop.KeyBindings;
+import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
+import ch.epfl.cs107.play.areagame.actor.Interactable;
+import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
@@ -24,7 +27,7 @@ import static ch.epfl.cs107.icoop.KeyBindings.RED_PLAYER_KEY_BINDINGS;
 import static ch.epfl.cs107.play.math.Orientation.*;
 
 
-public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
+public class ICoopPlayer extends MovableAreaEntity implements Interactor, ElementalEntity {
 
     private final static int MOVE_DURATION = 8;
     private final TextGraphics message;
@@ -35,6 +38,11 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
     private OrientedAnimation animation;
     private static final int ANIMATION_DURATION = 4;
     private KeyBindings.PlayerKeyBindings keys;
+    private Keyboard keyboard;
+    private boolean contactPorte;
+    private List<DiscreteCoordinates> joueurPosition;
+    private String areaKey;
+    private final ICoopPlayerInteractionHandler handler;
 
 
     public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String element, KeyBindings.PlayerKeyBindings keys) {
@@ -48,15 +56,15 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
                 anchor, orders, 4, 1, 2, 16, 32,
                 true);
         this.keys = keys;
+        this.keyboard = owner.getKeyboard();
         resetMotion();
-
+        this.handler = new ICoopPlayerInteractionHandler();
     }
 
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        Keyboard keyboard = getOwnerArea().getKeyboard();
         moveIfPressed(LEFT, keyboard.get(keys.left()));
         moveIfPressed(UP, keyboard.get(keys.up()));
         moveIfPressed(RIGHT, keyboard.get(keys.right()));
@@ -66,7 +74,6 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
         } else {
             animation.reset();
         }
-
     }
 
 
@@ -91,8 +98,31 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
     }
 
     @Override
-    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+    public List<DiscreteCoordinates> getFieldOfViewCells() {
+        return Collections.singletonList(getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
+    }
 
+    @Override
+    public boolean wantsCellInteraction() {
+        return true;
+    }
+
+    @Override
+    public boolean wantsViewInteraction() {
+        return keyboard.get(keys.useItem()).isPressed();
+    }
+
+
+    @Override
+    public void interactWith(Interactable other, boolean isCellInteraction) {
+        if (other instanceof Door) {
+            other.acceptInteraction(handler, isCellInteraction);
+        }
+    }
+
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
     }
 
 
@@ -112,7 +142,6 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
 
     public void enterArea(Area area, DiscreteCoordinates position) {
         area.registerActor(this);
-        area.setViewCandidate(this);
         setOwnerArea(area);
         setCurrentPosition(position.toVector());
         resetMotion();
@@ -134,7 +163,32 @@ public class ICoopPlayer extends MovableAreaEntity implements ElementalEntity {
     }
 
 
+    private class ICoopPlayerInteractionHandler implements ICoopInteractionVisitor {
+        public void interactWith(Door door, boolean isCellInteraction) {
+            if (door.getSignal().isOn()) {
+                contactPorte = true;
+                joueurPosition = door.getCoordArrive();
+                areaKey = door.getAirTransitoire();
+            }
+        }
+
+
+    }
+
+
+    public String getAreaKey() {
+        return areaKey;
+    }
+
+    public boolean isContactPorte() {
+        return contactPorte;
+    }
+
+    public List<DiscreteCoordinates> getJoueurPosition() {
+        return joueurPosition;
+    }
 }
+
 
 interface ElementalEntity {
     public String element();
