@@ -70,7 +70,6 @@ public class ICoop extends AreaGame {
         bluePlayer.centerCamera(redPlayer, bluePlayer);
         super.update(deltaTime);
         ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
-        System.out.println();
         resetGame();
         resetArea();
     }
@@ -100,7 +99,7 @@ public class ICoop extends AreaGame {
         if (contactPlayer.isContactPorte()) {
             contactPlayer.leaveArea();
             nonContactPlayer.leaveArea();
-            setCurrentArea(contactPlayer.getAreaKey(), true);
+            setCurrentArea(contactPlayer.getAreaKey(), false);
             redPlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().getFirst());
             bluePlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().get(1));
         }
