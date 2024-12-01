@@ -45,7 +45,6 @@ public final class KeyBindings {
     public static final int RESET_AREA = T;
 
     private KeyBindings() {
-
     }
 
     /**

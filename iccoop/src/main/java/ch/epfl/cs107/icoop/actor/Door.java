@@ -74,7 +74,6 @@ public class Door extends AreaEntity {
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
-        System.out.println("la porte accepte l'interaction avec un visiteur");
     }
 
     @Override

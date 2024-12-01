@@ -58,7 +58,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         this.keys = keys;
         this.keyboard = owner.getKeyboard();
         resetMotion();
-        this.handler = new ICoopPlayerInteractionHandler();
+        handler = new ICoopPlayerInteractionHandler();
     }
 
 
@@ -115,9 +115,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
-        if (other instanceof Door) {
-            other.acceptInteraction(handler, isCellInteraction);
-        }
+        other.acceptInteraction(handler, isCellInteraction);
     }
 
     @Override
@@ -173,8 +171,14 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 areaKey = door.getAirTransitoire();
             }
         }
-    }
 
+        @Override
+        public void interactWith(Explosif explosif, boolean isCellInteraction) {
+            if (wantsViewInteraction()) {
+                explosif.setActiver(true);
+            }
+        }
+    }
 
 
     public String getAreaKey() {

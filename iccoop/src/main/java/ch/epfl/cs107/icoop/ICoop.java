@@ -7,15 +7,16 @@ import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.area.OrbWay;
 import ch.epfl.cs107.icoop.area.Spawn;
 import ch.epfl.cs107.play.areagame.AreaGame;
+import ch.epfl.cs107.play.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
+import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
-import static ch.epfl.cs107.icoop.KeyBindings.BLUE_PLAYER_KEY_BINDINGS;
-import static ch.epfl.cs107.icoop.KeyBindings.RED_PLAYER_KEY_BINDINGS;
+import static ch.epfl.cs107.icoop.KeyBindings.*;
 import static java.lang.reflect.Array.getLength;
 
 
@@ -24,6 +25,22 @@ public class ICoop extends AreaGame {
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
+
+    public void resetGame() {
+        if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
+            begin(getWindow(), getFileSystem());
+        }
+    }
+
+    public void resetArea() {
+        if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
+            if (getCurrentArea().getTitle().equals(areas[0])) {
+                initArea(areas[0]);
+            } else if (getCurrentArea().getTitle().equals(areas[1])) {
+                initArea(areas[1]);
+            }
+        }
+    }
 
 
     @Override
@@ -54,6 +71,8 @@ public class ICoop extends AreaGame {
         super.update(deltaTime);
         ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
         System.out.println();
+        resetGame();
+        resetArea();
     }
 
     @Override
@@ -70,6 +89,8 @@ public class ICoop extends AreaGame {
         bluePlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords2, "Icoop/player2", "water", BLUE_PLAYER_KEY_BINDINGS);
         bluePlayer.enterArea(getCurrentArea(), coords2);
         bluePlayer.centerCamera(redPlayer, bluePlayer);
+
+
     }
 
 
