@@ -6,6 +6,7 @@ import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.area.OrbWay;
 import ch.epfl.cs107.icoop.area.Spawn;
 import ch.epfl.cs107.play.areagame.AreaGame;
+import ch.epfl.cs107.play.engine.PauseMenu;
 import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -21,6 +22,8 @@ public class ICoop extends AreaGame {
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
     private Dialog dialogue;
+    private boolean paused, requestPause;
+    private PauseMenu menu;
 
 
     public void resetGame() {
@@ -59,27 +62,31 @@ public class ICoop extends AreaGame {
 
     @Override
     public void update(float deltaTime) {
-        switchArea();
-        bluePlayer.centerCamera(redPlayer, bluePlayer);
+//        if (!dialogActif(dialogue) || dialogue.isCompleted()) {
+//            switchArea();
+//            bluePlayer.centerCamera(redPlayer, bluePlayer);
+//            super.update(deltaTime);
+//            ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
+//            if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
+//                resetGame();
+//            }
+//
+//            if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
+//                resetArea();
+//            }
+//            if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
+//                resetArea();
+//            }
+//        } else {
+        setPauseMenu(menu);
+        requestPause();
         super.update(deltaTime);
-        ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
-        if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
-            resetGame();
-        }
+//            if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
+//                dialogue.update(deltaTime);
+//            }
+//        }
 
-        if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
-            resetArea();
-        }
-        if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
-            resetArea();
-        }
 
-        if (dialogue!=null) {
-            getCurrentArea().end();
-        }
-        if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
-
-        }
     }
 
     @Override
@@ -111,8 +118,12 @@ public class ICoop extends AreaGame {
         }
     }
 
+    private boolean dialogActif(Dialog dialogue) {
+        return dialogue != null;
+    }
+
     private void setActiveDialog(String dialogue) {
-        this.dialogue=new Dialog(dialogue);
+        this.dialogue = new Dialog(dialogue);
     }
 
 

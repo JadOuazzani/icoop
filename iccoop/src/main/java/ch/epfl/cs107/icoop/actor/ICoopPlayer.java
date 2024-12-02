@@ -89,9 +89,6 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
     }
 
-    public Health getHealth() {
-        return health;
-    }
 
     @Override
     public boolean takeCellSpace() {
