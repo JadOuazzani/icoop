@@ -1,5 +1,6 @@
 package ch.epfl.cs107.icoop.actor;
 
+import ch.epfl.cs107.icoop.ICoopCollectable;
 import ch.epfl.cs107.icoop.KeyBindings;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
@@ -205,7 +206,12 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             if (wantsViewInteraction()) {
                 explosif.setActiver(true);
             }
+
+            if (wantsCellInteraction()){
+
+            }
         }
+
     }
 
 
