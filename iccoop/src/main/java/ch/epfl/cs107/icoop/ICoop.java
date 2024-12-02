@@ -17,7 +17,6 @@ import static ch.epfl.cs107.icoop.KeyBindings.*;
 
 
 public class ICoop extends AreaGame {
-    int test;
     private final String[] areas = {"Spawn", "OrbWay"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
@@ -125,7 +124,7 @@ public class ICoop extends AreaGame {
         this.dialogue = new Dialog(dialogue);
     }
 
-    
+
 
 
 }
