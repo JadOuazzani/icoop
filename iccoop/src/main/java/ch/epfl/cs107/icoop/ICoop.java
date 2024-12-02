@@ -27,18 +27,14 @@ public class ICoop extends AreaGame {
     private ICoopPlayer redPlayer;
 
     public void resetGame() {
-        if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
-            begin(getWindow(), getFileSystem());
-        }
+        begin(getWindow(), getFileSystem());
     }
 
     public void resetArea() {
-        if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
-            if (getCurrentArea().getTitle().equals(areas[0])) {
-                initArea(areas[0]);
-            } else if (getCurrentArea().getTitle().equals(areas[1])) {
-                initArea(areas[1]);
-            }
+        if (getCurrentArea().getTitle().equals(areas[0])) {
+            initArea(areas[0]);
+        } else if (getCurrentArea().getTitle().equals(areas[1])) {
+            initArea(areas[1]);
         }
     }
 
@@ -70,13 +66,20 @@ public class ICoop extends AreaGame {
         bluePlayer.centerCamera(redPlayer, bluePlayer);
         super.update(deltaTime);
         ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
-        resetGame();
-        resetArea();
+        if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
+            resetGame();
+        }
+
+        if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
+            resetArea();
+        }
+        if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
+            resetArea();
+        }
     }
 
     @Override
     public void end() {
-
     }
 
     private void initArea(String areaKey) {
@@ -88,7 +91,6 @@ public class ICoop extends AreaGame {
         bluePlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords2, "Icoop/player2", "water", BLUE_PLAYER_KEY_BINDINGS);
         bluePlayer.enterArea(getCurrentArea(), coords2);
         bluePlayer.centerCamera(redPlayer, bluePlayer);
-
 
     }
 

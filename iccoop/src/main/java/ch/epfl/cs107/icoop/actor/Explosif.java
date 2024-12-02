@@ -16,6 +16,7 @@ import ch.epfl.cs107.play.engine.actor.Animation;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.window.Canvas;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Explosif extends AreaEntity implements Interactor {
     private Animation animation;
     private static final int ANIMATION_DURATION = 24;
     private final ExplosifInteractionHandler handler;
+    private static final int DEGATS_PERDUE = 2;
 
     public Explosif(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
@@ -114,6 +116,13 @@ public class Explosif extends AreaEntity implements Interactor {
         public void interactWith(Rochers rochers, boolean isCellInteraction) {
             if (wantsViewInteraction()) {
                 rochers.setDetruit(true);
+            }
+        }
+
+        @Override
+        public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
+            if (wantsViewInteraction()) {
+                player.perteDegats(DEGATS_PERDUE);
             }
         }
     }

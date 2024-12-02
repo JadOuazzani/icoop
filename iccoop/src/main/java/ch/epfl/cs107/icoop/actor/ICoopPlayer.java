@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.engine.actor.Sprite;
 import ch.epfl.cs107.play.engine.actor.TextGraphics;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.math.Transform;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
@@ -30,8 +31,6 @@ import static ch.epfl.cs107.play.math.Orientation.*;
 public class ICoopPlayer extends MovableAreaEntity implements Interactor, ElementalEntity {
 
     private final static int MOVE_DURATION = 8;
-    private final TextGraphics message;
-    private float hp;
     private String element;
     final Vector anchor = new Vector(0, 0);
     final Orientation[] orders = {DOWN, RIGHT, UP, LEFT};
@@ -43,15 +42,16 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     private List<DiscreteCoordinates> joueurPosition;
     private String areaKey;
     private final ICoopPlayerInteractionHandler handler;
+    private final Health health;
+    private static final int MAX_LIFE = 5;
+    private boolean invulnerable;
+    private boolean immunite;
+    private int periodeImmunite = 24;
 
 
     public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String element, KeyBindings.PlayerKeyBindings keys) {
         super(owner, orientation, coordinates);
-        this.hp = 10;
         this.element = element;
-        message = new TextGraphics(Integer.toString((int) hp), 0.4f, Color.BLUE);
-        message.setParent(this);
-        message.setAnchor(new Vector(-0.3f, 0.1f));
         animation = new OrientedAnimation(prefixe, ANIMATION_DURATION, this,
                 anchor, orders, 4, 1, 2, 16, 32,
                 true);
@@ -59,6 +59,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         this.keyboard = owner.getKeyboard();
         resetMotion();
         handler = new ICoopPlayerInteractionHandler();
+        health = new Health(this, Transform.I.translated(0, 1.75f), MAX_LIFE, true);
+        invulnerable = false;
     }
 
 
@@ -71,11 +73,24 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         moveIfPressed(DOWN, keyboard.get(keys.down()));
         if (isDisplacementOccurs()) {
             animation.update(deltaTime);
+
         } else {
             animation.reset();
         }
+
+        if (immunite) {
+            periodeImmunite -= deltaTime/2 ;
+        }
+
+        if (periodeImmunite <= 0) { // Possiblité d'ameliorer ?
+            immunite = false;
+            periodeImmunite = 24;
+        }
     }
 
+    public Health getHealth() {
+        return health;
+    }
 
     @Override
     public boolean takeCellSpace() {
@@ -154,7 +169,14 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
     @Override
     public void draw(Canvas canvas) {
-        animation.draw(canvas);
+        if (!immunite) {
+            animation.draw(canvas);
+            health.draw(canvas);
+        }
+        if (immunite && periodeImmunite % 7 == 0) {
+            animation.draw(canvas);
+            health.draw(canvas);
+        }
     }
 
     @Override
@@ -162,6 +184,12 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         return element;
     }
 
+    public void perteDegats(int degats) {
+        if (!invulnerable && !immunite) {
+            health.decrease(degats);
+            immunite = true;
+        }
+    }
 
     private class ICoopPlayerInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(Door door, boolean isCellInteraction) {
@@ -193,6 +221,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         return joueurPosition;
     }
 }
+
 
 
 interface ElementalEntity {
