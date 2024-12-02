@@ -1,23 +1,18 @@
 package ch.epfl.cs107.icoop;
 
 
-import ch.epfl.cs107.icoop.actor.CenterOfMass;
 import ch.epfl.cs107.icoop.actor.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.area.OrbWay;
 import ch.epfl.cs107.icoop.area.Spawn;
 import ch.epfl.cs107.play.areagame.AreaGame;
-import ch.epfl.cs107.play.areagame.actor.AreaEntity;
+import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
-import ch.epfl.cs107.play.math.Vector;
-import ch.epfl.cs107.play.window.Canvas;
-import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 import static ch.epfl.cs107.icoop.KeyBindings.*;
-import static java.lang.reflect.Array.getLength;
 
 
 public class ICoop extends AreaGame {
@@ -25,6 +20,8 @@ public class ICoop extends AreaGame {
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
+    private Dialog dialogue;
+
 
     public void resetGame() {
         begin(getWindow(), getFileSystem());
@@ -76,6 +73,13 @@ public class ICoop extends AreaGame {
         if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
             resetArea();
         }
+
+        if (dialogue!=null) {
+            getCurrentArea().end();
+        }
+        if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
+
+        }
     }
 
     @Override
@@ -105,6 +109,10 @@ public class ICoop extends AreaGame {
             redPlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().getFirst());
             bluePlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().get(1));
         }
+    }
+
+    private void setActiveDialog(String dialogue) {
+        this.dialogue=new Dialog(dialogue);
     }
 
 
