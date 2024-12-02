@@ -23,8 +23,8 @@ public class ICoop extends AreaGame {
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
     private Dialog dialogue;
-    private boolean paused, requestPause;
-    private PauseMenu menu;
+    private int compteur = 0;
+
 
 
 
@@ -64,6 +64,9 @@ public class ICoop extends AreaGame {
 
     @Override
     public void update(float deltaTime) {
+        if (compteur <1) {
+            super.update(deltaTime);
+        }
         if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             switchArea();
             bluePlayer.centerCamera(redPlayer, bluePlayer);
@@ -79,14 +82,10 @@ public class ICoop extends AreaGame {
             if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
                 resetArea();
             }
-        } else {
-        setPauseMenu(menu);
-        requestPause();
-        super.update(deltaTime);
-            if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
-                dialogue.update(deltaTime);
-            }
+        } else  if ((getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed())){
+            {dialogue.update(deltaTime);}
         }
+        compteur +=1;
     }
 
     @Override
@@ -125,6 +124,8 @@ public class ICoop extends AreaGame {
     private void setActiveDialog(String dialogue) {
         this.dialogue = new Dialog(dialogue);
     }
+
+    
 
 
 }
