@@ -8,6 +8,7 @@ package ch.epfl.cs107.icoop.actor;
 
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.AreaEntity;
+import ch.epfl.cs107.play.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.area.Area;
@@ -21,7 +22,7 @@ import org.w3c.dom.ls.LSOutput;
 import java.util.Collections;
 import java.util.List;
 
-public class Explosif extends AreaEntity implements Interactor {
+public class Explosif extends CollectableAreaEntity implements Interactor {
     private float retardateur;
     private boolean activer;
     private boolean etatExplosion;
