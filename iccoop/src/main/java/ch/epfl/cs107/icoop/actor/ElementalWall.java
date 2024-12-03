@@ -119,7 +119,6 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
             if (isCellInteraction && wantsCellInteraction()) {
                 player.perteDegats(1);
             }
-
         }
     }
 }

@@ -6,6 +6,7 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
+import ch.epfl.cs107.icoop.actor.Coeur;
 import ch.epfl.cs107.icoop.actor.Door;
 import ch.epfl.cs107.icoop.actor.ElementalWall;
 import ch.epfl.cs107.icoop.actor.Orb;
@@ -50,11 +51,17 @@ public class OrbWay extends ICoopArea {
         Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
         registerActor(orbeEau1);
         for (int i = 0; i <= 4; i++) {
-            ElementalWall murFeu = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10+i), Logic.TRUE, ElementalWall.WallType.FEU);
+            ElementalWall murFeu = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10 + i), Logic.TRUE, ElementalWall.WallType.FEU);
             registerActor(murFeu);
-            ElementalWall murEau = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 3+i), Logic.TRUE, ElementalWall.WallType.EAU);
+            ElementalWall murEau = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 4 + i), Logic.TRUE, ElementalWall.WallType.EAU);
             registerActor(murEau);
         }
+        Coeur coeur1 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));
+        registerActor(coeur1);
+        Coeur coeur2 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(8, 12));
+        registerActor(coeur2);
+
+
     }
 
     @Override

@@ -218,11 +218,11 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             }
         }
 
-        public void interactWith(PressurePlate plate, boolean isCellInteractive) {
-            if (wantsCellInteraction()) {
-                plate.getSignal().isOn();
-            }
-        }
+//        public void interactWith(PressurePlate plate, boolean isCellInteractive) {
+//            if (wantsCellInteraction()) {
+//                plate.getSignal().isOn();
+//            }
+//        }
     }
 
 
