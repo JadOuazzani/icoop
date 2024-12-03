@@ -6,10 +6,8 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.ICoopBehavior;
-import ch.epfl.cs107.play.areagame.actor.Interactor;
+import ch.epfl.cs107.icoop.utilities.ICoopBehavior;
 import ch.epfl.cs107.play.areagame.area.Area;
-import ch.epfl.cs107.play.areagame.area.AreaBehavior;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Vector;
@@ -18,7 +16,6 @@ import ch.epfl.cs107.play.window.Window;
 import java.util.List;
 
 import static java.lang.Math.max;
-import static java.lang.reflect.Array.getLength;
 
 public abstract class ICoopArea extends Area {
     public final static float DEFAULT_SCALE_FACTOR = 13.f;

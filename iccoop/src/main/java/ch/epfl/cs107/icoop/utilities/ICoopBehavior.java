@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop;
+package ch.epfl.cs107.icoop.utilities;
 
 
 /*

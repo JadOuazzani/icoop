@@ -7,6 +7,8 @@ package ch.epfl.cs107.icoop.area;
  */
 
 import ch.epfl.cs107.icoop.actor.Door;
+import ch.epfl.cs107.icoop.actor.Orb;
+import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Foreground;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -16,6 +18,11 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 import java.util.List;
 
 public class OrbWay extends ICoopArea {
+    private DialogHandler jeu;
+
+    public OrbWay(DialogHandler jeu) {
+        this.jeu = jeu;
+    }
 
     @Override
     protected void createArea() {
@@ -38,7 +45,10 @@ public class OrbWay extends ICoopArea {
                 new DiscreteCoordinates(0, 7), new DiscreteCoordinates(0, 6), new DiscreteCoordinates(0, 5), new DiscreteCoordinates(0, 4));
         registerActor(door1);
         registerActor(door2);
-
+        Orb orbeFeu1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17,12), Orb.OrbType.FEU, jeu);
+        registerActor(orbeFeu1);
+        Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17,6), Orb.OrbType.EAU, jeu);
+        registerActor(orbeEau1);
     }
 
     @Override

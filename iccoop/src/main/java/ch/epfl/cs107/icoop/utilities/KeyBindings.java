@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop;
+package ch.epfl.cs107.icoop.utilities;
 
 import static ch.epfl.cs107.play.window.Keyboard.A;
 import static ch.epfl.cs107.play.window.Keyboard.D;

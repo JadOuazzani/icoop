@@ -6,9 +6,8 @@ package ch.epfl.cs107.icoop.actor;
  *	Date:
  */
 
+import ch.epfl.cs107.icoop.utilities.ICoopCollectable;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
-import ch.epfl.cs107.play.areagame.actor.AreaEntity;
-import ch.epfl.cs107.play.areagame.actor.CollectableAreaEntity;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.area.Area;
@@ -17,12 +16,11 @@ import ch.epfl.cs107.play.engine.actor.Animation;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.window.Canvas;
-import org.w3c.dom.ls.LSOutput;
 
 import java.util.Collections;
 import java.util.List;
 
-public class Explosif extends CollectableAreaEntity implements Interactor {
+public class Explosif extends ICoopCollectable implements Interactor {
     private float retardateur;
     private boolean activer;
     private boolean etatExplosion;
@@ -39,6 +37,7 @@ public class Explosif extends CollectableAreaEntity implements Interactor {
         animation = new Animation("icoop/explosive", 2, 1, 1, this, 16, 16, ANIMATION_DURATION / 2, true);
         handler = new ExplosifInteractionHandler();
     }
+
 
     @Override
     public void update(float deltaTime) {
@@ -79,7 +78,7 @@ public class Explosif extends CollectableAreaEntity implements Interactor {
 
     @Override
     public boolean wantsCellInteraction() {
-        return etatExplosion;
+        return (etatExplosion && activer);
     }
 
     @Override
@@ -90,11 +89,6 @@ public class Explosif extends CollectableAreaEntity implements Interactor {
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
-    }
-
-    @Override
-    public boolean takeCellSpace() {
-        return false;
     }
 
     @Override

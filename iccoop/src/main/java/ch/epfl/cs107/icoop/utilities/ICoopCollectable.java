@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop;
+package ch.epfl.cs107.icoop.utilities;
 
 
 /*
@@ -7,13 +7,9 @@ package ch.epfl.cs107.icoop;
  */
 
 import ch.epfl.cs107.play.areagame.actor.CollectableAreaEntity;
-import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
-import ch.epfl.cs107.play.math.Positionable;
-
-import javax.swing.text.Position;
 
 public abstract class ICoopCollectable extends CollectableAreaEntity {
 
@@ -22,7 +18,8 @@ public abstract class ICoopCollectable extends CollectableAreaEntity {
     }
 
     public void disparition() {
-        if (isCollected()) {
+        this.collect();
+        if (this.isCollected()) {
             this.getOwnerArea().unregisterActor(this);
         }
     }

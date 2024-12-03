@@ -1,6 +1,7 @@
 package ch.epfl.cs107.icoop.handler;
 
-import ch.epfl.cs107.icoop.ICoopBehavior;
+import ch.epfl.cs107.icoop.actor.ElementalItem;
+import ch.epfl.cs107.icoop.utilities.ICoopBehavior;
 import ch.epfl.cs107.icoop.actor.*;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 
@@ -15,4 +16,5 @@ public interface ICoopInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(Obstacle obstacle, boolean isCellInteraction){}
     default void interactWith(Rochers rochers, boolean isCellInteraction){}
     default void interactWith(Explosif explosif, boolean isCellInteraction){}
+    default void interactWith(Orb orb, boolean isCellInteraction){};
 }

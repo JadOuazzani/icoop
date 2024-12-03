@@ -1,17 +1,14 @@
 package ch.epfl.cs107.icoop.actor;
 
-import ch.epfl.cs107.icoop.ICoopCollectable;
-import ch.epfl.cs107.icoop.KeyBindings;
+import ch.epfl.cs107.icoop.handler.DialogHandler;
+import ch.epfl.cs107.icoop.utilities.KeyBindings;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
-import ch.epfl.cs107.play.engine.actor.Animation;
 import ch.epfl.cs107.play.engine.actor.OrientedAnimation;
-import ch.epfl.cs107.play.engine.actor.Sprite;
-import ch.epfl.cs107.play.engine.actor.TextGraphics;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.math.Transform;
@@ -20,19 +17,16 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
-import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
-import static ch.epfl.cs107.icoop.KeyBindings.BLUE_PLAYER_KEY_BINDINGS;
-import static ch.epfl.cs107.icoop.KeyBindings.RED_PLAYER_KEY_BINDINGS;
 import static ch.epfl.cs107.play.math.Orientation.*;
 
 
 public class ICoopPlayer extends MovableAreaEntity implements Interactor, ElementalEntity {
 
     private final static int MOVE_DURATION = 8;
-    private String element;
+    public String item;
     final Vector anchor = new Vector(0, 0);
     final Orientation[] orders = {DOWN, RIGHT, UP, LEFT};
     private OrientedAnimation animation;
@@ -50,9 +44,9 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     private int periodeImmunite = 24;
 
 
-    public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String element, KeyBindings.PlayerKeyBindings keys) {
+    public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String item, KeyBindings.PlayerKeyBindings keys) {
         super(owner, orientation, coordinates);
-        this.element = element;
+        this.item = item;
         animation = new OrientedAnimation(prefixe, ANIMATION_DURATION, this,
                 anchor, orders, 4, 1, 2, 16, 32,
                 true);
@@ -80,7 +74,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
 
         if (immunite) {
-            periodeImmunite -= deltaTime/2 ;
+            periodeImmunite -= deltaTime / 2;
         }
 
         if (periodeImmunite <= 0) { // Possiblité d'ameliorer ?
@@ -180,16 +174,17 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
     }
 
-    @Override
-    public String element() {
-        return element;
-    }
 
     public void perteDegats(int degats) {
         if (!invulnerable && !immunite) {
             health.decrease(degats);
             immunite = true;
         }
+    }
+
+    @Override
+    public String item() {
+        return item;
     }
 
     private class ICoopPlayerInteractionHandler implements ICoopInteractionVisitor {
@@ -207,16 +202,28 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 explosif.setActiver(true);
             }
 
-            if (wantsCellInteraction()){
-
+            if (wantsCellInteraction() && isCellInteraction) {
+                explosif.disparition();
             }
         }
 
+
+        @Override
+        public void interactWith(Orb orb, boolean isCellInteraction) {
+            if (wantsCellInteraction() && isCellInteraction) {
+                orb.getJeu().publish(orb.getDialog());
+                orb.collectBy(ICoopPlayer.this::getItem);
+            }
+        }
     }
 
 
     public String getAreaKey() {
         return areaKey;
+    }
+
+    public String getItem() {
+        return item;
     }
 
     public boolean isContactPorte() {
@@ -226,10 +233,17 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     public List<DiscreteCoordinates> getJoueurPosition() {
         return joueurPosition;
     }
+
+    public void setInvulnerable(boolean invulnerable) {
+        this.invulnerable = invulnerable;
+    }
+
+    public boolean getInvulnerable(){
+        return invulnerable;
+    }
+
+
 }
 
 
 
-interface ElementalEntity {
-    public String element();
-}

@@ -1,33 +1,32 @@
-package ch.epfl.cs107.icoop;
+package ch.epfl.cs107.icoop.utilities;
 
 
 import ch.epfl.cs107.icoop.actor.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.area.OrbWay;
 import ch.epfl.cs107.icoop.area.Spawn;
+import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.areagame.AreaGame;
-import ch.epfl.cs107.play.engine.PauseMenu;
 import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.window.Window;
 
-import static ch.epfl.cs107.icoop.KeyBindings.*;
+import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 
-public class ICoop extends AreaGame {
+public class ICoop extends AreaGame implements DialogHandler {
     private final String[] areas = {"Spawn", "OrbWay"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
     private Dialog dialogue;
-    private int compteur = 0;
-
-
+    private static boolean ITS_INITIALIZED = false;
 
 
     public void resetGame() {
+        ITS_INITIALIZED = false;
         begin(getWindow(), getFileSystem());
     }
 
@@ -46,8 +45,8 @@ public class ICoop extends AreaGame {
     }
 
     private void createAreas() {
-        addArea(new Spawn());
-        addArea(new OrbWay());
+        addArea(new Spawn((DialogHandler) this));
+        addArea(new OrbWay((DialogHandler) this));
     }
 
     @Override
@@ -63,14 +62,16 @@ public class ICoop extends AreaGame {
 
     @Override
     public void update(float deltaTime) {
-        if (compteur <1) {
+        if (!ITS_INITIALIZED) {
             super.update(deltaTime);
+            ITS_INITIALIZED = true;
         }
         if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             switchArea();
             bluePlayer.centerCamera(redPlayer, bluePlayer);
             super.update(deltaTime);
             ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
+
             if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
                 resetGame();
             }
@@ -81,15 +82,14 @@ public class ICoop extends AreaGame {
             if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
                 resetArea();
             }
-        } else  if ((getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed())){
-            {dialogue.update(deltaTime);}
+        } else {
+            dialogue.draw(getWindow());
+            if ((getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed())) {
+                dialogue.update(deltaTime);
+            }
         }
-        compteur +=1;
     }
 
-    @Override
-    public void end() {
-    }
 
     private void initArea(String areaKey) {
         ICoopArea area = (ICoopArea) setCurrentArea(areaKey, true);
@@ -120,11 +120,10 @@ public class ICoop extends AreaGame {
         return dialogue != null;
     }
 
-    private void setActiveDialog(String dialogue) {
-        this.dialogue = new Dialog(dialogue);
+
+    @Override
+    public void publish(Dialog dialogue) {
+        this.dialogue = dialogue;
     }
-
-
-
 
 }
