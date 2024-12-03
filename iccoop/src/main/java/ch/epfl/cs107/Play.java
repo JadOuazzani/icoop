@@ -1,6 +1,6 @@
 package ch.epfl.cs107;
 
-import ch.epfl.cs107.icoop.ICoop;
+import ch.epfl.cs107.icoop.utilities.ICoop;
 import ch.epfl.cs107.play.engine.Game;
 import ch.epfl.cs107.play.io.DefaultFileSystem;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -36,7 +36,6 @@ public class Play {
         // Use Swing display
 		final Window window = new SwingWindow(game.getTitle(), fileSystem, WINDOW_WIDTH, WINDOW_HEIGHT);
 		window.registerFonts(ResourcePath.FONTS);
-
 		try {
 			if (game.begin(window, fileSystem)) {
 				// Use system clock to keep track of time progression
@@ -72,7 +71,7 @@ public class Play {
 			}
 			game.end();
 		} finally {
-			// Release resources
+			// Release resourcesa
 			window.dispose();
 		}
 	}
