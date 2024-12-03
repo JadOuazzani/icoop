@@ -182,6 +182,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
     }
 
+
     @Override
     public String item() {
         return item;
@@ -195,6 +196,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 areaKey = door.getAirTransitoire();
             }
         }
+
 
         @Override
         public void interactWith(Explosif explosif, boolean isCellInteraction) {
@@ -213,6 +215,12 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             if (wantsCellInteraction() && isCellInteraction) {
                 orb.getJeu().publish(orb.getDialog());
                 orb.collectBy(ICoopPlayer.this::getItem);
+            }
+        }
+
+        public void interactWith(PressurePlate plate, boolean isCellInteractive) {
+            if (wantsCellInteraction()) {
+                plate.getSignal().isOn();
             }
         }
     }
@@ -238,7 +246,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         this.invulnerable = invulnerable;
     }
 
-    public boolean getInvulnerable(){
+    public boolean getInvulnerable() {
         return invulnerable;
     }
 
