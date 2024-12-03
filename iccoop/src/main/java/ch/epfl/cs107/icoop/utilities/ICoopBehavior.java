@@ -6,6 +6,9 @@ package ch.epfl.cs107.icoop.utilities;
  *	Date:
  */
 
+import ch.epfl.cs107.icoop.actor.ElementalEntity;
+import ch.epfl.cs107.icoop.actor.ElementalWall;
+import ch.epfl.cs107.icoop.actor.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.AreaBehavior;
@@ -82,20 +85,27 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         protected boolean canEnter(Interactable entity) {
-            if(!type.canWalk)
+            if (!type.canWalk)
                 return false;
 
             if (entity.takeCellSpace()) {
-                for (Interactable other : entities ) {
+                for (Interactable other : entities) {
                     if (other.takeCellSpace()) {
                         return false;
                     }
+
+                    if (other instanceof ElementalWall && entity instanceof ICoopPlayer) {
+                        String itemPlayer = ((ICoopPlayer) entity).getItem();
+                        String itemWall = ((ElementalWall) other).item();
+
+                        return itemWall.equals(itemPlayer);
+                    }
+
                 }
             }
 
             return true;
         }
-
 
 
         @Override

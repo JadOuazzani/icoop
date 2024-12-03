@@ -7,6 +7,7 @@ package ch.epfl.cs107.icoop.area;
  */
 
 import ch.epfl.cs107.icoop.actor.Door;
+import ch.epfl.cs107.icoop.actor.ElementalWall;
 import ch.epfl.cs107.icoop.actor.Orb;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
@@ -35,7 +36,7 @@ public class OrbWay extends ICoopArea {
                 new DiscreteCoordinates(0, 14),
                 Orientation.DOWN,
                 new DiscreteCoordinates(0, 13), new DiscreteCoordinates(0, 12), new DiscreteCoordinates(0, 11), new DiscreteCoordinates(0, 10));
-
+        registerActor(door1);
         Door door2 = new Door("Spawn", Logic.TRUE, List.of(
                 new DiscreteCoordinates(18, 16),
                 new DiscreteCoordinates(18, 15)),
@@ -43,12 +44,17 @@ public class OrbWay extends ICoopArea {
                 new DiscreteCoordinates(0, 8),
                 Orientation.DOWN,
                 new DiscreteCoordinates(0, 7), new DiscreteCoordinates(0, 6), new DiscreteCoordinates(0, 5), new DiscreteCoordinates(0, 4));
-        registerActor(door1);
         registerActor(door2);
-        Orb orbeFeu1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17,12), Orb.OrbType.FEU, jeu);
+        Orb orbeFeu1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FEU, jeu);
         registerActor(orbeFeu1);
-        Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17,6), Orb.OrbType.EAU, jeu);
+        Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
         registerActor(orbeEau1);
+        for (int i = 0; i <= 4; i++) {
+            ElementalWall murFeu = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10+i), Logic.TRUE, ElementalWall.WallType.FEU);
+            registerActor(murFeu);
+            ElementalWall murEau = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 3+i), Logic.TRUE, ElementalWall.WallType.EAU);
+            registerActor(murEau);
+        }
     }
 
     @Override

@@ -34,6 +34,43 @@ public class Orb extends ElementalItem implements Interactor {
     private Dialog dialog;
     private final OrbInteractionHandler handler;
 
+    public enum OrbType {
+        EAU("water", new Dialog("orb_water_msg"), 0),
+        FEU("fire", new Dialog("orb_fire_msg"), 64);
+
+        private final String element;
+        private final int spriteYDelta;
+        private final Dialog dialogue;
+
+        OrbType(String item, Dialog dialogue, int spriteYDelta) {
+            this.element = item;
+            this.spriteYDelta = spriteYDelta;
+            this.dialogue = dialogue;
+        }
+
+        public int getSpriteYDelta() {
+            return spriteYDelta;
+        }
+
+        public String getItem() {
+            return element;
+        }
+
+        public Dialog getDialogue() {
+            return dialogue;
+        }
+    }
+
+    public Orb(Area area, Orientation orientation, DiscreteCoordinates position, OrbType orbType, DialogHandler jeu) {
+        super(area, orientation, position, orbType.getItem());
+        this.jeu = jeu;
+        this.dialog = orbType.getDialogue();
+        for (int i = 0; i < ANIMATION_FRAMES; i++) {
+            sprites[i] = new RPGSprite("icoop/orb", 1, 1, this, new RegionOfInterest(i * 32, orbType.getSpriteYDelta(), 32, 32));
+        }
+        handler = new OrbInteractionHandler();
+    }
+
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -72,44 +109,6 @@ public class Orb extends ElementalItem implements Interactor {
     @Override
     public String item() {
         return "";
-    }
-
-
-    public enum OrbType {
-        EAU("water", new Dialog("orb_water_msg"), 0),
-        FEU("fire", new Dialog("orb_fire_msg"), 64);
-
-        private final String element;
-        private final int spriteYDelta;
-        private final Dialog dialogue;
-
-        OrbType(String item, Dialog dialogue, int spriteYDelta) {
-            this.element = item;
-            this.spriteYDelta = spriteYDelta;
-            this.dialogue = dialogue;
-        }
-
-        public int getSpriteYDelta() {
-            return spriteYDelta;
-        }
-
-        public String getItem() {
-            return element;
-        }
-
-        public Dialog getDialogue() {
-            return dialogue;
-        }
-    }
-
-    public Orb(Area area, Orientation orientation, DiscreteCoordinates position, OrbType orbType, DialogHandler jeu) {
-        super(area, orientation, position, orbType.getItem());
-        this.jeu = jeu;
-        this.dialog = orbType.getDialogue();
-        for (int i = 0; i < ANIMATION_FRAMES; i++) {
-            sprites[i] = new RPGSprite("icoop/orb", 1, 1, this, new RegionOfInterest(i * 32, orbType.getSpriteYDelta(), 32, 32));
-        }
-        handler = new OrbInteractionHandler();
     }
 
     @Override
