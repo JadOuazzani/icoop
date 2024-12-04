@@ -57,6 +57,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         handler = new ICoopPlayerInteractionHandler();
         health = new Health(this, Transform.I.translated(0, 1.75f), MAX_LIFE, true);
         invulnerable = false;
+        immunite = false;
     }
 
 
@@ -75,7 +76,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
 
         if (immunite) {
-            periodeImmunite -= deltaTime / 2;
+            periodeImmunite -= (int) (deltaTime / 2);
         }
 
         if (periodeImmunite <= 0) { // Possiblité d'ameliorer ?
@@ -178,7 +179,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
 
     public void perteDegats(int degats) {
-        if (!invulnerable && !immunite) {
+        if ( !(invulnerable || immunite) ) {
             health.decrease(degats);
             immunite = true;
         }
@@ -217,11 +218,13 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             if (wantsCellInteraction() && isCellInteraction) {
                 orb.getJeu().publish(orb.getDialog());
                 orb.collectBy(ICoopPlayer.this::getItem);
+                setInvulnerable(true);
             }
         }
 
         public void interactWith(PressurePlate plate, boolean isCellIInteraction) {
             if (wantsCellInteraction() && isCellIInteraction) {
+                plate.setOccupier(ICoopPlayer.this);
                 plate.setInteractorHere(true);
             }
         }
@@ -252,7 +255,10 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         return invulnerable;
     }
 
-
+    @Override
+    protected boolean isDisplacementOccurs() {
+        return super.isDisplacementOccurs();
+    }
 }
 
 

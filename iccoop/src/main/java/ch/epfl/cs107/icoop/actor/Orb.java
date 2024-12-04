@@ -8,8 +8,6 @@ package ch.epfl.cs107.icoop.actor;
 
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
-import ch.epfl.cs107.play.areagame.actor.Interactable;
-import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.engine.actor.Animation;
@@ -19,20 +17,18 @@ import ch.epfl.cs107.play.engine.actor.Sprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.math.RegionOfInterest;
-import ch.epfl.cs107.play.signal.logic.Or;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Collections;
 import java.util.List;
 
-public class Orb extends ElementalItem implements Interactor {
+public class Orb extends ElementalItem  {
     private final static int ANIMATION_FRAMES = 6;
     private final static int ANIMATION_DURATION = 24;
     final Sprite[] sprites = new Sprite[ANIMATION_FRAMES];
-    private Animation animation = new Animation(ANIMATION_DURATION / ANIMATION_FRAMES, sprites);
-    private DialogHandler jeu;
-    private Dialog dialog;
-    private final OrbInteractionHandler handler;
+    private final Animation animation = new Animation(ANIMATION_DURATION / ANIMATION_FRAMES, sprites);
+    private final DialogHandler jeu;
+    private final Dialog dialog;
 
     public enum OrbType {
         EAU("water", new Dialog("orb_water_msg"), 0),
@@ -68,7 +64,6 @@ public class Orb extends ElementalItem implements Interactor {
         for (int i = 0; i < ANIMATION_FRAMES; i++) {
             sprites[i] = new RPGSprite("icoop/orb", 1, 1, this, new RegionOfInterest(i * 32, orbType.getSpriteYDelta(), 32, 32));
         }
-        handler = new OrbInteractionHandler();
     }
 
     @Override
@@ -76,25 +71,6 @@ public class Orb extends ElementalItem implements Interactor {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
-    @Override
-    public List<DiscreteCoordinates> getFieldOfViewCells() {
-        return Collections.singletonList(getCurrentMainCellCoordinates());
-    }
-
-    @Override
-    public boolean wantsCellInteraction() {
-        return true;
-    }
-
-    @Override
-    public boolean wantsViewInteraction() {
-        return false;
-    }
-
-    @Override
-    public void interactWith(Interactable other, boolean isCellInteraction) {
-        other.acceptInteraction(handler, isCellInteraction);
-    }
 
     @Override
     public boolean isViewInteractable() {
@@ -133,16 +109,4 @@ public class Orb extends ElementalItem implements Interactor {
     public Dialog getDialog() {
         return dialog;
     }
-
-
-    private static class OrbInteractionHandler implements ICoopInteractionVisitor {
-        @Override
-        public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
-            if (player.wantsCellInteraction() && isCellInteraction) {
-                player.setInvulnerable(true);
-                System.out.println(player.getInvulnerable());
-            }
-        }
-    }
-
 }

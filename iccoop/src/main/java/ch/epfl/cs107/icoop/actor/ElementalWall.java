@@ -58,14 +58,13 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (actif.isOff()) {
-            getOwnerArea().unregisterActor(this);
-        }
     }
 
     @Override
     public void draw(Canvas canvas) {
+        if (actif.isOn()){
         wallSprites[getOrientation().ordinal()].draw(canvas);
+        }
     }
 
     @Override
@@ -109,8 +108,8 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
 
     private class WallInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
-            setTakeCellSpace(!player.getItem().equals(item));
-            if (isCellInteraction && wantsCellInteraction()) {
+            setTakeCellSpace(!player.getItem().equals(item) && actif.isOn());
+            if (isCellInteraction && wantsCellInteraction() && actif.isOn()) {
                 player.perteDegats(1);
             }
         }
