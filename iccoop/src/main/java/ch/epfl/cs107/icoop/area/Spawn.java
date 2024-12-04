@@ -44,6 +44,9 @@ public class Spawn extends ICoopArea {
         registerActor(explosif3);
         Rochers rochers = new Rochers(this, Orientation.DOWN, new DiscreteCoordinates(10, 10));
         registerActor(rochers);
+        Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));
+        registerActor(door2);
+
     }
 
     @Override
