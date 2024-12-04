@@ -22,11 +22,11 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.List;
 
 public class ElementalWall extends Obstacle implements ElementalEntity, Interactor {
-    private boolean detruit;
     private Sprite[] wallSprites;
     private String item;
     private boolean takeCellSpace;
     private WallInteractionHandler handler;
+    private Logic actif;
 
     public enum WallType {
         EAU("water", "water_wall"),
@@ -44,23 +44,21 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
             return spriteName;
         }
 
-        public String getItem() {
-            return item;
-        }
+
     }
 
     public ElementalWall(Area area, Orientation orientation, DiscreteCoordinates position, Logic actif, WallType wallType) {
         super(area, orientation, position);
         item = wallType.item;
-        detruit = false;
         wallSprites = RPGSprite.extractSprites(wallType.getSpriteName(), 4, 1, 1, this, Vector.ZERO, 256, 256);
         handler = new WallInteractionHandler();
+        this.actif = actif;
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (detruit) {
+        if (actif.isOff()) {
             getOwnerArea().unregisterActor(this);
         }
     }
@@ -68,10 +66,6 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
     @Override
     public void draw(Canvas canvas) {
         wallSprites[getOrientation().ordinal()].draw(canvas);
-    }
-
-    public void setDetruit(boolean detruit) {
-        this.detruit = detruit;
     }
 
     @Override

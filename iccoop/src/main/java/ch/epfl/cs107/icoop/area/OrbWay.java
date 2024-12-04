@@ -6,10 +6,7 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.Coeur;
-import ch.epfl.cs107.icoop.actor.Door;
-import ch.epfl.cs107.icoop.actor.ElementalWall;
-import ch.epfl.cs107.icoop.actor.Orb;
+import ch.epfl.cs107.icoop.actor.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Foreground;
@@ -50,16 +47,48 @@ public class OrbWay extends ICoopArea {
         registerActor(orbeFeu1);
         Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
         registerActor(orbeEau1);
-        for (int i = 0; i <= 4; i++) {
-            ElementalWall murFeu = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10 + i), Logic.TRUE, ElementalWall.WallType.FEU);
-            registerActor(murFeu);
-            ElementalWall murEau = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 4 + i), Logic.TRUE, ElementalWall.WallType.EAU);
-            registerActor(murEau);
-        }
+
         Coeur coeur1 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));
         registerActor(coeur1);
-        Coeur coeur2 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(8, 12));
+        Coeur coeur2 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(10, 6));
         registerActor(coeur2);
+        Coeur coeur3 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(5, 13));
+        registerActor(coeur3);
+        Coeur coeur4 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(10, 11));
+        registerActor(coeur4);
+
+        PressurePlate firePressurePlate = new PressurePlate(this, new DiscreteCoordinates(5, 7), Orientation.DOWN);
+        registerActor(firePressurePlate);
+        PressurePlate waterPressurePlate = new PressurePlate(this, new DiscreteCoordinates(5, 10), Orientation.DOWN);
+        registerActor(waterPressurePlate);
+
+        for (int i = 0; i <= 4; i++) {
+            ElementalWall murFeu = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10 + i), new Logic() {
+                @Override
+                public boolean isOn() {
+                    return firePressurePlate.isOff();
+                }
+
+                @Override
+                public boolean isOff() {
+                    return firePressurePlate.isOn();
+                }
+            }, ElementalWall.WallType.FEU);
+            registerActor(murFeu);
+
+            ElementalWall murEau = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 4 + i), new Logic() {
+                @Override
+                public boolean isOn() {
+                    return waterPressurePlate.isOff();
+                }
+
+                @Override
+                public boolean isOff() {
+                    return waterPressurePlate.isOn();
+                }
+            }, ElementalWall.WallType.EAU);
+            registerActor(murEau);
+        }
 
 
     }

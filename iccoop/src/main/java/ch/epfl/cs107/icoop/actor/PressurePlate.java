@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.engine.actor.Animation;
+import ch.epfl.cs107.play.engine.actor.Sprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.signal.logic.Logic;
@@ -15,20 +16,37 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class PressurePlate extends AreaEntity {
-    private DiscreteCoordinates positionPrincipale;
-    private Logic signal;
-    private Animation animation;
-    public PressurePlate(Logic signal, Area area, DiscreteCoordinates positionPrincipale, Orientation orientation) {
+public class PressurePlate extends AreaEntity implements Logic {
+    private Sprite sprite;
+    private boolean interactorHere;
+
+
+
+
+
+    public PressurePlate(Area area, DiscreteCoordinates positionPrincipale, Orientation orientation) {
         super(area, orientation, positionPrincipale);
-        this.signal = signal;
-        this.positionPrincipale = positionPrincipale;
+        sprite = new Sprite("GroundPlateOff", 1f, 1f, this);
+        interactorHere = false;
+
     }
+
+
+    public void setInteractorHere(boolean interactorHere) {
+        this.interactorHere = interactorHere;
+    }
+
+    public void draw(Canvas canvas) {
+        sprite.draw(canvas);
+    }
+
+
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return List.of(getCurrentMainCellCoordinates());
     }
+
 
     @Override
     public boolean takeCellSpace() {
@@ -48,16 +66,19 @@ public class PressurePlate extends AreaEntity {
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
-
     }
 
-    public void draw(Canvas canvas) {
-        animation.draw(canvas);
+
+    @Override
+    public boolean isOn() {
+        return interactorHere;
     }
 
-    public Logic getSignal() {
-        return signal;
+    @Override
+    public boolean isOff() {
+        return !interactorHere;
     }
+
 }
 
 

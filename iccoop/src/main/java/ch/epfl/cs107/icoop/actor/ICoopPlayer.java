@@ -13,6 +13,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.math.Transform;
 import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
@@ -81,6 +82,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             immunite = false;
             periodeImmunite = 24;
         }
+
     }
 
     public Health getHealth() {
@@ -218,11 +220,11 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             }
         }
 
-//        public void interactWith(PressurePlate plate, boolean isCellInteractive) {
-//            if (wantsCellInteraction()) {
-//                plate.getSignal().isOn();
-//            }
-//        }
+        public void interactWith(PressurePlate plate, boolean isCellIInteraction) {
+            if (wantsCellInteraction() && isCellIInteraction) {
+                plate.setInteractorHere(true);
+            }
+        }
     }
 
 
