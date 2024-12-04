@@ -63,7 +63,7 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
     @Override
     public void draw(Canvas canvas) {
         if (actif.isOn()){
-        wallSprites[getOrientation().ordinal()].draw(canvas);
+            wallSprites[getOrientation().ordinal()].draw(canvas);
         }
     }
 
@@ -115,3 +115,4 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
         }
     }
 }
+

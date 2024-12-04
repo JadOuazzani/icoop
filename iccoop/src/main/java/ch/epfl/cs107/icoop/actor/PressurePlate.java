@@ -91,5 +91,3 @@ public class PressurePlate extends AreaEntity implements Logic {
     }
 
 }
-
-
