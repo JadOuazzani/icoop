@@ -4,6 +4,7 @@ import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
+import ch.epfl.cs107.play.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.engine.actor.Animation;
@@ -19,18 +20,29 @@ import java.util.List;
 public class PressurePlate extends AreaEntity implements Logic {
     private Sprite sprite;
     private boolean interactorHere;
-
-
-
+    private MovableAreaEntity occupier;
 
 
     public PressurePlate(Area area, DiscreteCoordinates positionPrincipale, Orientation orientation) {
         super(area, orientation, positionPrincipale);
         sprite = new Sprite("GroundPlateOff", 1f, 1f, this);
         interactorHere = false;
-
     }
 
+    public void setOccupier(MovableAreaEntity occupier) {
+        this.occupier = occupier;
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        if (occupier != null && !(getCurrentMainCellCoordinates().equals(occupier.getCurrentMainCellCoordinates()))) {
+            occupier = null;
+        }
+        if (occupier == null){
+            setInteractorHere(false);
+        }
+    }
 
     public void setInteractorHere(boolean interactorHere) {
         this.interactorHere = interactorHere;
@@ -39,7 +51,6 @@ public class PressurePlate extends AreaEntity implements Logic {
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
     }
-
 
 
     @Override
@@ -80,5 +91,3 @@ public class PressurePlate extends AreaEntity implements Logic {
     }
 
 }
-
-

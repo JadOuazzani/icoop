@@ -217,6 +217,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             if (wantsCellInteraction() && isCellInteraction) {
                 orb.getJeu().publish(orb.getDialog());
                 orb.collectBy(ICoopPlayer.this::getItem);
+                setInvulnerable(true);
             }
         }
 
@@ -254,6 +255,3 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
 
 }
-
-
-
