@@ -63,7 +63,7 @@ public class Coeur extends ICoopCollectable implements Interactor {
 
     private class CoeurInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
-            if (wantsCellInteraction()) {
+            if (wantsCellInteraction() && player.getHealth().getHealthPoints() != player.getHealth().getMaxHealth()) { //nvl option: npp recup coeur quand max HP
                 player.getHealth().increase(1);
                 collect();
             }
@@ -73,7 +73,7 @@ public class Coeur extends ICoopCollectable implements Interactor {
 
     public void update(float deltaTime) {
         animation.update(deltaTime);
-        if (isCollected()){
+        if (isCollected()) {
             disparition();
         }
     }
