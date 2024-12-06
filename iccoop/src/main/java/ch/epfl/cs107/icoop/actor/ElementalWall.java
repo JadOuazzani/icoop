@@ -11,6 +11,7 @@ import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.area.Area;
+import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.engine.actor.RPGSprite;
 import ch.epfl.cs107.play.engine.actor.Sprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -27,6 +28,7 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
     private boolean takeCellSpace;
     private WallInteractionHandler handler;
     private Logic actif;
+    private boolean detruit;
 
     public enum WallType {
         EAU("water", "water_wall"),
@@ -44,7 +46,9 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
             return spriteName;
         }
 
-
+        public String getItem() {
+            return item;
+        }
     }
 
     public ElementalWall(Area area, Orientation orientation, DiscreteCoordinates position, Logic actif, WallType wallType) {
@@ -53,16 +57,20 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
         wallSprites = RPGSprite.extractSprites(wallType.getSpriteName(), 4, 1, 1, this, Vector.ZERO, 256, 256);
         handler = new WallInteractionHandler();
         this.actif = actif;
+        detruit = false;
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        if (detruit) {
+            getOwnerArea().unregisterActor(this);
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (actif.isOn()){
+        if (actif.isOn()) {
             wallSprites[getOrientation().ordinal()].draw(canvas);
         }
     }
@@ -89,7 +97,7 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
 
     @Override
     public boolean isViewInteractable() {
-        return false;
+        return true;
     }
 
     @Override
@@ -106,11 +114,20 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
         other.acceptInteraction(handler, isCellInteraction);
     }
 
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
+    }
+
+    public void setDetruit(boolean detruit) {
+        this.detruit = detruit;
+    }
+
     private class WallInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             setTakeCellSpace(!player.getItem().equals(item) && actif.isOn());
             if (isCellInteraction && wantsCellInteraction() && actif.isOn()) {
-                player.perteDegats(1);
+                player.perteDegats(1, item);
             }
         }
     }

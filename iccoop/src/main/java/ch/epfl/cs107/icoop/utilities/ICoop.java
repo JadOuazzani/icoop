@@ -7,6 +7,7 @@ import ch.epfl.cs107.icoop.area.Maze;
 import ch.epfl.cs107.icoop.area.OrbWay;
 import ch.epfl.cs107.icoop.area.Spawn;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
+import ch.epfl.cs107.icoop.handler.ICoopPlayerStatusGUI;
 import ch.epfl.cs107.play.areagame.AreaGame;
 import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -18,12 +19,14 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 
 public class ICoop extends AreaGame implements DialogHandler {
-    private final String[] areas = {"Spawn", "OrbWay","Maze"};
+    private final String[] areas = {"Spawn", "OrbWay", "Maze"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
     private Dialog dialogue;
     private static boolean ITS_INITIALIZED = false;
+    ICoopPlayerStatusGUI redStatusGUI;
+    ICoopPlayerStatusGUI blueStatusGUI;
 
 
     public void resetGame() {
@@ -48,7 +51,7 @@ public class ICoop extends AreaGame implements DialogHandler {
     private void createAreas() {
         addArea(new Spawn((DialogHandler) this));
         addArea(new OrbWay((DialogHandler) this));
-        addArea(new Maze((DialogHandler)this));
+        addArea(new Maze((DialogHandler) this));
     }
 
     @Override
@@ -90,6 +93,8 @@ public class ICoop extends AreaGame implements DialogHandler {
                 dialogue.update(deltaTime);
             }
         }
+        blueStatusGUI.draw(getWindow());
+        redStatusGUI.draw(getWindow());
     }
 
 
@@ -98,8 +103,10 @@ public class ICoop extends AreaGame implements DialogHandler {
         DiscreteCoordinates coords1 = area.getStartPositions().getFirst();
         DiscreteCoordinates coords2 = area.getStartPositions().getLast();
         redPlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords1, "Icoop/player", "fire", RED_PLAYER_KEY_BINDINGS);
+        redStatusGUI = new ICoopPlayerStatusGUI(redPlayer, true);
         redPlayer.enterArea(getCurrentArea(), coords1);
         bluePlayer = new ICoopPlayer(getCurrentArea(), Orientation.DOWN, coords2, "Icoop/player2", "water", BLUE_PLAYER_KEY_BINDINGS);
+        blueStatusGUI = new ICoopPlayerStatusGUI(bluePlayer, false);
         bluePlayer.enterArea(getCurrentArea(), coords2);
         bluePlayer.centerCamera(redPlayer, bluePlayer);
 

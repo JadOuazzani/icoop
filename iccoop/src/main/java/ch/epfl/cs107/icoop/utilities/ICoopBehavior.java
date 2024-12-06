@@ -8,6 +8,7 @@ package ch.epfl.cs107.icoop.utilities;
 
 import ch.epfl.cs107.icoop.actor.ElementalEntity;
 import ch.epfl.cs107.icoop.actor.ElementalWall;
+import ch.epfl.cs107.icoop.actor.Explosif;
 import ch.epfl.cs107.icoop.actor.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
@@ -85,11 +86,13 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         protected boolean canEnter(Interactable entity) {
-            if (!type.canWalk)
+            if (!type.canWalk) {
                 return false;
+            }
 
-            if (entity.takeCellSpace()) {
-                for (Interactable other : entities) {
+
+            for (Interactable other : entities) {
+                if (!(entity instanceof Explosif) ){
                     if (other.takeCellSpace()) {
                         return false;
                     }
@@ -97,10 +100,10 @@ public class ICoopBehavior extends AreaBehavior {
                     if (other instanceof ElementalWall && entity instanceof ICoopPlayer) {
                         String itemPlayer = ((ICoopPlayer) entity).getItem();
                         String itemWall = ((ElementalWall) other).item();
-
                         return itemWall.equals(itemPlayer);
                     }
-
+                }else {
+                    return false;
                 }
             }
 

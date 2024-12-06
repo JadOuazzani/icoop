@@ -41,6 +41,7 @@ public class Explosif extends ICoopCollectable implements Interactor {
 
     @Override
     public void update(float deltaTime) {
+
         super.update(deltaTime);
         if (activer) {
             retardateur -= deltaTime;
@@ -61,6 +62,11 @@ public class Explosif extends ICoopCollectable implements Interactor {
     public void draw(Canvas canvas) {
         animation.draw(canvas);
     }
+
+    public void setRetardateur(float retardateur) {
+        this.retardateur = retardateur;
+    }
+
 
     public void setActiver(boolean activer) {
         this.activer = activer;
@@ -86,6 +92,7 @@ public class Explosif extends ICoopCollectable implements Interactor {
         return etatExplosion;
     }
 
+
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
@@ -101,12 +108,15 @@ public class Explosif extends ICoopCollectable implements Interactor {
         return !etatExplosion;
     }
 
+
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
     }
 
+
     private class ExplosifInteractionHandler implements ICoopInteractionVisitor {
+
         @Override
         public void interactWith(Rochers rochers, boolean isCellInteraction) {
             if (wantsViewInteraction()) {
@@ -117,9 +127,24 @@ public class Explosif extends ICoopCollectable implements Interactor {
         @Override
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (wantsViewInteraction()) {
-                player.perteDegats(DEGATS_PERDUE);
+                player.perteDegats(DEGATS_PERDUE, "physique");
             }
         }
+
+        @Override
+        public void interactWith(ElementalWall wall, boolean isCellInteraction) {
+            if (wantsViewInteraction()) {
+                wall.setDetruit(true);
+            }
+        }
+
+        @Override
+        public void interactWith(Explosif explosif, boolean isCellInteraction) {
+            if (wantsViewInteraction()) {
+                explosif.setRetardateur(0);
+            }
+        }
+
     }
 }
 
