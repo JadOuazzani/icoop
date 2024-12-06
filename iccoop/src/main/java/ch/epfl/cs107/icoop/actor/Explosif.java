@@ -43,6 +43,8 @@ public class Explosif extends ICoopCollectable implements Interactor {
     public void update(float deltaTime) {
 
         super.update(deltaTime);
+
+
         if (activer) {
             retardateur -= deltaTime;
             animation.update(deltaTime);
@@ -50,9 +52,9 @@ public class Explosif extends ICoopCollectable implements Interactor {
         if (retardateur <= 0 && !etatExplosion) {
             etatExplosion = true;
             animation = new Animation("icoop/explosion", 7, 1, 1, this, 32, 32, ANIMATION_DURATION / 7, false);
-            animation.update(deltaTime);
         }
-        if (animation.isCompleted()) {
+        if (etatExplosion) animation.update(deltaTime);
+        if (animation.isCompleted() && etatExplosion) {
             getOwnerArea().unregisterActor(this);
         }
 
@@ -119,28 +121,28 @@ public class Explosif extends ICoopCollectable implements Interactor {
 
         @Override
         public void interactWith(Rochers rochers, boolean isCellInteraction) {
-            if (wantsViewInteraction()) {
+            if (!isCellInteraction) {
                 rochers.setDetruit(true);
             }
         }
 
         @Override
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
-            if (wantsViewInteraction()) {
+            if (!isCellInteraction) {
                 player.perteDegats(DEGATS_PERDUE, "physique");
             }
         }
 
         @Override
         public void interactWith(ElementalWall wall, boolean isCellInteraction) {
-            if (wantsViewInteraction()) {
+            if (!isCellInteraction) {
                 wall.setDetruit(true);
             }
         }
 
         @Override
         public void interactWith(Explosif explosif, boolean isCellInteraction) {
-            if (wantsViewInteraction()) {
+            if (!isCellInteraction) {
                 explosif.setRetardateur(0);
             }
         }

@@ -126,6 +126,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                     Explosif bombe = new Explosif(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
                     if (getOwnerArea().canEnterAreaCells(bombe, bombe.getCurrentCells())){
                         getOwnerArea().registerActor(bombe);
+                        bombe.setActiver(true);
                         inventory.removePocketItem(ICoopItem.EXPLOSIVE, 1);
                         if (!possess(item)){
                             switchItem();

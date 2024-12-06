@@ -34,7 +34,6 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     private Animation animation;
 
 
-
     /**
      * Default MovableAreaEntity constructor
      *
@@ -43,13 +42,13 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
      * @param position    (Coordinate): Initial position of the entity. Not null
      */
 
-    Foe(Area area, Orientation orientation, DiscreteCoordinates position, List<ElementalEntity> vulnerabilite,String prefixe ) {
+    Foe(Area area, Orientation orientation, DiscreteCoordinates position, List<ElementalEntity> vulnerabilite, String prefixe) {
         super(area, orientation, position);
         animationorientee = new OrientedAnimation(prefixe, ANIMATION_DURATION, this,
                 anchor, orders, 4, 1, 2, 16, 32,
                 true);
-        animation = new Animation("icoop/vanish", 7, 2, 2, this , 32, 32, new
-                Vector(-0.5f, 0f), ANIMATION_DURATION/7, false);
+        animation = new Animation("icoop/vanish", 7, 2, 2, this, 32, 32, new
+                Vector(-0.5f, 0f), ANIMATION_DURATION / 7, false);
     }
 
     @Override
@@ -75,12 +74,16 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     }
 
     @Override
-    public void interactWith(Interactable other, boolean isCellInteraction) {}
+    public void interactWith(Interactable other, boolean isCellInteraction) {
+    }
 
     @Override
     public boolean takeCellSpace() {
-        if(isdead){return false;}
-        else {return true;}
+        if (isdead) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
@@ -129,10 +132,10 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     }
 
 
-
-    public void setDead () {
-        if (health.getHealthPoints()<=0){
-        getOwnerArea().unregisterActor(this);
-        isdead=true;}
+    public void setDead() {
+        if (health.getHealthPoints() <= 0) {
+            getOwnerArea().unregisterActor(this);
+            isdead = true;
+        }
     }
 }
