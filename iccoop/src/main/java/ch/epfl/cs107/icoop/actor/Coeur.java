@@ -18,7 +18,6 @@ public class Coeur extends ICoopCollectable implements Interactor {
     private static final int ANIMATION_DURATION = 24;
     private final Animation animation;
     private final CoeurInteractionHandler handler;
-    private int test;
 
     public Coeur(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
