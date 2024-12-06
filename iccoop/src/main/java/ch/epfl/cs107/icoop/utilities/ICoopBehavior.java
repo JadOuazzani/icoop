@@ -6,10 +6,7 @@ package ch.epfl.cs107.icoop.utilities;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.ElementalEntity;
-import ch.epfl.cs107.icoop.actor.ElementalWall;
-import ch.epfl.cs107.icoop.actor.Explosif;
-import ch.epfl.cs107.icoop.actor.ICoopPlayer;
+import ch.epfl.cs107.icoop.actor.*;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.AreaBehavior;
@@ -86,6 +83,9 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         protected boolean canEnter(Interactable entity) {
+            if (entity instanceof Unstoppable){
+                return true;
+            }
             if (!type.canWalk) {
                 return false;
             }

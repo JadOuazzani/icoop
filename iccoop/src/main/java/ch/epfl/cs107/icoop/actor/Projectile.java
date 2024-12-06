@@ -58,8 +58,6 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     public boolean wantsViewInteraction() {
         return false;
     }
-
-    public abstract void interactWith();
     
 
     @Override
@@ -78,8 +76,6 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     }
 
     @Override
-    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
-
-    }
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {}
 
     }
