@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.object;
 
 
 /*
@@ -22,7 +22,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class Orb extends ElementalItem  {
+public class Orb extends ElementalItem {
     private final static int ANIMATION_FRAMES = 6;
     private final static int ANIMATION_DURATION = 24;
     final Sprite[] sprites = new Sprite[ANIMATION_FRAMES];

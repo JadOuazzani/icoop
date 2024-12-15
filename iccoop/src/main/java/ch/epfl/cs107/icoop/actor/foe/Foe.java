@@ -1,5 +1,9 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.foe;
 
+import ch.epfl.cs107.icoop.actor.object.ElementalEntity;
+import ch.epfl.cs107.icoop.actor.object.Explosif;
+import ch.epfl.cs107.icoop.actor.perso.Health;
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
@@ -8,9 +12,9 @@ import ch.epfl.cs107.play.areagame.area.Area;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.engine.actor.Animation;
 import ch.epfl.cs107.play.engine.actor.OrientedAnimation;
-import ch.epfl.cs107.play.engine.actor.Sprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.math.Transform;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -22,16 +26,15 @@ import static ch.epfl.cs107.play.math.Orientation.LEFT;
 
 public abstract class Foe extends MovableAreaEntity implements Interactor {
     private Health health;
-    private int MAX_LIFE;
-    private OrientedAnimation animationorientee;
-    private boolean isdead;
-    private boolean invulnerable;
+    protected int MAX_LIFE;
+    private boolean isDead;
     private boolean immunite;
-    private int periodeImmunite = 24;
+    private static int periodeImmunite = 24;
     final Vector anchor = new Vector(0, 0);
     final Orientation[] orders = {DOWN, RIGHT, UP, LEFT};
-    private static final int ANIMATION_DURATION = 4;
     private Animation animation;
+    List<String> vulnerabilite;
+    protected static final int ANIMATION_DURATION = 4;
 
 
     /**
@@ -42,13 +45,48 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
      * @param position    (Coordinate): Initial position of the entity. Not null
      */
 
-    Foe(Area area, Orientation orientation, DiscreteCoordinates position, List<ElementalEntity> vulnerabilite, String prefixe) {
+    Foe(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, final int MAX_LIFE) {
         super(area, orientation, position);
-        animationorientee = new OrientedAnimation(prefixe, ANIMATION_DURATION, this,
-                anchor, orders, 4, 1, 2, 16, 32,
-                true);
-        animation = new Animation("icoop/vanish", 7, 2, 2, this, 32, 32, new
-                Vector(-0.5f, 0f), ANIMATION_DURATION / 7, false);
+        this.MAX_LIFE = MAX_LIFE;
+        this.vulnerabilite = vulnerabilite;
+        animation = new Animation("icoop/vanish", 7, 2, 2, this, 32, 32,
+                new Vector(-0.5f, 0f), ANIMATION_DURATION / 7, false);
+        health = new Health(this, Transform.I.translated(0, 1.75f), MAX_LIFE, false);
+        isDead = false;
+        immunite = false;
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        if (health.getHealthPoints() <= 0) {
+            isDead = true;
+            getOwnerArea().unregisterActor(this);
+        }
+        if (immunite) {
+            periodeImmunite -= (int) (deltaTime / 2);
+        }
+
+        if (periodeImmunite <= 0) {
+            immunite = false;
+            periodeImmunite = 24;
+        }
+    }
+
+
+    public boolean getImmunite(){
+        return immunite;
+    }
+
+
+
+
+    public boolean getIsDead() {
+        return isDead;
+    }
+
+    @Override
+    public boolean takeCellSpace() {
+        return !isDead;
     }
 
     @Override
@@ -77,26 +115,6 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     public void interactWith(Interactable other, boolean isCellInteraction) {
     }
 
-    @Override
-    public boolean takeCellSpace() {
-        if (isdead) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        if (!immunite) {
-            animationorientee.draw(canvas);
-            health.draw(canvas);
-        }
-        if (immunite && periodeImmunite % 7 == 0) {
-            animationorientee.draw(canvas);
-            health.draw(canvas);
-        }
-    }
 
     @Override
     public boolean isCellInteractable() {
@@ -111,12 +129,18 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
-
     }
 
+    public void perteDegats(int degats, String type) {
+        for (String element : vulnerabilite) {
+            if (element.equals(type)) {
+                health.decrease(degats);
+            }
+        }
+    }
+
+
     public class FoeInteractionHandler implements ICoopInteractionVisitor {
-
-
         @Override
         public void interactWith(Explosif explosif, boolean isCellInteraction) {
 
@@ -131,11 +155,4 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
         }
     }
 
-
-    public void setDead() {
-        if (health.getHealthPoints() <= 0) {
-            getOwnerArea().unregisterActor(this);
-            isdead = true;
-        }
-    }
 }

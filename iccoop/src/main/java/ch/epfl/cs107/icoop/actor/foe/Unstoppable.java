@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.foe;
 
 import ch.epfl.cs107.icoop.utilities.ICoopBehavior;
 

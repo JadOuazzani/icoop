@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.perso;
 
 import ch.epfl.cs107.play.engine.actor.Actor;
 import ch.epfl.cs107.play.math.Transform;

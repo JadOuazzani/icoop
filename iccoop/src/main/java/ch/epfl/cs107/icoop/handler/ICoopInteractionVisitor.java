@@ -1,8 +1,11 @@
 package ch.epfl.cs107.icoop.handler;
 
-import ch.epfl.cs107.icoop.actor.ElementalItem;
+import ch.epfl.cs107.icoop.actor.foe.BombFoe;
+import ch.epfl.cs107.icoop.actor.foe.Fire;
+import ch.epfl.cs107.icoop.actor.foe.Foe;
+import ch.epfl.cs107.icoop.actor.object.*;
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.utilities.ICoopBehavior;
-import ch.epfl.cs107.icoop.actor.*;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
 
 /**
@@ -18,6 +21,9 @@ public interface ICoopInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(Explosif explosif, boolean isCellInteraction){}
     default void interactWith(Orb orb, boolean isCellInteraction){};
     default void interactWith(ElementalWall wall, boolean isCellInteraction){};
-    default void interactWith(Coeur coeur, boolean isCellInteraction){}
+    default void interactWith(Heart heart, boolean isCellInteraction){}
     default void interactWith(PressurePlate plate, boolean isCellInteraction){}
+    default void interactWith(Foe foe, boolean isCellInteraction){}
+    default void interactWith(Fire fire, boolean isCellInteraction){}
+    default void interactWith(BombFoe bombFoe, boolean isCellInteraction){}
 }

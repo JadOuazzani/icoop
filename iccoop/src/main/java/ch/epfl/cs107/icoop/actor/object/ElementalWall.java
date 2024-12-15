@@ -1,4 +1,4 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.object;
 
 
 /*
@@ -7,6 +7,7 @@ package ch.epfl.cs107.icoop.actor;
  */
 
 
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;

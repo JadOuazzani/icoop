@@ -1,5 +1,6 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.object;
 
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.icoop.utilities.ICoopCollectable;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
@@ -14,12 +15,12 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class Coeur extends ICoopCollectable implements Interactor {
+public class Heart extends ICoopCollectable implements Interactor {
     private static final int ANIMATION_DURATION = 24;
     private final Animation animation;
     private final CoeurInteractionHandler handler;
 
-    public Coeur(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Heart(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         animation = new Animation("icoop/heart", 4, 1, 1, this, 16, 16,
                 ANIMATION_DURATION / 4, true);

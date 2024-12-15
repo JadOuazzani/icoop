@@ -1,7 +1,7 @@
 package ch.epfl.cs107.icoop.utilities;
 
 
-import ch.epfl.cs107.icoop.actor.ICoopPlayer;
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.area.Maze;
 import ch.epfl.cs107.icoop.area.OrbWay;
@@ -39,6 +39,8 @@ public class ICoop extends AreaGame implements DialogHandler {
             initArea(areas[0]);
         } else if (getCurrentArea().getTitle().equals(areas[1])) {
             initArea(areas[1]);
+        } else if (getCurrentArea().getTitle().equals(areas[2])) {
+            initArea(areas[2]);
         }
     }
 

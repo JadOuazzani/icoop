@@ -6,11 +6,10 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.Door;
-import ch.epfl.cs107.icoop.actor.Explosif;
-import ch.epfl.cs107.icoop.actor.Rochers;
+import ch.epfl.cs107.icoop.actor.object.Door;
+import ch.epfl.cs107.icoop.actor.object.Explosif;
+import ch.epfl.cs107.icoop.actor.object.Rochers;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
-import ch.epfl.cs107.icoop.utilities.ICoop;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.engine.actor.Foreground;

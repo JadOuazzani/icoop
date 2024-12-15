@@ -6,7 +6,7 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.*;
+import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Foreground;
@@ -48,14 +48,14 @@ public class OrbWay extends ICoopArea {
         Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
         registerActor(orbeEau1);
 
-        Coeur coeur1 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));
-        registerActor(coeur1);
-        Coeur coeur2 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(10, 6));
-        registerActor(coeur2);
-        Coeur coeur3 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(5, 13));
-        registerActor(coeur3);
-        Coeur coeur4 = new Coeur(this, Orientation.DOWN, new DiscreteCoordinates(10, 11));
-        registerActor(coeur4);
+        Heart heart1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));
+        registerActor(heart1);
+        Heart heart2 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(10, 6));
+        registerActor(heart2);
+        Heart heart3 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(5, 13));
+        registerActor(heart3);
+        Heart heart4 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(10, 11));
+        registerActor(heart4);
 
         PressurePlate firePressurePlate = new PressurePlate(this, new DiscreteCoordinates(5, 7), Orientation.DOWN);
         registerActor(firePressurePlate);

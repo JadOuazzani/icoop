@@ -6,7 +6,10 @@ package ch.epfl.cs107.icoop.utilities;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.*;
+import ch.epfl.cs107.icoop.actor.foe.Unstoppable;
+import ch.epfl.cs107.icoop.actor.object.ElementalWall;
+import ch.epfl.cs107.icoop.actor.object.Explosif;
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.AreaBehavior;

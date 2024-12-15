@@ -1,6 +1,6 @@
 package ch.epfl.cs107.icoop.handler;
 
-import ch.epfl.cs107.icoop.actor.ICoopPlayer;
+import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.play.engine.actor.Graphics;
 import ch.epfl.cs107.play.engine.actor.ImageGraphics;
 import ch.epfl.cs107.play.io.ResourcePath;

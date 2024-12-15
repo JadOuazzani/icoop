@@ -78,6 +78,7 @@ public abstract class MovableAreaEntity extends AreaEntity {
      * @return (boolean): indicate if the move is initiated
      */
     protected final boolean move(int frameForMove, int startingFrame) {
+
         if (!displacementOccurs || isTargetReached()) {
             List<DiscreteCoordinates> originCells = getCurrentCells();
             List<DiscreteCoordinates> targetCells = getNextCells(getPosition().add(getOrientation().toVector()));

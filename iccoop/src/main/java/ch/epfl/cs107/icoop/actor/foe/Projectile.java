@@ -1,8 +1,5 @@
-package ch.epfl.cs107.icoop.actor;
+package ch.epfl.cs107.icoop.actor.foe;
 
-import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
-import ch.epfl.cs107.icoop.utilities.ICoopBehavior;
-import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.actor.Interactor;
 import ch.epfl.cs107.play.areagame.actor.MovableAreaEntity;
 import ch.epfl.cs107.play.areagame.area.Area;
@@ -13,29 +10,30 @@ import ch.epfl.cs107.play.math.Orientation;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class Projectile extends MovableAreaEntity implements Interactor {
-    private final int vitesse;
-    private final int distancemax;
-    private int distanceaParcourir;
-    private final int DEGATS_PERDUE =1;
-    public Projectile(Area area, Orientation orientation,DiscreteCoordinates position, int vitesse, int distancemax){
-        super(area,orientation,position);
-        this.vitesse=vitesse;
-        this.distancemax=distancemax;
-        distanceaParcourir=distancemax;
+public abstract class Projectile extends MovableAreaEntity implements Interactor, Unstoppable {
+    private final int distanceMax;
+    private int distanceParcourir;
+    private final static int DEGATS_PERDUE = 1;
+    private float vitesse;
+    private final static int MOVE_DURATION = 15;
 
-    }
+    public Projectile(Area area, Orientation orientation, DiscreteCoordinates position, float vitesse, int distanceMax) {
+        super(area, orientation, position);
+        this.vitesse = vitesse;
+        this.distanceMax = distanceMax;
+        distanceParcourir = distanceMax;
 
-    public void stop(){
-       this.abortCurrentMove();
+
     }
 
     public void update(float deltatime) {
         super.update(deltatime);
-        distanceaParcourir-=1;
-        if (distanceaParcourir==0) {
-            stop();
+        distanceParcourir -= 1;
+        if (distanceParcourir == 0) {
+            getOwnerArea().unregisterActor(this);
         }
+        move((int) (MOVE_DURATION / vitesse));
+
     }
 
 
@@ -58,7 +56,7 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
     public boolean wantsViewInteraction() {
         return false;
     }
-    
+
 
     @Override
     public boolean takeCellSpace() {
@@ -67,7 +65,7 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
 
     @Override
     public boolean isCellInteractable() {
-        return false;
+        return (distanceParcourir != 0);
     }
 
     @Override
@@ -75,7 +73,5 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
         return false;
     }
 
-    @Override
-    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {}
 
-    }
+}
