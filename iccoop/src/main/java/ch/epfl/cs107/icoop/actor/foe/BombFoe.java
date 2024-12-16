@@ -29,9 +29,9 @@ import static ch.epfl.cs107.play.math.Orientation.DOWN;
 public class BombFoe extends Foe {
 
     private enum BombFoeEtat {
-        idle("icoop/bombMonster", "idle", 2),
-        attaque("icoop/bombMonster", "attaque", 6),
-        protection("icoop/bombMonster.protecting", "protection", 1);
+        idle("bombFoe", "idle", 2),
+        attaque("bombFoe", "attaque", 6),
+        protection("bombFoe.protecting", "protection", 1);
 
         private String spriteName;
         private String etat;
@@ -63,7 +63,7 @@ public class BombFoe extends Foe {
     private final static int TIME_TRESHOLD = 24;
     private int randomInt;
     private double randDouble;
-    private static final int ANIMATION_DURATION = 12;
+    private static final int ANIMATION_DURATION = 3;
     private int speedFactor;
     private Orientation orientation;
     private boolean randomBool;
@@ -71,12 +71,14 @@ public class BombFoe extends Foe {
     private int randomInt2;
 
 
-    public BombFoe(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, String spriteName) {
+    public BombFoe(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite) {
         super(area, orientation, position, vulnerabilite, 2);
         this.etat = BombFoeEtat.idle;
-        this.orientedAnimation = new OrientedAnimation(etat.getSpriteName(), ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, true);
+        orientedAnimation = new OrientedAnimation(etat.getSpriteName(), ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, true);
         handler = new BombFoeInteractionHandler();
         speedFactor = etat.getSpeedFactor();
+        tempsInaction = 0;
+
 
     }
 
@@ -91,14 +93,17 @@ public class BombFoe extends Foe {
                 this.orientedAnimation = new OrientedAnimation(etat.getSpriteName(), ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, false);
                 break;
         }
-        orientedAnimation.update(deltaTime);
+        orientation = Orientation.fromInt(RandomGenerator.getInstance().nextInt(0, 4));
         speedFactor = etat.getSpeedFactor();
         randDouble = RandomGenerator.getInstance().nextDouble();
         randomInt = RandomGenerator.getInstance().nextInt(TIME_TRESHOLD);
-        orientation = Orientation.fromInt(RandomGenerator.getInstance().nextInt());
         randomBool = RandomGenerator.getInstance().nextBoolean();
         randomInt2 = RandomGenerator.getInstance().nextInt(72, 120);
+
+        orientedAnimation.update(deltaTime);
         behavior(deltaTime);
+
+
     }
 
     @Override
@@ -129,6 +134,10 @@ public class BombFoe extends Foe {
         return super.getCurrentCells();
     }
 
+    @Override
+    protected boolean isTargetReached() {
+        return true;
+    }
 
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {
@@ -154,7 +163,9 @@ public class BombFoe extends Foe {
     }
 
     private void behavior(float deltatime) {
-        if (!getImmunite() && tempsInaction == 0) {
+
+
+        if (!getImmunite() && tempsInaction <= 0) {
             switch (etat) {
                 case BombFoeEtat.idle:
                     randomMoving();
@@ -172,7 +183,7 @@ public class BombFoe extends Foe {
                         }
                     }
                     break;
-                case protection:
+                case BombFoeEtat.protection:
                     if (randomInt2 > 0) {
                         randomMoving();
                         resetPlayerCoords();
@@ -187,12 +198,17 @@ public class BombFoe extends Foe {
         }
     }
 
+    @Override
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
     private void randomMoving() {
         if (!isDisplacementOccurs()) {
             if (randDouble < 0.4) {
-                orientate(orientation);
+                orientate(getOrientation());
             }
-            move(ANIMATION_DURATION / speedFactor);
+            move(ANIMATION_DURATION / etat.getSpeedFactor());
         }
     }
 
@@ -213,12 +229,11 @@ public class BombFoe extends Foe {
 
         Orientation newOrientation = Orientation.fromVector(chosenDirection);
         orientate(newOrientation);
-        move(ANIMATION_DURATION / speedFactor);
-
         if (!orientate(newOrientation)) {
-            move(ANIMATION_DURATION / speedFactor);
+            move(ANIMATION_DURATION / 6);
+        } else {
+            move(ANIMATION_DURATION / etat.getSpeedFactor());
         }
-
     }
 
     public void resetPlayerCoords() {
@@ -227,7 +242,7 @@ public class BombFoe extends Foe {
 
     private void setInactionBehavior(float deltaTime) {
         if (tempsInaction > 0) {
-            move(0);
+            resetMotion();
             tempsInaction -= deltaTime;
         }
     }
