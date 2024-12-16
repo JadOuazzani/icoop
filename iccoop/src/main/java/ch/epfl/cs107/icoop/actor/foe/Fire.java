@@ -50,7 +50,6 @@ public class Fire extends Projectile {
     }
 
 
-
     @Override
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);

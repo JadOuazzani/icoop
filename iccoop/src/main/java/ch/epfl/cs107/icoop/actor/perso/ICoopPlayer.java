@@ -1,11 +1,8 @@
 package ch.epfl.cs107.icoop.actor.perso;
 
-import ch.epfl.cs107.icoop.actor.foe.Fire;
-import ch.epfl.cs107.icoop.actor.object.Door;
-import ch.epfl.cs107.icoop.actor.object.ElementalEntity;
-import ch.epfl.cs107.icoop.actor.object.Explosif;
-import ch.epfl.cs107.icoop.actor.object.Orb;
-import ch.epfl.cs107.icoop.actor.object.PressurePlate;
+import ch.epfl.cs107.icoop.actor.object.*;
+
+
 import ch.epfl.cs107.icoop.handler.ICoopInventory;
 import ch.epfl.cs107.icoop.handler.ICoopItem;
 import ch.epfl.cs107.icoop.utilities.KeyBindings;
@@ -22,10 +19,12 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.math.Transform;
 import ch.epfl.cs107.play.math.Vector;
+
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
 
         if (immunite) {
-            periodeImmunite -= (int) (deltaTime / 2);
+            periodeImmunite -= deltaTime / 2;
         }
 
         if (periodeImmunite <= 0) { // Possiblité d'ameliorer ?
@@ -104,6 +103,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
     public void switchItem() {
         int index = NAVIGATION_LIST.indexOf(currentItem);
+
         do {
             index = (index + 1) % NAVIGATION_LIST.size();
         } while (!possess(NAVIGATION_LIST.get(index)));
@@ -128,7 +128,6 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                     Explosif bombe = new Explosif(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
                     if (getOwnerArea().canEnterAreaCells(bombe, bombe.getCurrentCells())) {
                         getOwnerArea().registerActor(bombe);
-                        bombe.setActiver(true);
                         inventory.removePocketItem(ICoopItem.EXPLOSIVE, 1);
                         if (!possess(item)) {
                             switchItem();
@@ -234,7 +233,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     }
 
     public void perteDegats(int degats, String typeDegats) {
-        if (typeDegats.equals("physique") || !(typeDegats.equals(getItem()))) {
+        if (typeDegats.equals("physique")) {
             if (!immunite) {
                 health.decrease(degats);
                 immunite = true;
@@ -244,7 +243,13 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 health.decrease(degats);
                 immunite = true;
             }
+        } else {
+            if (!immunite) {
+                health.decrease(degats);
+                immunite = true;
+            }
         }
+
     }
 
     @Override
@@ -301,7 +306,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             }
 
             if (wantsCellInteraction() && currentItem == ICoopItem.EXPLOSIVE) {
-                explosif.setActiver(true);
+                getOwnerArea().unregisterActor(explosif);
             }
         }
 
@@ -319,13 +324,6 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             if (wantsCellInteraction() && isCellIInteraction) {
                 plate.setOccupier(ICoopPlayer.this);
                 plate.setInteractorHere(true);
-            }
-        }
-
-        @Override
-        public void interactWith(Fire fire, boolean isCellInteraction) {
-            if (isCellInteraction) {
-                getOwnerArea().unregisterActor(fire);
             }
         }
     }

@@ -61,6 +61,10 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
         detruit = false;
     }
 
+    public Logic getActif() {
+        return actif;
+    }
+
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -127,7 +131,7 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
     private class WallInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             setTakeCellSpace(!player.getItem().equals(item) && actif.isOn());
-            if (isCellInteraction && wantsCellInteraction() && actif.isOn()) {
+            if (isCellInteraction && actif.isOn()) {
                 player.perteDegats(1, item);
             }
         }

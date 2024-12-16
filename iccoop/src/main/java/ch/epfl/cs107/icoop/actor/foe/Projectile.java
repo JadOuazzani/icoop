@@ -33,7 +33,6 @@ public abstract class Projectile extends MovableAreaEntity implements Interactor
             getOwnerArea().unregisterActor(this);
         }
         move((int) (MOVE_DURATION / vitesse));
-
     }
 
 

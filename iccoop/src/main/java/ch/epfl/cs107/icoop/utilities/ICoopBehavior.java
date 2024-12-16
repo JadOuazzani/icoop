@@ -86,7 +86,7 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         protected boolean canEnter(Interactable entity) {
-            if (entity instanceof Unstoppable){
+            if (entity instanceof Unstoppable) {
                 return true;
             }
             if (!type.canWalk) {
@@ -95,7 +95,7 @@ public class ICoopBehavior extends AreaBehavior {
 
 
             for (Interactable other : entities) {
-                if (!(entity instanceof Explosif) ){
+                if (!(entity instanceof Explosif)) {
                     if (other.takeCellSpace()) {
                         return false;
                     }
@@ -103,9 +103,9 @@ public class ICoopBehavior extends AreaBehavior {
                     if (other instanceof ElementalWall && entity instanceof ICoopPlayer) {
                         String itemPlayer = ((ICoopPlayer) entity).getItem();
                         String itemWall = ((ElementalWall) other).item();
-                        return itemWall.equals(itemPlayer);
+                        return itemWall.equals(itemPlayer) || ((ElementalWall) other).getActif().isOff();
                     }
-                }else {
+                } else {
                     return false;
                 }
             }

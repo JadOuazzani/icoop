@@ -58,8 +58,10 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
 
     @Override
     public void update(float deltaTime) {
+        super.update(deltaTime);
         if (health.getHealthPoints() <= 0) {
             isDead = true;
+            animation.update(deltaTime);
             getOwnerArea().unregisterActor(this);
         }
         if (immunite) {
