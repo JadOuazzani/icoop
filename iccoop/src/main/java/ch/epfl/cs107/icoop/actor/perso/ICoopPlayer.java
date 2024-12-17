@@ -97,8 +97,6 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             switchItem();
         }
         invokeItem(currentItem);
-
-
     }
 
     public void switchItem() {

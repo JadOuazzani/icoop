@@ -49,8 +49,7 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
         super(area, orientation, position);
         this.MAX_LIFE = MAX_LIFE;
         this.vulnerabilite = vulnerabilite;
-        animation = new Animation("icoop/vanish", 7, 2, 2, this, 32, 32,
-                new Vector(-0.5f, 0f), ANIMATION_DURATION / 7, false);
+        animation = new Animation("icoop/vanish", 7, 2, 2, this, 32, 32, new Vector(-0.5f, 0f), ANIMATION_DURATION / 7, false);
         health = new Health(this, Transform.I.translated(0, 1.75f), MAX_LIFE, false);
         isDead = false;
         immunite = false;
@@ -59,28 +58,25 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (health.getHealthPoints() <= 0) {
-            isDead = true;
-            animation.update(deltaTime);
-            getOwnerArea().unregisterActor(this);
-        }
-        if (immunite) {
-            periodeImmunite -= (int) (deltaTime / 2);
-        }
-
-        if (periodeImmunite <= 0) {
-            immunite = false;
-            periodeImmunite = 24;
-        }
+//        if (health.getHealthPoints() <= 0) {
+//            isDead = true;
+//            animation.update(deltaTime);
+//            getOwnerArea().unregisterActor(this);
+//        }
+//        if (immunite) {
+//            periodeImmunite -= (int) (deltaTime / 2);
+//        }
+//
+//        if (periodeImmunite <= 0) {
+//            immunite = false;
+//            periodeImmunite = 24;
+//        }
     }
 
 
     public boolean getImmunite(){
         return immunite;
     }
-
-
-
 
     public boolean getIsDead() {
         return isDead;

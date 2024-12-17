@@ -6,14 +6,21 @@ package ch.epfl.cs107.icoop.utilities;
  *	Date:
  */
 
+
+import ch.epfl.cs107.icoop.actor.foe.BombFoe;
 import ch.epfl.cs107.icoop.actor.foe.Unstoppable;
 import ch.epfl.cs107.icoop.actor.object.ElementalWall;
 import ch.epfl.cs107.icoop.actor.object.Explosif;
+import ch.epfl.cs107.icoop.actor.object.Obstacle;
+import ch.epfl.cs107.icoop.actor.object.Rochers;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
+import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.AreaBehavior;
 import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.window.Window;
 
 public class ICoopBehavior extends AreaBehavior {
@@ -29,6 +36,7 @@ public class ICoopBehavior extends AreaBehavior {
             }
         }
     }
+
 
     public enum ICoopCellType {
         NULL(0, false, false),
@@ -60,6 +68,29 @@ public class ICoopBehavior extends AreaBehavior {
             System.out.println(type);
             return NULL;
         }
+
+
+    }
+
+    public void createYourActors(ICoopArea area) {
+        if (area.getTitle().equals("Arena")) {
+            for (int i = 0; i < area.getHeight(); i++) {
+                for (int j = 0; j < area.getWidth(); j++) {
+                    ICoopCell cell = (ICoopCell) (getCell(i, j));
+                    if (cell.type == ICoopCellType.ROCK) {
+                        Rochers rock = new Rochers(area, Orientation.DOWN , new DiscreteCoordinates(i, j));
+                        area.registerActor(rock);
+                    }
+
+                    if (cell.type == ICoopCellType.OBSTACLE) {
+                        Obstacle obstacle = new Obstacle(area, Orientation.DOWN, new DiscreteCoordinates(i, j));
+                        area.registerActor(obstacle);
+                    }
+
+                }
+            }
+        }
+
     }
 
     public class ICoopCell extends AreaBehavior.Cell {
@@ -86,6 +117,7 @@ public class ICoopBehavior extends AreaBehavior {
 
         @Override
         protected boolean canEnter(Interactable entity) {
+
             if (entity instanceof Unstoppable) {
                 return true;
             }
@@ -93,20 +125,18 @@ public class ICoopBehavior extends AreaBehavior {
                 return false;
             }
 
-
             for (Interactable other : entities) {
-                if (!(entity instanceof Explosif)) {
-                    if (other.takeCellSpace()) {
-                        return false;
-                    }
-
-                    if (other instanceof ElementalWall && entity instanceof ICoopPlayer) {
-                        String itemPlayer = ((ICoopPlayer) entity).getItem();
-                        String itemWall = ((ElementalWall) other).item();
-                        return itemWall.equals(itemPlayer) || ((ElementalWall) other).getActif().isOff();
-                    }
-                } else {
+                if (entity instanceof Explosif || entity instanceof BombFoe) {
                     return false;
+                }
+                if (other.takeCellSpace()) {
+                    return false;
+                }
+
+                if (other instanceof ElementalWall && entity instanceof ICoopPlayer) {
+                    String itemPlayer = ((ICoopPlayer) entity).getItem();
+                    String itemWall = ((ElementalWall) other).item();
+                    return itemWall.equals(itemPlayer) || ((ElementalWall) other).getActif().isOff();
                 }
             }
 

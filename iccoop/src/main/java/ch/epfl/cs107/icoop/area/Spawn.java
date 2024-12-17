@@ -6,6 +6,7 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
+import ch.epfl.cs107.icoop.actor.foe.BombFoe;
 import ch.epfl.cs107.icoop.actor.object.Door;
 import ch.epfl.cs107.icoop.actor.object.Explosif;
 import ch.epfl.cs107.icoop.actor.object.Rochers;
@@ -45,7 +46,6 @@ public class Spawn extends ICoopArea {
         registerActor(rochers);
         Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));
         registerActor(door2);
-
     }
 
     @Override

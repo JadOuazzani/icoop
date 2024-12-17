@@ -2,10 +2,7 @@ package ch.epfl.cs107.icoop.utilities;
 
 
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
-import ch.epfl.cs107.icoop.area.ICoopArea;
-import ch.epfl.cs107.icoop.area.Maze;
-import ch.epfl.cs107.icoop.area.OrbWay;
-import ch.epfl.cs107.icoop.area.Spawn;
+import ch.epfl.cs107.icoop.area.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.icoop.handler.ICoopPlayerStatusGUI;
 import ch.epfl.cs107.play.areagame.AreaGame;
@@ -19,7 +16,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 
 public class ICoop extends AreaGame implements DialogHandler {
-    private final String[] areas = {"Spawn", "OrbWay", "Maze"};
+    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Area"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
@@ -54,6 +51,7 @@ public class ICoop extends AreaGame implements DialogHandler {
         addArea(new Spawn((DialogHandler) this));
         addArea(new OrbWay((DialogHandler) this));
         addArea(new Maze((DialogHandler) this));
+        addArea(new Arena());
     }
 
     @Override

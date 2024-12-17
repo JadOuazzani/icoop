@@ -1,0 +1,53 @@
+package ch.epfl.cs107.icoop.area;
+
+
+/*
+ *	Author:      Jad Ouazzani
+ *	Date:
+ */
+
+import ch.epfl.cs107.icoop.actor.object.Door;
+import ch.epfl.cs107.icoop.actor.object.Key;
+import ch.epfl.cs107.play.engine.actor.Background;
+import ch.epfl.cs107.play.engine.actor.Foreground;
+import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.signal.logic.Logic;
+
+import java.util.List;
+
+public class Arena extends ICoopArea {
+
+    @Override
+    protected void createArea() {
+        registerActor(new Background(this));
+        registerActor(new Foreground(this));
+        Key redKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 16), "fire");
+        registerActor(redKey);
+        Key blueKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 4), "water");
+        registerActor(blueKey);
+
+        Door teleporeur = new Door("Spawn", new Logic() {
+            @Override
+            public boolean isOn() {
+                return (redKey.isOn() && blueKey.isOn());
+            }
+
+            @Override
+            public boolean isOff() {
+                return (redKey.isOff() || blueKey.isOff());
+            }
+        }, List.of(new DiscreteCoordinates(13, 6), new DiscreteCoordinates(14, 6)), this, new DiscreteCoordinates(10, 10), Orientation.DOWN);
+        registerActor(teleporeur);
+    }
+
+    @Override
+    public List<DiscreteCoordinates> getStartPositions() {
+        return List.of(new DiscreteCoordinates(4, 5), new DiscreteCoordinates(14, 15));
+    }
+
+    @Override
+    public String getTitle() {
+        return "Arena";
+    }
+}

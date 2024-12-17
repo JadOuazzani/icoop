@@ -62,16 +62,6 @@ public class Heart extends ICoopCollectable implements Interactor {
     }
 
 
-    private class CoeurInteractionHandler implements ICoopInteractionVisitor {
-        public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
-            if (wantsCellInteraction() && player.getHealth().getHealthPoints() != player.getHealth().getMaxHealth()) { //nvl option: npp recup coeur quand max HP
-                player.getHealth().increase(1);
-                collect();
-            }
-        }
-    }
-
-
     public void update(float deltaTime) {
         animation.update(deltaTime);
         if (isCollected()) {
@@ -83,6 +73,14 @@ public class Heart extends ICoopCollectable implements Interactor {
         animation.draw(canvas);
     }
 
+    private class CoeurInteractionHandler implements ICoopInteractionVisitor {
+        public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
+            if (wantsCellInteraction() && player.getHealth().getHealthPoints() != player.getHealth().getMaxHealth()) { //nvl option: npp recup coeur quand max HP
+                player.getHealth().increase(1);
+                collect();
+            }
+        }
+    }
 
 }
 

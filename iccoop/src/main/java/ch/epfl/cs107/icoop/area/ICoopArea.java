@@ -40,8 +40,10 @@ public abstract class ICoopArea extends Area {
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
-            setBehavior(new ICoopBehavior(window, getTitle()));
+            ICoopBehavior behavior = new ICoopBehavior(window, getTitle());
+            setBehavior(behavior);
             createArea();
+            behavior.createYourActors(this);
             return true;
         }
         return false;

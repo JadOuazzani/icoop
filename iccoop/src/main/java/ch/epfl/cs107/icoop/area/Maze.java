@@ -2,10 +2,7 @@ package ch.epfl.cs107.icoop.area;
 
 import ch.epfl.cs107.icoop.actor.foe.BombFoe;
 import ch.epfl.cs107.icoop.actor.foe.HellSkull;
-import ch.epfl.cs107.icoop.actor.object.ElementalWall;
-import ch.epfl.cs107.icoop.actor.object.Explosif;
-import ch.epfl.cs107.icoop.actor.object.Heart;
-import ch.epfl.cs107.icoop.actor.object.PressurePlate;
+import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Foreground;
@@ -123,14 +120,17 @@ public class Maze extends ICoopArea {
         ElementalWall fireWall3 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(13, 4), Logic.TRUE, ElementalWall.WallType.FEU);
         registerActor(fireWall3);
 
-//        BombFoe bombFoe1 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 15), List.of("physique", "feu"));
-//        registerActor(bombFoe1);
-//        BombFoe bombFoe2 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(6, 17), List.of("physique", "feu"));
-//        registerActor(bombFoe2);
-//        BombFoe bombFoe3 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(10, 17), List.of("physique", "feu"));
-//        registerActor(bombFoe3);
-//        BombFoe bombFoe4 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 14), List.of("physique", "feu"));
-//        registerActor(bombFoe4);
+        BombFoe bombFoe1 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 15), List.of("physique", "feu"));
+        registerActor(bombFoe1);
+        BombFoe bombFoe2 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(6, 17), List.of("physique", "feu"));
+        registerActor(bombFoe2);
+        BombFoe bombFoe3 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(10, 17), List.of("physique", "feu"));
+        registerActor(bombFoe3);
+        BombFoe bombFoe4 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 14), List.of("physique", "feu"));
+        registerActor(bombFoe4);
+
+        Door doorArena = new Door("Arena", Logic.TRUE, List.of(new DiscreteCoordinates(4, 5), new DiscreteCoordinates(14, 15)), this, new DiscreteCoordinates(19, 6), Orientation.DOWN, new DiscreteCoordinates(19, 7));
+        registerActor(doorArena);
     }
 
     public String getTitle() {

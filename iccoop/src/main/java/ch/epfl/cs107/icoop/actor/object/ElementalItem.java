@@ -20,14 +20,6 @@ public abstract class ElementalItem extends ICoopCollectable implements Elementa
         this.item = item;
     }
 
-    public boolean allume() {
-        if (isCollected()) {
-            return isOn();
-        } else {
-            return isOff();
-        }
-    }
-
     public void collectBy(ElementalEntity item) {
         if (getItem().equals(item.item())) {
             disparition();
