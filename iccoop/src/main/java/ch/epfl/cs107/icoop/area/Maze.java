@@ -33,8 +33,6 @@ public class Maze extends ICoopArea {
         registerActor(hellSkull4);
         HellSkull hellSkull5 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 25), List.of("physique", "eau"));
         registerActor(hellSkull5);
-        HellSkull hellSkull6 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 34), List.of("physique", "eau"));
-        registerActor(hellSkull6);
         HellSkull hellSkull7 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 32), List.of("physique", "eau"));
         registerActor(hellSkull7);
         HellSkull hellSkull8 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 30), List.of("physique", "eau"));
