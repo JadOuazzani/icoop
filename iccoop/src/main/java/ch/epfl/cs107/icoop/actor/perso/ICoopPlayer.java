@@ -407,7 +407,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             }
 
             if (wantsCellInteraction() && currentItem == ICoopItem.EXPLOSIVE) {
-                getOwnerArea().unregisterActor(explosif);
+                explosif.setActiver(true);
             }
 
             if (wantsCellInteraction() && currentItem == ICoopItem.SWORD) {
