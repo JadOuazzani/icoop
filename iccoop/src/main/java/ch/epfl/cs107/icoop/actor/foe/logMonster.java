@@ -20,7 +20,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.List;
 
 public class logMonster extends Foe {
-    private Orientation[] orders = new Orientation[]{Orientation.UP, Orientation.LEFT, Orientation.DOWN, Orientation.RIGHT};
+    private Orientation[] orders = new Orientation[]{Orientation.DOWN, Orientation.UP, Orientation.RIGHT, Orientation.LEFT};
     private OrientedAnimation orientedAnimation;
     private float randomFloat;
     private Fleche fleches;

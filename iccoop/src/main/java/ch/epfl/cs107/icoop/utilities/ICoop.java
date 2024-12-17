@@ -17,7 +17,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 
 public class ICoop extends AreaGame implements DialogHandler, Logic {
-    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Area"};
+    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Area", "SanctumEntrance"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
@@ -29,6 +29,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     private ICoopArea maze;
     private ICoopArea orbWay;
     private ICoopArea arena;
+    private ICoopArea sanctumEntrance;
 
 
     public void resetGame() {
@@ -52,10 +53,12 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         maze = new Maze(this);
         orbWay = new OrbWay(this);
         arena = new Arena();
+        sanctumEntrance = new SanctumEntrance();
         addArea(spawn);
         addArea(orbWay);
         addArea(maze);
         addArea(arena);
+        addArea(sanctumEntrance);
     }
 
     @Override
@@ -72,7 +75,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 0;
+            areaIndex = 4;
             initArea(areas[areaIndex]);
             return true;
         }

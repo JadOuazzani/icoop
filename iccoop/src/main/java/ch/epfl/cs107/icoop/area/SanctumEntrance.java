@@ -26,9 +26,8 @@ public class SanctumEntrance extends ICoopArea {
     @Override
     protected void createArea() {
         registerActor(new Background(this));
-        logMonster monster = new logMonster(this, Orientation.DOWN, new DiscreteCoordinates(10, 13), List.of("fire","physique"));
+        logMonster monster = new logMonster(this, Orientation.DOWN, new DiscreteCoordinates(10, 13), List.of("fire", "physique"));
         registerActor(monster);
-//
     }
 
     @Override
@@ -42,4 +41,13 @@ public class SanctumEntrance extends ICoopArea {
     }
 
 
+    @Override
+    public boolean isOn() {
+        return true;
+    }
+
+    @Override
+    public boolean isOff() {
+        return false;
+    }
 }
