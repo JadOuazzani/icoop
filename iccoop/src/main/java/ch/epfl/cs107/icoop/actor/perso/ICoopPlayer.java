@@ -157,10 +157,10 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
     public void invokeItem(ICoopItem item) {
         if (keyboard.get(keys.useItem()).isPressed() && !isAttacking) {
-            isAttacking = true;
             switch (item) {
                 case SWORD:
                     animation = swordAnimation;
+                    isAttacking = true;
                     break;
                 case FIRE_STAFF:
                     animation = firestaffAnimation;
@@ -171,6 +171,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                     );
                     if (getOwnerArea().canEnterAreaCells(fireball, fireball.getCurrentCells())) {
                         getOwnerArea().registerActor(fireball);
+                        isAttacking = true;
                     }
                     break;
                 case WATER_STAFF:
@@ -182,6 +183,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                     );
                     if (getOwnerArea().canEnterAreaCells(waterball, waterball.getCurrentCells())) {
                         getOwnerArea().registerActor(waterball);
+                        isAttacking = true;
                     }
                     break;
                 case EXPLOSIVE:
@@ -192,6 +194,9 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                         if (!possess(item)) {
                             switchItem();
                         }
+                    }
+                    else {
+                        bombe.setActiver(true);
                     }
                     break;
                 case FIRE_KEY:

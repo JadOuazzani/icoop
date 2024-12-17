@@ -25,7 +25,8 @@ import java.util.List;
 import static ch.epfl.cs107.play.math.Orientation.*;
 import static ch.epfl.cs107.play.math.Orientation.LEFT;
 
-public abstract class Foe extends MovableAreaEntity implements Interactor {
+public abstract class
+Foe extends MovableAreaEntity implements Interactor {
     protected Health health;
     protected int MAX_LIFE;
     private boolean isDead;
@@ -49,7 +50,7 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
         super(area, orientation, position);
         this.MAX_LIFE = MAX_LIFE;
         this.vulnerabilite = vulnerabilite;
-        deathAnimation = new Animation("icoop/vanish", 7, 2, 2, this , 32, 32, ANIMATION_DURATION/2, false);
+        deathAnimation = new Animation("icoop/vanish", 7, 2, 2, this , 32, 32, new Vector(-0.5f,0f),ANIMATION_DURATION/7, false);
 
         health = new Health(this, Transform.I.translated(0, 1.75f), MAX_LIFE, false);
         isDead = false;
@@ -60,14 +61,15 @@ public abstract class Foe extends MovableAreaEntity implements Interactor {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        health.draw(canvas);
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         if (health.isOff() ) {
-            getOwnerArea().unregisterActor(this);
+            deathAnimation.update(deltaTime);
+            if(deathAnimation.isCompleted()){
+            getOwnerArea().unregisterActor(this);}
         }
         if (immunite) {
             periodeImmunite -= (int) (deltaTime / 2);
