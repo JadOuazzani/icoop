@@ -194,8 +194,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                         if (!possess(item)) {
                             switchItem();
                         }
-                    }
-                    else {
+                    } else {
                         bombe.setActiver(true);
                     }
                     break;
@@ -406,14 +405,10 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 inventory.addPocketItem(ICoopItem.EXPLOSIVE, 1);
             }
 
-            if (wantsCellInteraction() && currentItem == ICoopItem.EXPLOSIVE) {
+            if (wantsCellInteraction() && (currentItem == ICoopItem.EXPLOSIVE || currentItem == ICoopItem.SWORD)) {
                 explosif.setActiver(true);
             }
 
-            if (wantsCellInteraction() && currentItem == ICoopItem.SWORD) {
-                explosif.setActiver(true);
-                explosif.setRetardateur(0);
-            }
         }
 
         public void interactWith(Staff staff, boolean isCellInteraction) {
@@ -450,10 +445,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 key.collectBy(ICoopPlayer.this::getItem);
                 if (key.getItem().equals("water")) {
                     inventory.addPocketItem(ICoopItem.WATER_KEY, 1);
-                    System.out.println(key.isCollected() + " eau");
                 } else if (key.getItem().equals("fire")) {
                     inventory.addPocketItem(ICoopItem.FIRE_KEY, 1);
-                    System.out.println(key.isCollected() + " feu");
                 }
             }
         }
