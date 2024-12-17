@@ -6,10 +6,8 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.foe.FireBall;
-import ch.epfl.cs107.icoop.actor.foe.Foe;
-import ch.epfl.cs107.icoop.actor.foe.HellSkull;
-import ch.epfl.cs107.icoop.actor.foe.WaterBall;
+
+import ch.epfl.cs107.icoop.actor.foe.Fleche;
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
