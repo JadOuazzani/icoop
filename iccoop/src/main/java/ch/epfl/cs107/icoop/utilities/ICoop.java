@@ -66,10 +66,13 @@ public class ICoop extends AreaGame implements DialogHandler {
     }
 
     @Override
+
     public void update(float deltaTime) {
         if (!ITS_INITIALIZED) {
             super.update(deltaTime);
             ITS_INITIALIZED = true;
+            bluePlayer.resetMotion();
+            redPlayer.resetMotion();
         }
         if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             switchArea();

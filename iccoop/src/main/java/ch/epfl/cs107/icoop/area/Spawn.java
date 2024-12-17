@@ -6,10 +6,14 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.foe.BombFoe;
+import ch.epfl.cs107.icoop.actor.foe.FireBall;
+import ch.epfl.cs107.icoop.actor.foe.Foe;
+import ch.epfl.cs107.icoop.actor.foe.HellSkull;
+import ch.epfl.cs107.icoop.actor.foe.WaterBall;
 import ch.epfl.cs107.icoop.actor.object.Door;
 import ch.epfl.cs107.icoop.actor.object.Explosif;
 import ch.epfl.cs107.icoop.actor.object.Rochers;
+import ch.epfl.cs107.icoop.actor.object.Staff;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Dialog;
@@ -19,6 +23,8 @@ import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.signal.logic.Logic;
 
 import java.util.List;
+
+import static java.awt.ComponentOrientation.getOrientation;
 
 public class Spawn extends ICoopArea {
     private DialogHandler jeu;
@@ -46,6 +52,7 @@ public class Spawn extends ICoopArea {
         registerActor(rochers);
         Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));
         registerActor(door2);
+
     }
 
     @Override

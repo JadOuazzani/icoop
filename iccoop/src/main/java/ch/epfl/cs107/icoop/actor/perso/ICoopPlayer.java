@@ -1,5 +1,8 @@
 package ch.epfl.cs107.icoop.actor.perso;
 
+import ch.epfl.cs107.icoop.actor.foe.FireBall;
+import ch.epfl.cs107.icoop.actor.foe.Foe;
+import ch.epfl.cs107.icoop.actor.foe.WaterBall;
 import ch.epfl.cs107.icoop.actor.object.*;
 
 
@@ -29,14 +32,18 @@ import java.util.Collections;
 import java.util.List;
 
 import static ch.epfl.cs107.play.math.Orientation.*;
+import static javax.print.attribute.standard.PrinterState.IDLE;
 
 
 public class ICoopPlayer extends MovableAreaEntity implements Interactor, ElementalEntity, Inventory.Holder {
 
     private final static int MOVE_DURATION = 6;
     public String item;
-    final Vector anchor = new Vector(0, 0);
-    final Orientation[] orders = {DOWN, RIGHT, UP, LEFT};
+    final Vector anchorIdle = new Vector(0, 0);
+    final Vector anchorSword = new Vector(-.5f, -.20f);
+    final Vector anchorStaff = new Vector(-.5f, -.20f);
+    final Orientation[] ordersIdle = {DOWN, RIGHT, UP, LEFT};
+    final Orientation[] ordersFight = {DOWN, UP, RIGHT, LEFT};
     private OrientedAnimation animation;
     private static final int ANIMATION_DURATION = 4;
     private KeyBindings.PlayerKeyBindings keys;
@@ -53,11 +60,19 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     private ICoopInventory inventory;
     private ICoopItem currentItem;
     private static final List<ICoopItem> NAVIGATION_LIST = List.of(ICoopItem.SWORD, ICoopItem.FIRE_KEY, ICoopItem.WATER_KEY, ICoopItem.FIRE_STAFF, ICoopItem.WATER_STAFF, ICoopItem.EXPLOSIVE);
+    private OrientedAnimation swordAnimation;
+    private OrientedAnimation waterstaffAnimation;
+    private OrientedAnimation firestaffAnimation;
+    private OrientedAnimation IdleAnimation;
+    private final static int SWORD_ANIMATION_DURATION = 2;
+    private final static int STAFF_ANIMATION_DURATION = 2;
+    private boolean isAttacking;
+
 
     public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String item, KeyBindings.PlayerKeyBindings keys) {
         super(owner, orientation, coordinates);
         this.item = item;
-        animation = new OrientedAnimation(prefixe, ANIMATION_DURATION, this, anchor, orders, 4, 1, 2, 16, 32, true);
+        IdleAnimation = new OrientedAnimation(prefixe, ANIMATION_DURATION, this, anchorIdle, ordersIdle, 4, 1, 2, 16, 32, true);
         this.keys = keys;
         this.keyboard = owner.getKeyboard();
         resetMotion();
@@ -68,36 +83,66 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         inventory.addPocketItem(ICoopItem.SWORD, 1);
         inventory.addPocketItem(ICoopItem.EXPLOSIVE, 1);// à changer dans les extensions ?
         currentItem = ICoopItem.SWORD;
+        swordAnimation = new OrientedAnimation(prefixe + ".sword", SWORD_ANIMATION_DURATION, this, anchorStaff, ordersFight,
+                4, 2, 2, 32, 32);
+        waterstaffAnimation = new OrientedAnimation("icoop/player2.staff_water", STAFF_ANIMATION_DURATION, this,
+                anchorStaff, ordersFight, 4, 2, 2, 32, 32);
+        firestaffAnimation = new OrientedAnimation("player.staff_fire", STAFF_ANIMATION_DURATION, this,
+                anchorStaff, ordersFight, 4, 2, 2, 32, 32);
+        animation = IdleAnimation;
+
+
     }
 
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+
         moveIfPressed(LEFT, keyboard.get(keys.left()));
         moveIfPressed(UP, keyboard.get(keys.up()));
         moveIfPressed(RIGHT, keyboard.get(keys.right()));
         moveIfPressed(DOWN, keyboard.get(keys.down()));
-        if (isDisplacementOccurs()) {
-            animation.update(deltaTime);
-
-        } else {
-            animation.reset();
-        }
 
         if (immunite) {
             periodeImmunite -= deltaTime / 2;
+            if (periodeImmunite <= 0) {
+                immunite = false;
+                periodeImmunite = 24;
+            }
         }
 
-        if (periodeImmunite <= 0) { // Possiblité d'ameliorer ?
-            immunite = false;
-            periodeImmunite = 24;
-        }
         if (keyboard.get(keys.switchItem()).isPressed()) {
             switchItem();
         }
-        invokeItem(currentItem);
+
+        if (!isAttacking) {
+            invokeItem(currentItem);
+        }
+
+        if (isAttacking) {
+            animation.update(deltaTime);
+            if (animation.isCompleted()) {
+                resetToIdle(); // Retour à l'état neutre après l'attaque
+            }
+        } else if (isDisplacementOccurs()) {
+            animation.update(deltaTime);
+        } else {
+            resetToIdle();
+        }
     }
+
+    /**
+     * Réinitialise l'état et l'animation à l'état neutre.
+     */
+    private void resetToIdle() {
+        animation = IdleAnimation;
+        swordAnimation.reset();
+        firestaffAnimation.reset();
+        waterstaffAnimation.reset();
+        isAttacking = false;
+    }
+
 
     public void switchItem() {
         int index = NAVIGATION_LIST.indexOf(currentItem);
@@ -109,18 +154,35 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
     }
 
+
     public void invokeItem(ICoopItem item) {
-        if (keyboard.get(keys.useItem()).isPressed()) {
+        if (keyboard.get(keys.useItem()).isPressed() && !isAttacking) {
+            isAttacking = true;
             switch (item) {
                 case SWORD:
-                    break;
-                case FIRE_KEY:
-                    break;
-                case WATER_KEY:
+                    animation = swordAnimation;
                     break;
                 case FIRE_STAFF:
+                    animation = firestaffAnimation;
+                    FireBall fireball = new FireBall(
+                            getOwnerArea(), getOrientation(),
+                            getCurrentMainCellCoordinates().jump(getOrientation().toVector()),
+                            3, 40
+                    );
+                    if (getOwnerArea().canEnterAreaCells(fireball, fireball.getCurrentCells())) {
+                        getOwnerArea().registerActor(fireball);
+                    }
                     break;
                 case WATER_STAFF:
+                    animation = waterstaffAnimation;
+                    WaterBall waterball = new WaterBall(
+                            getOwnerArea(), getOrientation(),
+                            getCurrentMainCellCoordinates().jump(getOrientation().toVector()),
+                            3, 40
+                    );
+                    if (getOwnerArea().canEnterAreaCells(waterball, waterball.getCurrentCells())) {
+                        getOwnerArea().registerActor(waterball);
+                    }
                     break;
                 case EXPLOSIVE:
                     Explosif bombe = new Explosif(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()));
@@ -132,6 +194,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                         }
                     }
                     break;
+                default:
+                    isAttacking = false;
             }
         }
     }
@@ -192,11 +256,11 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
 
     private void moveIfPressed(Orientation orientation, Button b) {
-        if (b.isDown()) {
-            if (!isDisplacementOccurs()) {
-                orientate(orientation);
-                move(MOVE_DURATION);
-            }
+        if (b.isDown()&& !isAttacking && !isDisplacementOccurs()) {
+
+            orientate(orientation);
+            move(MOVE_DURATION);
+
         }
     }
 
@@ -291,6 +355,12 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             }
         }
 
+        @Override
+        public void interactWith(Foe foe, boolean isCellInteraction) {
+            if (animation == swordAnimation && wantsViewInteraction()) {
+                foe.perteDegats(1, "physique");
+            }
+        }
 
         @Override
         public void interactWith(Explosif explosif, boolean isCellInteraction) {
@@ -305,6 +375,31 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
             if (wantsCellInteraction() && currentItem == ICoopItem.EXPLOSIVE) {
                 getOwnerArea().unregisterActor(explosif);
+            }
+        }
+
+        public void interactWith(Staff staff, boolean isCellInteraction) {
+
+            if (getItem().equals("water") && staff.getItem().equals("water")) {
+
+                if (wantsCellInteraction() && isCellInteraction) {
+                    staff.disparition();
+                    inventory.addPocketItem(ICoopItem.WATER_STAFF, 1);
+                }
+
+                if (wantsCellInteraction() && currentItem == ICoopItem.WATER_STAFF) {
+                    getOwnerArea().unregisterActor(staff);
+                }
+            } else if (getItem().equals("fire") && staff.getItem().equals("fire")) {
+
+                if (wantsCellInteraction() && isCellInteraction) {
+                    staff.disparition();
+                    inventory.addPocketItem(ICoopItem.FIRE_STAFF, 1);
+                }
+
+                if (wantsCellInteraction() && currentItem == ICoopItem.FIRE_STAFF) {
+                    getOwnerArea().unregisterActor(staff);
+                }
             }
         }
 
@@ -326,4 +421,9 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         }
     }
 
+    @Override
+    public void resetMotion() {
+        super.resetMotion();
+    }
 }
+

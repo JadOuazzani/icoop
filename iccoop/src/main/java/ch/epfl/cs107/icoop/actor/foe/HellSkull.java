@@ -7,6 +7,8 @@ import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.Area;
+import ch.epfl.cs107.play.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.engine.actor.Animation;
 import ch.epfl.cs107.play.engine.actor.OrientedAnimation;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
@@ -25,7 +27,6 @@ public class HellSkull extends Foe {
     private static final int ANIMATION_DURATION = 12;
     private HellSkullInteractionHandler handler;
 
-
     public HellSkull(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite) {
         super(area, orientation, position, vulnerabilite, 1);
         orientedAnimation = new OrientedAnimation("icoop/flameskull", ANIMATION_DURATION / 3, this, new Vector(-0.5f, -0.5f), orders, 3, 2, 2, 32, 32, true);
@@ -36,7 +37,6 @@ public class HellSkull extends Foe {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        orientedAnimation.update(deltaTime);
         flammes = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates().jump(getOrientation().toVector()), 3, 40);
         randomFloat -= deltaTime;
         if (randomFloat <= 0) {
@@ -46,12 +46,28 @@ public class HellSkull extends Foe {
             }
         }
 
+        if(health.isOff()){
+            deathAnimation.update(deltaTime);
+        }else{
+            orientedAnimation.update(deltaTime);
+        }
+
+        if ( health.isOff() && deathAnimation.isCompleted()) {
+            getOwnerArea().unregisterActor(this);
+        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        orientedAnimation.draw(canvas);
+        super.draw(canvas);
+        if(health.isOff()){
+            deathAnimation.draw(canvas);
+        }else{
+            orientedAnimation.draw(canvas);
+        }
+
     }
+
 
     @Override
     public boolean takeCellSpace() {
@@ -59,13 +75,18 @@ public class HellSkull extends Foe {
     }
 
     @Override
+    public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
+        super.acceptInteraction(v, isCellInteraction);
+    }
+
+    @Override
     public boolean isViewInteractable() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCellInteractable() {
-        return getIsDead();
+        return true;
     }
 
     @Override

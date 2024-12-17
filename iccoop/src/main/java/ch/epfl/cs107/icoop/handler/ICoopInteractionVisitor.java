@@ -1,8 +1,6 @@
 package ch.epfl.cs107.icoop.handler;
 
-import ch.epfl.cs107.icoop.actor.foe.BombFoe;
-import ch.epfl.cs107.icoop.actor.foe.Fire;
-import ch.epfl.cs107.icoop.actor.foe.Foe;
+import ch.epfl.cs107.icoop.actor.foe.*;
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.utilities.ICoopBehavior;
@@ -26,4 +24,7 @@ public interface ICoopInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(Foe foe, boolean isCellInteraction){}
     default void interactWith(Fire fire, boolean isCellInteraction){}
     default void interactWith(BombFoe bombFoe, boolean isCellInteraction){}
+    default void interactWith(Staff staff, boolean isCellInteraction){}
+    default void interactWith(FireBall fireBall, boolean isCellInteraction) {}
+    default void interactWith(WaterBall waterBall, boolean isCellInteraction) {}
 }

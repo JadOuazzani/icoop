@@ -131,6 +131,12 @@ public class Maze extends ICoopArea {
 
         Door doorArena = new Door("Arena", Logic.TRUE, List.of(new DiscreteCoordinates(4, 5), new DiscreteCoordinates(14, 15)), this, new DiscreteCoordinates(19, 6), Orientation.DOWN, new DiscreteCoordinates(19, 7));
         registerActor(doorArena);
+
+        Staff staffeau= new Staff(this,Orientation.DOWN, new DiscreteCoordinates(8,2), Staff.StaffType.EAU);
+        registerActor(staffeau);
+        Staff stafffeu= new Staff(this,Orientation.DOWN, new DiscreteCoordinates(13,2), Staff.StaffType.FEU);
+        registerActor(stafffeu);
+
     }
 
     public String getTitle() {
