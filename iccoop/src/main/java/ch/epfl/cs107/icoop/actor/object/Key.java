@@ -41,16 +41,6 @@ public class Key extends ElementalItem {
     }
 
     @Override
-    public boolean isOn() {
-        return isCollected();
-    }
-
-    @Override
-    public boolean isOff() {
-        return !isCollected();
-    }
-
-    @Override
     public String item() {
         return getItem();
     }

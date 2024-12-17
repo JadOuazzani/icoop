@@ -31,15 +31,14 @@ public abstract class ElementalItem extends ICoopCollectable implements Elementa
         return super.isCollected();
     }
 
-
     @Override
     public boolean isOn() {
-        return true;
+        return isCollected();
     }
 
     @Override
     public boolean isOff() {
-        return false;
+        return !isCollected();
     }
 
     public String getItem() {

@@ -37,7 +37,7 @@ import static javax.print.attribute.standard.PrinterState.IDLE;
 
 public class ICoopPlayer extends MovableAreaEntity implements Interactor, ElementalEntity, Inventory.Holder {
 
-    private final static int MOVE_DURATION = 6;
+    private final static int MOVE_DURATION = 3;
     public String item;
     final Vector anchorIdle = new Vector(0, 0);
     final Vector anchorSword = new Vector(-.5f, -.20f);
@@ -67,6 +67,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     private final static int SWORD_ANIMATION_DURATION = 2;
     private final static int STAFF_ANIMATION_DURATION = 2;
     private boolean isAttacking;
+    private boolean firsTime = true;
+    private  DiscreteCoordinates manoirPortailCoord;
 
 
     public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String item, KeyBindings.PlayerKeyBindings keys) {
@@ -130,7 +132,11 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         } else {
             resetToIdle();
         }
+        if(!firsTime){
+            firsTime = !getCurrentMainCellCoordinates().equals(manoirPortailCoord);
+        }
     }
+
 
     /**
      * Réinitialise l'état et l'animation à l'état neutre.
@@ -432,6 +438,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             }
         }
 
+        @Override
         public void interactWith(PressurePlate plate, boolean isCellIInteraction) {
             if (wantsCellInteraction() && isCellIInteraction) {
                 plate.setOccupier(ICoopPlayer.this);
@@ -450,7 +457,22 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 }
             }
         }
+
+        @Override
+        public void interactWith(Portail portail, boolean isCellInteraction) {
+            if (portail.getSignal().isOn() && isCellInteraction && firsTime) {
+                portail.getJeu().publish(portail.getVictoryDialog());
+                firsTime = false;
+
+
+            } else if (portail.getSignal().isOff() && isCellInteraction && firsTime) {
+                portail.getJeu().publish(portail.getRequiredDialog());
+                firsTime = false;
+            }
+            manoirPortailCoord = portail.getCurrentMainCellCoordinates();
+        }
     }
 
 }
+
 

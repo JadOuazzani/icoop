@@ -18,6 +18,9 @@ import java.util.List;
 
 public class OrbWay extends ICoopArea {
     private DialogHandler jeu;
+    private Orb orbeFeu1;
+    private Orb orbeEau1;
+
 
     public OrbWay(DialogHandler jeu) {
         this.jeu = jeu;
@@ -43,9 +46,9 @@ public class OrbWay extends ICoopArea {
                 Orientation.DOWN,
                 new DiscreteCoordinates(0, 7), new DiscreteCoordinates(0, 6), new DiscreteCoordinates(0, 5), new DiscreteCoordinates(0, 4));
         registerActor(door2);
-        Orb orbeFeu1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FEU, jeu);
+        orbeFeu1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FEU, jeu);
         registerActor(orbeFeu1);
-        Orb orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
+        orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
         registerActor(orbeEau1);
 
         Heart heart1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));
@@ -104,4 +107,13 @@ public class OrbWay extends ICoopArea {
     }
 
 
+    @Override
+    public boolean isOn() {
+        return orbeEau1.isOn();
+    }
+
+    @Override
+    public boolean isOff() {
+        return false;
+    }
 }

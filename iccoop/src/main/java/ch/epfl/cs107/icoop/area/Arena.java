@@ -18,14 +18,16 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 import java.util.List;
 
 public class Arena extends ICoopArea {
+    private Key redKey;
+    private Key blueKey;
 
     @Override
     protected void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));
-        Key redKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 16), "fire");
+        redKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 16), "fire");
         registerActor(redKey);
-        Key blueKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 4), "water");
+        blueKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 4), "water");
         registerActor(blueKey);
 
         Door teleporeur = new Teleportation("Spawn", new Logic() {
@@ -43,6 +45,25 @@ public class Arena extends ICoopArea {
     }
 
     @Override
+    public boolean isOn() {
+        if (redKey != null && blueKey != null) {
+            return (redKey.isOn() && blueKey.isOn());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isOff() {
+        if (redKey != null && blueKey != null) {
+            return (redKey.isOff() || blueKey.isOff());
+        } else {
+            return true;
+        }
+    }
+
+
+    @Override
     public List<DiscreteCoordinates> getStartPositions() {
         return List.of(new DiscreteCoordinates(4, 5), new DiscreteCoordinates(14, 15));
     }
@@ -51,4 +72,5 @@ public class Arena extends ICoopArea {
     public String getTitle() {
         return "Arena";
     }
+
 }

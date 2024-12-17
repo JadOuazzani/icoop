@@ -19,8 +19,8 @@ public class Staff extends ElementalItem {
     private final Sprite[] sprites;
     private int imageActuelle;
     private int compteurImage;
-    private final static int SEUIL_IMAGE=4;
-    private final static int NOMBRE_IMAGE =8;
+    private final static int SEUIL_IMAGE = 4;
+    private final static int NOMBRE_IMAGE = 8;
 
     // Enumération des types de bâtons
     public enum StaffType {
@@ -59,7 +59,7 @@ public class Staff extends ElementalItem {
         }
 
         imageActuelle = 0;
-        compteurImage =0;
+        compteurImage = 0;
     }
 
     @Override

@@ -14,6 +14,9 @@ import java.util.List;
 
 public class Maze extends ICoopArea {
     private DialogHandler jeu;
+    private Staff waterStaff;
+    private Staff fireStaff;
+
 
     public Maze(DialogHandler jeu) {
         this.jeu = jeu;
@@ -130,10 +133,10 @@ public class Maze extends ICoopArea {
         Door doorArena = new Door("Arena", Logic.TRUE, List.of(new DiscreteCoordinates(4, 5), new DiscreteCoordinates(14, 15)), this, new DiscreteCoordinates(19, 6), Orientation.DOWN, new DiscreteCoordinates(19, 7));
         registerActor(doorArena);
 
-        Staff staffeau= new Staff(this,Orientation.DOWN, new DiscreteCoordinates(8,2), Staff.StaffType.EAU);
-        registerActor(staffeau);
-        Staff stafffeu= new Staff(this,Orientation.DOWN, new DiscreteCoordinates(13,2), Staff.StaffType.FEU);
-        registerActor(stafffeu);
+        waterStaff = new Staff(this, Orientation.DOWN, new DiscreteCoordinates(8, 2), Staff.StaffType.EAU);
+        registerActor(waterStaff);
+        fireStaff = new Staff(this, Orientation.DOWN, new DiscreteCoordinates(13, 2), Staff.StaffType.FEU);
+        registerActor(fireStaff);
 
     }
 
@@ -145,6 +148,15 @@ public class Maze extends ICoopArea {
         return List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39));
     }
 
+    @Override
+    public boolean isOn() {
+        return (waterStaff.isOn() && fireStaff.isOn());
+    }
+
+    @Override
+    public boolean isOff() {
+        return (waterStaff.isOff() || fireStaff.isOff());
+    }
 }
 
 

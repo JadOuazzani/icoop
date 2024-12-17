@@ -10,12 +10,13 @@ import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Window;
 
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 
-public class ICoop extends AreaGame implements DialogHandler {
+public class ICoop extends AreaGame implements DialogHandler, Logic {
     private final String[] areas = {"Spawn", "OrbWay", "Maze", "Area"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
@@ -24,21 +25,20 @@ public class ICoop extends AreaGame implements DialogHandler {
     private static boolean ITS_INITIALIZED = false;
     ICoopPlayerStatusGUI redStatusGUI;
     ICoopPlayerStatusGUI blueStatusGUI;
+    private ICoopArea spawn;
+    private ICoopArea maze;
+    private ICoopArea orbWay;
+    private ICoopArea arena;
 
 
     public void resetGame() {
         ITS_INITIALIZED = false;
         begin(getWindow(), getFileSystem());
+
     }
 
     public void resetArea() {
-        if (getCurrentArea().getTitle().equals(areas[0])) {
-            initArea(areas[0]);
-        } else if (getCurrentArea().getTitle().equals(areas[1])) {
-            initArea(areas[1]);
-        } else if (getCurrentArea().getTitle().equals(areas[2])) {
-            initArea(areas[2]);
-        }
+        initArea(getCurrentArea().getTitle());
     }
 
 
@@ -48,10 +48,24 @@ public class ICoop extends AreaGame implements DialogHandler {
     }
 
     private void createAreas() {
-        addArea(new Spawn((DialogHandler) this));
-        addArea(new OrbWay((DialogHandler) this));
-        addArea(new Maze((DialogHandler) this));
-        addArea(new Arena());
+        spawn = new Spawn(this, this);
+        maze = new Maze(this);
+        orbWay = new OrbWay(this);
+        arena = new Arena();
+        addArea(spawn);
+        addArea(orbWay);
+        addArea(maze);
+        addArea(arena);
+    }
+
+    @Override
+    public boolean isOn() {
+        return arena.isOn() && orbWay.isOn() && maze.isOn();
+    }
+
+    @Override
+    public boolean isOff() {
+        return arena.isOff() || orbWay.isOff() || maze.isOff();
     }
 
     @Override

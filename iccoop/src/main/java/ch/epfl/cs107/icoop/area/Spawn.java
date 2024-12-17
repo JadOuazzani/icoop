@@ -26,15 +26,17 @@ import static java.awt.ComponentOrientation.getOrientation;
 public class Spawn extends ICoopArea {
     private DialogHandler jeu;
     private Dialog welcome = new Dialog("Welcome");
+    private Portail portail;
+    private Logic signalJeu;
 
-    public Spawn(DialogHandler jeu) {
+    public Spawn(DialogHandler jeu, Logic signalJeu) {
         this.jeu = jeu;
         jeu.publish(welcome);
+        this.signalJeu = signalJeu;
     }
 
     @Override
     protected void createArea() {
-
         registerActor(new Background(this));
         registerActor(new Foreground(this));
         Door door = new Door("OrbWay", Logic.TRUE, List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5)), this, new DiscreteCoordinates(19, 15), Orientation.DOWN, new DiscreteCoordinates(19, 16));
@@ -49,6 +51,18 @@ public class Spawn extends ICoopArea {
         registerActor(rochers);
         Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));
         registerActor(door2);
+        portail = new Portail("Spawn", new Logic() {
+            @Override
+            public boolean isOn() {
+                return signalJeu.isOn();
+            }
+
+            @Override
+            public boolean isOff() {
+                return signalJeu.isOff();
+            }
+        }, getStartPositions(), this, new DiscreteCoordinates(6, 11), Orientation.DOWN, jeu);
+        registerActor(portail);
     }
 
     @Override
@@ -61,4 +75,13 @@ public class Spawn extends ICoopArea {
         return List.of(new DiscreteCoordinates(13, 6), new DiscreteCoordinates(14, 6));
     }
 
+    @Override
+    public boolean isOn() {
+        return signalJeu.isOn();
+    }
+
+    @Override
+    public boolean isOff() {
+        return signalJeu.isOff();
+    }
 }
