@@ -36,6 +36,11 @@ public class Key extends ElementalItem {
     }
 
     @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+    }
+
+    @Override
     public boolean isOn() {
         return isCollected();
     }
@@ -70,5 +75,8 @@ public class Key extends ElementalItem {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
     }
 
-
+    @Override
+    public void collectBy(ElementalEntity item) {
+        super.collectBy(item);
+    }
 }

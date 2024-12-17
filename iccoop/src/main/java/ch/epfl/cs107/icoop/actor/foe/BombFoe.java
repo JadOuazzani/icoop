@@ -236,6 +236,7 @@ public class BombFoe extends Foe {
 
     @Override
     public void draw(Canvas canvas) {
+        super.draw(canvas);
         currentAnimation.draw(canvas);
     }
 

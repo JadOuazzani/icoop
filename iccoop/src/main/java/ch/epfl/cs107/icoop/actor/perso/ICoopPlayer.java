@@ -194,6 +194,29 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                         }
                     }
                     break;
+                case FIRE_KEY:
+                    Key firekey = new Key(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()), "fire");
+                    if (getOwnerArea().canEnterAreaCells(firekey, firekey.getCurrentCells())) {
+                        getOwnerArea().registerActor(firekey);
+                        inventory.removePocketItem(ICoopItem.FIRE_KEY, 1);
+                        if (!possess(item)) {
+                            switchItem();
+                        }
+                    }
+
+                    break;
+                case WATER_KEY:
+                    Key waterkey = new Key(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()), "water");
+                    if (getOwnerArea().canEnterAreaCells(waterkey, waterkey.getCurrentCells())) {
+                        getOwnerArea().registerActor(waterkey);
+                        inventory.removePocketItem(ICoopItem.FIRE_KEY, 1);
+                        if (!possess(item)) {
+                            switchItem();
+                        }
+                    }
+                    break;
+
+
                 default:
                     isAttacking = false;
             }
@@ -256,7 +279,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
 
     private void moveIfPressed(Orientation orientation, Button b) {
-        if (b.isDown()&& !isAttacking && !isDisplacementOccurs()) {
+        if (b.isDown() && !isAttacking && !isDisplacementOccurs()) {
 
             orientate(orientation);
             move(MOVE_DURATION);
@@ -345,6 +368,11 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         this.invulnerable = invulnerable;
     }
 
+    @Override
+    public void resetMotion() {
+        super.resetMotion();
+    }
+
 
     private class ICoopPlayerInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(Door door, boolean isCellInteraction) {
@@ -376,29 +404,20 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
             if (wantsCellInteraction() && currentItem == ICoopItem.EXPLOSIVE) {
                 getOwnerArea().unregisterActor(explosif);
             }
+
+            if (wantsCellInteraction() && currentItem == ICoopItem.SWORD) {
+                explosif.setActiver(true);
+                explosif.setRetardateur(0);
+            }
         }
 
         public void interactWith(Staff staff, boolean isCellInteraction) {
-
-            if (getItem().equals("water") && staff.getItem().equals("water")) {
-
-                if (wantsCellInteraction() && isCellInteraction) {
-                    staff.disparition();
+            if (wantsCellInteraction() && isCellInteraction) {
+                staff.collectBy(ICoopPlayer.this::getItem);
+                if (staff.getItem().equals("water")) {
                     inventory.addPocketItem(ICoopItem.WATER_STAFF, 1);
-                }
-
-                if (wantsCellInteraction() && currentItem == ICoopItem.WATER_STAFF) {
-                    getOwnerArea().unregisterActor(staff);
-                }
-            } else if (getItem().equals("fire") && staff.getItem().equals("fire")) {
-
-                if (wantsCellInteraction() && isCellInteraction) {
-                    staff.disparition();
+                } else if (staff.getItem().equals("fire")) {
                     inventory.addPocketItem(ICoopItem.FIRE_STAFF, 1);
-                }
-
-                if (wantsCellInteraction() && currentItem == ICoopItem.FIRE_STAFF) {
-                    getOwnerArea().unregisterActor(staff);
                 }
             }
         }
@@ -419,11 +438,21 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 plate.setInteractorHere(true);
             }
         }
+
+        @Override
+        public void interactWith(Key key, boolean isCellInteraction) {
+            if (wantsCellInteraction() && isCellInteraction) {
+                key.collectBy(ICoopPlayer.this::getItem);
+                if (key.getItem().equals("water")) {
+                    inventory.addPocketItem(ICoopItem.WATER_KEY, 1);
+                    System.out.println(key.isCollected() + " eau");
+                } else if (key.getItem().equals("fire")) {
+                    inventory.addPocketItem(ICoopItem.FIRE_KEY, 1);
+                    System.out.println(key.isCollected() + " feu");
+                }
+            }
+        }
     }
 
-    @Override
-    public void resetMotion() {
-        super.resetMotion();
-    }
 }
 

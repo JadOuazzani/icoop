@@ -8,6 +8,7 @@ package ch.epfl.cs107.icoop.area;
 
 import ch.epfl.cs107.icoop.actor.object.Door;
 import ch.epfl.cs107.icoop.actor.object.Key;
+import ch.epfl.cs107.icoop.actor.object.Teleportation;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Foreground;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -27,7 +28,7 @@ public class Arena extends ICoopArea {
         Key blueKey = new Key(this, Orientation.DOWN, new DiscreteCoordinates(9, 4), "water");
         registerActor(blueKey);
 
-        Door teleporeur = new Door("Spawn", new Logic() {
+        Door teleporeur = new Teleportation("Spawn", new Logic() {
             @Override
             public boolean isOn() {
                 return (redKey.isOn() && blueKey.isOn());

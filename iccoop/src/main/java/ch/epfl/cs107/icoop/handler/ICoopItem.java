@@ -10,8 +10,8 @@ import ch.epfl.cs107.play.areagame.handler.InventoryItem;
 
 public enum ICoopItem implements InventoryItem {
     SWORD("Sword", "sword.icon"),
-    FIRE_KEY("Fire Key", "key_red"),
-    WATER_KEY("Water Key","key_blue"),
+    FIRE_KEY("Fire Key", "icoop/key_red"),
+    WATER_KEY("Water Key","icoop/key_blue"),
     FIRE_STAFF("Fire Staff", "staff_fire.icon"),
     WATER_STAFF("Water Staff", "staff_water.icon"),
     EXPLOSIVE("Explosive", "icoop/explosive");
