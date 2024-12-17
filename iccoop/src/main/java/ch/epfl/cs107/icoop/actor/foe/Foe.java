@@ -79,6 +79,7 @@ Foe extends MovableAreaEntity implements Interactor {
             immunite = false;
             periodeImmunite = 24;
         }
+
     }
 
 

@@ -100,7 +100,17 @@ public class BombFoe extends Foe {
             currentAnimation.reset();
         }
 
-        behavior(deltaTime);
+        behavior();
+
+        if (health.isOff()) {
+            deathAnimation.update(deltaTime);
+        } else {
+            orientedAnimation.update(deltaTime);
+        }
+
+        if (health.isOff() && deathAnimation.isCompleted()) {
+            getOwnerArea().unregisterActor(this);
+        }
     }
 
 
@@ -116,7 +126,7 @@ public class BombFoe extends Foe {
         this.player = player;
     }
 
-    private void behavior(float deltaTime) {
+    private void behavior() {
         if (tempsInaction > 0) {
             tempsInaction--;
             return; // Ignore tout autre comportement jusqu'à ce que le temps d'innation soit nul
@@ -237,7 +247,11 @@ public class BombFoe extends Foe {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        currentAnimation.draw(canvas);
+        if (health.isOff()) {
+            deathAnimation.draw(canvas);
+        } else {
+            currentAnimation.draw(canvas);
+        }
     }
 
     @Override
