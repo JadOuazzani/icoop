@@ -18,6 +18,7 @@ import ch.epfl.cs107.play.math.random.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static ch.epfl.cs107.play.math.Orientation.*;
@@ -41,7 +42,6 @@ public class DarkLord extends Foe {
     private OrientedAnimation idleAnimation;
     private OrientedAnimation spellAnimation;
     private darkLordInteractionHandler handler;
-    private Fire eau;
     final Orientation[] orders = {UP, LEFT, DOWN, RIGHT};
     private float randomFloat;
     private int alternate;
@@ -84,27 +84,41 @@ public class DarkLord extends Foe {
             Fire flammes2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 20, "icoop/fireproj", "fire");
             Fire flammes3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 15, "icoop/fireproj", "fire");
             Fire flammes4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 15, "icoop/fireproj", "fire");
-            eau = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates().jump(getOrientation().toVector()), 3, 10, "icoop/waterproj", "water");
+            Fire eau1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 15, "icoop/waterproj", "water");
+            Fire eau2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 20, "icoop/waterproj", "water");
+            Fire eau3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 15, "icoop/waterproj", "water");
+            Fire eau4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 15, "icoop/waterproj", "water");
             randomFloat -= deltaTime;
             if (randomFloat <= 0) {
                 randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);
                 if (alternate % 2 == 0) {
-                    if (getOwnerArea().canEnterAreaCells(flammes1, flammes1.getCurrentCells())){
+                    if (getOwnerArea().canEnterAreaCells(flammes1, flammes1.getCurrentCells())) {
                         getOwnerArea().registerActor(flammes1);
                     }
-                    if (getOwnerArea().canEnterAreaCells(flammes2, flammes2.getCurrentCells())){
+                    if (getOwnerArea().canEnterAreaCells(flammes2, flammes2.getCurrentCells())) {
                         getOwnerArea().registerActor(flammes2);
                     }
-                    if (getOwnerArea().canEnterAreaCells(flammes3, flammes3.getCurrentCells())){
+                    if (getOwnerArea().canEnterAreaCells(flammes3, flammes3.getCurrentCells())) {
                         getOwnerArea().registerActor(flammes3);
                     }
-                    if (getOwnerArea().canEnterAreaCells(flammes4, flammes4.getCurrentCells())){
+                    if (getOwnerArea().canEnterAreaCells(flammes4, flammes4.getCurrentCells())) {
                         getOwnerArea().registerActor(flammes4);
                     }
                 }
 
-                if (alternate %2 == 1 && getOwnerArea().canEnterAreaCells(eau, eau.getCurrentCells())) {
-                    getOwnerArea().registerActor(eau);
+                if (alternate % 2 == 1) {
+                    if (getOwnerArea().canEnterAreaCells(eau1, eau1.getCurrentCells())) {
+                        getOwnerArea().registerActor(eau1);
+                    }
+                    if (getOwnerArea().canEnterAreaCells(eau2, eau2.getCurrentCells())) {
+                        getOwnerArea().registerActor(eau2);
+                    }
+                    if (getOwnerArea().canEnterAreaCells(eau3, eau3.getCurrentCells())) {
+                        getOwnerArea().registerActor(eau3);
+                    }
+                    if (getOwnerArea().canEnterAreaCells(eau4, eau4.getCurrentCells())) {
+                        getOwnerArea().registerActor(eau4);
+                    }
                 }
                 alternate++;
             }
@@ -114,7 +128,7 @@ public class DarkLord extends Foe {
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {
         List<DiscreteCoordinates> cells = new ArrayList<>();
-        int radius = 3;
+        int radius = 5;
         for (int i = -radius; i <= radius; i++) {
             for (int j = -radius; j <= radius; j++) {
                 Vector newVector = new Vector(i, j);
@@ -123,6 +137,18 @@ public class DarkLord extends Foe {
         }
         return cells;
     }
+
+    @Override
+    public DiscreteCoordinates getCurrentMainCellCoordinates() {
+        return super.getCurrentMainCellCoordinates();
+    }
+
+    @Override
+    public List<DiscreteCoordinates> getCurrentCells() {
+        return Collections.singletonList(getCurrentMainCellCoordinates());
+    }
+
+
 
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {

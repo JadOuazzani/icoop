@@ -110,7 +110,7 @@ public class OrbWay extends ICoopArea {
 
     @Override
     public boolean isOn() {
-        return orbeEau1.isOn();
+        return (orbeEau1.isOn() && orbeFeu1.isOn());
     }
 
     @Override
