@@ -19,16 +19,20 @@ public class Coin extends ICoopCollectable implements Interactor {
     private static final int ANIMATION_DURATION = 24;
     private final Animation animation;
     private final CoinInteractionHandler handler;
-    private int CoinCounter;
+
+    // Compteur global de pièces ramassées
+    private static int globalCoinCounter = 0;
 
     public Coin(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         animation = new Animation("icoop/coin", 4, 1, 1, this, 16, 16,
                 ANIMATION_DURATION / 4, true);
         handler = new CoinInteractionHandler();
-        CoinCounter =0;
     }
 
+    public static int getGlobalCoinCount() {
+        return globalCoinCounter;
+    }
 
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -39,12 +43,10 @@ public class Coin extends ICoopCollectable implements Interactor {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
-
     @Override
     public boolean isViewInteractable() {
         return false;
     }
-
 
     public void acceptInteraction(AreaInteractionVisitor v, boolean isCellInteraction) {
         ((ICoopInteractionVisitor) v).interactWith(this, isCellInteraction);
@@ -58,11 +60,9 @@ public class Coin extends ICoopCollectable implements Interactor {
         return false;
     }
 
-
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
     }
-
 
     public void update(float deltaTime) {
         animation.update(deltaTime);
@@ -75,18 +75,20 @@ public class Coin extends ICoopCollectable implements Interactor {
         animation.draw(canvas);
     }
 
-    private class CoinInteractionHandler implements ICoopInteractionVisitor {
-        public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
-            if (wantsCellInteraction() ) {
-                CoinCounter+=1;
-                collect();
-            }
-        }
+    public static void setGlobalCoinCounter(int globalCoinCounter) {
+        Coin.globalCoinCounter = globalCoinCounter;
     }
 
-}
+    private class CoinInteractionHandler implements ICoopInteractionVisitor {
+        public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
 
-
-
+                // Vérifie si la pièce n'est pas déjà collectée
+                if (!isCollected() && wantsCellInteraction()) {
+                    globalCoinCounter += 1;
+                    collect();
+                }
+            }
+        }
+        }
 
 

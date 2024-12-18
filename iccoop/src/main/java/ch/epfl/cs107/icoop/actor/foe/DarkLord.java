@@ -27,16 +27,23 @@ import static ch.epfl.cs107.play.math.Orientation.LEFT;
 public class DarkLord extends Foe {
 
     private enum darkLordEtat {
-        idle("idle"),
-        spell("spell");
+        idle("idle", 2),
+        spell("spell", 3);
 
         private String etat;
+        private double speed;
 
-        darkLordEtat(String etat) {
+        darkLordEtat(String etat, double speed) {
             this.etat = etat;
+            this.speed = speed;
+        }
+
+        public double getSpeed() {
+            return speed;
         }
     }
 
+    private static final int ANIMATION_DURATION = 12;
     private darkLordEtat etat;
     private OrientedAnimation currentAnimation;
     private OrientedAnimation idleAnimation;
@@ -45,6 +52,7 @@ public class DarkLord extends Foe {
     final Orientation[] orders = {UP, LEFT, DOWN, RIGHT};
     private float randomFloat;
     private int alternate;
+    private ICoopPlayer player;
 
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, int MAX_LIFE) {
         super(area, orientation, position, vulnerabilite, MAX_LIFE);
@@ -64,11 +72,11 @@ public class DarkLord extends Foe {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-//        if (etat == darkLordEtat.spell || isDisplacementOccurs()) {
-//            currentAnimation.update(deltaTime);
-//        } else {
-//            currentAnimation.reset();
-//        }
+        if (etat == darkLordEtat.spell || isDisplacementOccurs()) {
+            currentAnimation.update(deltaTime);
+        } else {
+            currentAnimation.reset();
+        }
         behavior(deltaTime);
     }
 
@@ -80,49 +88,72 @@ public class DarkLord extends Foe {
 
     private void behavior(float deltaTime) {
         if (etat == darkLordEtat.spell) {
+            targetedMoving();
             Fire flammes1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 15, "icoop/fireproj", "fire");
             Fire flammes2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 20, "icoop/fireproj", "fire");
             Fire flammes3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 15, "icoop/fireproj", "fire");
             Fire flammes4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 15, "icoop/fireproj", "fire");
+            List<Fire> flammes = List.of(flammes1, flammes2, flammes3, flammes4);
             Fire eau1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 15, "icoop/waterproj", "water");
             Fire eau2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 20, "icoop/waterproj", "water");
             Fire eau3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 15, "icoop/waterproj", "water");
             Fire eau4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 15, "icoop/waterproj", "water");
+            List<Fire> eau = List.of(eau1, eau2, eau3, eau4);
             randomFloat -= deltaTime;
             if (randomFloat <= 0) {
                 randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);
                 if (alternate % 2 == 0) {
-                    if (getOwnerArea().canEnterAreaCells(flammes1, flammes1.getCurrentCells())) {
-                        getOwnerArea().registerActor(flammes1);
-                    }
-                    if (getOwnerArea().canEnterAreaCells(flammes2, flammes2.getCurrentCells())) {
-                        getOwnerArea().registerActor(flammes2);
-                    }
-                    if (getOwnerArea().canEnterAreaCells(flammes3, flammes3.getCurrentCells())) {
-                        getOwnerArea().registerActor(flammes3);
-                    }
-                    if (getOwnerArea().canEnterAreaCells(flammes4, flammes4.getCurrentCells())) {
-                        getOwnerArea().registerActor(flammes4);
-                    }
+                    registerProjectiles(flammes);
                 }
 
                 if (alternate % 2 == 1) {
-                    if (getOwnerArea().canEnterAreaCells(eau1, eau1.getCurrentCells())) {
-                        getOwnerArea().registerActor(eau1);
-                    }
-                    if (getOwnerArea().canEnterAreaCells(eau2, eau2.getCurrentCells())) {
-                        getOwnerArea().registerActor(eau2);
-                    }
-                    if (getOwnerArea().canEnterAreaCells(eau3, eau3.getCurrentCells())) {
-                        getOwnerArea().registerActor(eau3);
-                    }
-                    if (getOwnerArea().canEnterAreaCells(eau4, eau4.getCurrentCells())) {
-                        getOwnerArea().registerActor(eau4);
-                    }
+                    registerProjectiles(eau);
                 }
                 alternate++;
             }
         }
+    }
+
+    private void registerProjectiles(List<Fire> projectils) {
+        for (Fire projectil : projectils) {
+            if (getOwnerArea().canEnterAreaCells(projectil, projectil.getCurrentCells())) {
+                getOwnerArea().registerActor(projectil);
+            }
+        }
+    }
+
+
+    private void targetedMoving() {
+        Vector targetPosition = player.getCurrentMainCellCoordinates().toVector();
+        Vector currentPosition = getCurrentMainCellCoordinates().toVector();
+        Vector v = targetPosition.sub(currentPosition);
+        float deltaX = v.getX();
+        float deltaY = v.getY();
+
+        Vector chosenDirection;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            chosenDirection = new Vector(deltaX, 0);
+        } else {
+            chosenDirection = new Vector(0, deltaY);
+        }
+
+        Orientation newOrientation = Orientation.fromVector(chosenDirection);
+
+        if (orientate(newOrientation)) {
+            move(getAdjustedSpeed());
+        } else {
+            move(ANIMATION_DURATION / 4);
+        }
+
+    }
+
+    private int getAdjustedSpeed() {
+        return (int) (ANIMATION_DURATION / etat.getSpeed());
+    }
+
+    public void setPlayer(ICoopPlayer player) {
+        this.player = player;
     }
 
     @Override
@@ -149,7 +180,6 @@ public class DarkLord extends Foe {
     }
 
 
-
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
@@ -161,6 +191,7 @@ public class DarkLord extends Foe {
             if (wantsViewInteraction()) {
                 setEtat(darkLordEtat.spell);
                 currentAnimation = spellAnimation;
+                setPlayer(player);
             }
         }
     }

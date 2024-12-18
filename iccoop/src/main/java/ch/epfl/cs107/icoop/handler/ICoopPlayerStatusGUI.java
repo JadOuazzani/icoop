@@ -45,5 +45,7 @@ public class ICoopPlayerStatusGUI implements Graphics {
         gearDisplay.draw(canvas);
         ImageGraphics currentItem = new ImageGraphics(ResourcePath.getSprite(sprite_name), 0.5f, 0.5f, new RegionOfInterest(0, 0, 16, 16), anchor.add(new Vector(0.5f, height - 1.25f)), 1, DEPTH);
         currentItem.draw(canvas);
+
+
     }
 }

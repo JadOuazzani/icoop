@@ -150,6 +150,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
 
     public void switchItem() {
+
         int index = NAVIGATION_LIST.indexOf(currentItem);
 
         do {

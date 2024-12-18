@@ -37,6 +37,14 @@ public class Spawn extends ICoopArea {
     public void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));
+//        Coin coin1 = new Coin(this,Orientation.DOWN, new DiscreteCoordinates(8,8));
+//        Coin coin2 = new Coin(this,Orientation.DOWN, new DiscreteCoordinates(7,8));
+//        Coin coin3 = new Coin(this,Orientation.DOWN, new DiscreteCoordinates(6,8));
+//        registerActor(coin1);
+//        registerActor(coin2);
+//        registerActor(coin3);
+
+
         Door door = new Door("OrbWay", Logic.TRUE, List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5)), this, new DiscreteCoordinates(19, 15), Orientation.DOWN, new DiscreteCoordinates(19, 16));
         registerActor(door);
         Explosif explosif1 = new Explosif(this, Orientation.DOWN, new DiscreteCoordinates(11, 10));

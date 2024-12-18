@@ -1,5 +1,6 @@
 package ch.epfl.cs107.icoop.utilities;
 
+import ch.epfl.cs107.icoop.actor.object.Coin;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
@@ -17,7 +18,7 @@ import ch.epfl.cs107.play.window.Window;
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 public class ICoop extends AreaGame implements DialogHandler, Logic {
-    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Arena", "SanctumEntrance", "Sanctum", "Accueil"};
+    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Arena", "SanctumEntrance", "Sanctum", "Accueil", "Ending"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
@@ -35,10 +36,13 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
 
     public void resetGame() {
         ITS_INITIALIZED = false;
+        Coin.setGlobalCoinCounter(0); // Réinitialise le compteur de pièces
+        dialogue = null; // Remet à zéro les dialogues
         begin(getWindow(), getFileSystem());
     }
 
     public void resetArea() {
+        dialogue = null; // Remet à zéro les dialogues pour l'aire
         initArea(getCurrentArea().getTitle());
     }
 
@@ -55,6 +59,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         sanctumEntrance = new SanctumEntrance();
         sanctum = new Sanctum();
         Accueil accueil = new Accueil();
+        Ending ending = new Ending();
         addArea(spawn);
         addArea(orbWay);
         addArea(maze);
@@ -62,6 +67,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         addArea(sanctumEntrance);
         addArea(sanctum);
         addArea(accueil);
+        addArea(ending);
     }
 
     @Override
@@ -95,36 +101,55 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             redPlayer.resetMotion();
         }
 
-        if (getCurrentArea().getTitle().equals("Accueil")) {
-            if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
+        Keyboard keyboard = getWindow().getKeyboard();
+        String currentAreaTitle = getCurrentArea().getTitle();
+
+        if (currentAreaTitle.equals("Accueil")) {
+            if (keyboard.get(NEXT_DIALOG).isPressed()) {
                 initArea(areas[0]);
                 super.update(deltaTime);
             }
-        } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
-            switchArea();
-            bluePlayer.centerCamera(redPlayer, bluePlayer);
-            super.update(deltaTime);
-            ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
-
-            if (getWindow().getKeyboard().get(RESET_GAME).isPressed()) {
-                resetGame();
+        }
+        else if (currentAreaTitle.equals("Ending")) {
+            if (keyboard.get(NEXT_DIALOG).isPressed()) {
+                Coin.setGlobalCoinCounter(0);
+                dialogue = null; // Remettre le dialogue à zéro
+                initArea("Accueil");
+                super.update(deltaTime);
             }
+        }
+        else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
+            // Vérifier le compteur global de pièces
+            if (Coin.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
+                initArea("Ending");
+                super.update(deltaTime);
+            } else {
+                switchArea();
+                bluePlayer.centerCamera(redPlayer, bluePlayer);
+                super.update(deltaTime);
+                ((ICoopArea) getCurrentArea()).setCameraScaleFactor(redPlayer.getPosition(), bluePlayer.getPosition());
 
-            if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
-                resetArea();
-            }
+                if (keyboard.get(RESET_GAME).isPressed()) {
+                    resetGame();
+                }
 
-            if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
-                resetArea();
+                if (keyboard.get(RESET_AREA).isPressed()) {
+                    resetArea();
+                }
+
+                if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
+                    resetArea();
+                }
             }
         } else {
             dialogue.draw(getWindow());
-            if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
+            if (keyboard.get(NEXT_DIALOG).isPressed()) {
                 dialogue.update(deltaTime);
             }
         }
 
-        if (!getCurrentArea().getTitle().equals("Accueil")) {
+        // N'affiche l'inventaire que si on n'est ni dans Accueil, ni dans Ending
+        if (!currentAreaTitle.equals("Accueil") && !currentAreaTitle.equals("Ending")) {
             blueStatusGUI.draw(getWindow());
             redStatusGUI.draw(getWindow());
         }
