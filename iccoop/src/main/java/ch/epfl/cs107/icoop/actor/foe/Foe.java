@@ -77,6 +77,7 @@ Foe extends MovableAreaEntity implements Interactor {
             if (deathAnimation.isCompleted()) {
                 getOwnerArea().unregisterActor(this);
             }
+            isDead = true;
         }
         if (immunite) {
             periodeImmunite -= (int) (deltaTime / 2);
@@ -88,6 +89,8 @@ Foe extends MovableAreaEntity implements Interactor {
         }
 
     }
+
+
 
 
     public boolean getImmunite() {
