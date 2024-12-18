@@ -8,6 +8,7 @@ import ch.epfl.cs107.icoop.handler.ICoopPlayerStatusGUI;
 import ch.epfl.cs107.icoop.handler.MusicPlayer;
 import ch.epfl.cs107.play.areagame.AreaGame;
 import ch.epfl.cs107.play.engine.actor.Dialog;
+import ch.epfl.cs107.play.engine.actor.TextGraphics;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
@@ -16,6 +17,8 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Mouse;
 import ch.epfl.cs107.play.window.Window;
+
+import java.awt.*;
 
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
@@ -35,9 +38,10 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     private SanctumEntrance sanctumEntrance;
     private Sanctum sanctum;
 
+
     public void resetGame() {
         ITS_INITIALIZED = false;
-        Coin.setGlobalCoinCounter(0); // Réinitialise le compteur de pièces
+        redPlayer.setGlobalCoinCounter(0); // Réinitialise le compteur de pièces
         dialogue = null; // Remet à zéro les dialogues
         begin(getWindow(), getFileSystem());
     }
@@ -120,14 +124,14 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             }
         } else if (currentAreaTitle.equals("Ending")) {
             if (isMouseOverRestartButton && mouse.getLeftButton().isPressed()) {
-                Coin.setGlobalCoinCounter(0);
+                redPlayer.setGlobalCoinCounter(0);
                 dialogue = null; // Remettre le dialogue à zéro
                 initArea("Accueil");
                 super.update(deltaTime);
             }
         } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             // Vérifier le compteur global de pièces
-            if (Coin.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
+            if (redPlayer.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
                 initArea("Ending");
                 super.update(deltaTime);
             } else {
@@ -160,6 +164,8 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             blueStatusGUI.draw(getWindow());
             redStatusGUI.draw(getWindow());
         }
+
+
 
 
     }

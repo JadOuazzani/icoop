@@ -3,10 +3,13 @@ package ch.epfl.cs107.icoop.handler;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.play.engine.actor.Graphics;
 import ch.epfl.cs107.play.engine.actor.ImageGraphics;
+import ch.epfl.cs107.play.engine.actor.TextGraphics;
 import ch.epfl.cs107.play.io.ResourcePath;
 import ch.epfl.cs107.play.math.RegionOfInterest;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.window.Canvas;
+
+import java.awt.*;
 
 /**
  * A GUI that shows information about the player on the screen.
@@ -17,6 +20,7 @@ public class ICoopPlayerStatusGUI implements Graphics {
     private final ICoopPlayer player;
     private final boolean flipped;
     private String sprite_name;
+
 
     public ICoopPlayerStatusGUI(ICoopPlayer player, boolean flipped) {
         this.player = player;
@@ -45,6 +49,12 @@ public class ICoopPlayerStatusGUI implements Graphics {
         gearDisplay.draw(canvas);
         ImageGraphics currentItem = new ImageGraphics(ResourcePath.getSprite(sprite_name), 0.5f, 0.5f, new RegionOfInterest(0, 0, 16, 16), anchor.add(new Vector(0.5f, height - 1.25f)), 1, DEPTH);
         currentItem.draw(canvas);
+        TextGraphics coinText = new TextGraphics("    "+Integer.toString(player.getGlobalCoinCount()), 0.5f, Color.YELLOW);
+        coinText.setFontName("Dragonfly");
+        coinText.setFontSize(1.1f);
+        coinText.setAnchor(anchor.add(new Vector(1.5f, height - 2.0f)));
+        coinText.draw(canvas);
+
 
 
     }

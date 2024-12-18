@@ -69,6 +69,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     private boolean isAttacking;
     private boolean firsTime = true;
     private DiscreteCoordinates manoirPortailCoord;
+    private static int globalCoinCounter = 0;
+
 
 
     public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String item, KeyBindings.PlayerKeyBindings keys) {
@@ -93,6 +95,13 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                 anchorStaff, ordersFight, 4, 2, 2, 32, 32);
         animation = IdleAnimation;
         MOVE_DURATION = 6;
+    }
+
+    public static int getGlobalCoinCount() {
+        return globalCoinCounter;
+    }
+    public static void setGlobalCoinCounter(int globalCoinCounter) {
+        ICoopPlayer.globalCoinCounter = globalCoinCounter;
     }
 
 

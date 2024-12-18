@@ -15,13 +15,12 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
+
 public class Coin extends ICoopCollectable implements Interactor {
     private static final int ANIMATION_DURATION = 24;
     private final Animation animation;
     private final CoinInteractionHandler handler;
 
-    // Compteur global de pièces ramassées
-    private static int globalCoinCounter = 0;
 
     public Coin(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
@@ -30,9 +29,6 @@ public class Coin extends ICoopCollectable implements Interactor {
         handler = new CoinInteractionHandler();
     }
 
-    public static int getGlobalCoinCount() {
-        return globalCoinCounter;
-    }
 
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -75,24 +71,20 @@ public class Coin extends ICoopCollectable implements Interactor {
         animation.draw(canvas);
     }
 
-    public static void setGlobalCoinCounter(int globalCoinCounter) {
-        Coin.globalCoinCounter = globalCoinCounter;
-    }
+
 
     private class CoinInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
 
             // Vérifie si la pièce n'est pas déjà collectée
             if (!isCollected() && wantsCellInteraction()) {
-                globalCoinCounter += 1;
+                player.setGlobalCoinCounter(player.getGlobalCoinCount()+1);
                 collect();
             }
         }
     }
 
 
-public int getCoinCounter() {
-    return globalCoinCounter;
-}}
+}
 
 
