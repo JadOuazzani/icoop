@@ -27,7 +27,7 @@ public class Arena extends ICoopArea {
     public void update(float deltaTime) {
         super.update(deltaTime);
         if (this.isOn()&& !isRegistered){
-            Coin coin = new Coin(this,Orientation.DOWN,new DiscreteCoordinates(7, 9));
+            Coin coin = new Coin(this,Orientation.DOWN,new DiscreteCoordinates(10, 11));
             registerActor(coin);
             coin.update(deltaTime);
             isRegistered=true;
