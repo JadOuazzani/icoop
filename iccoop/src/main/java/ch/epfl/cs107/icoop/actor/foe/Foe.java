@@ -32,12 +32,13 @@ Foe extends MovableAreaEntity implements Interactor {
     private boolean isDead;
     private boolean immunite;
     private static int periodeImmunite = 24;
-    final Vector anchor = new Vector(0, 0);
+    final Vector anchor = new Vector(-0.5f, -0.5f);
     final Orientation[] orders = {DOWN, RIGHT, UP, LEFT};
     protected Animation deathAnimation;
     List<String> vulnerabilite;
     protected static final int ANIMATION_DURATION = 24;
     private FoeInteractionHandler handler;
+
     /**
      * Default MovableAreaEntity constructor
      *
@@ -50,12 +51,12 @@ Foe extends MovableAreaEntity implements Interactor {
         super(area, orientation, position);
         this.MAX_LIFE = MAX_LIFE;
         this.vulnerabilite = vulnerabilite;
-        deathAnimation = new Animation("icoop/vanish", 7, 2, 2, this , 32, 32, new Vector(-0.5f,0f),ANIMATION_DURATION/7, false);
+        deathAnimation = new Animation("icoop/vanish", 7, 2, 2, this, 32, 32, new Vector(-0.5f, 0f), ANIMATION_DURATION / 9, false);
 
         health = new Health(this, Transform.I.translated(0, 1.75f), MAX_LIFE, false);
         isDead = false;
         immunite = false;
-        handler=new FoeInteractionHandler();
+        handler = new FoeInteractionHandler();
     }
 
     public boolean isDead() {
@@ -65,15 +66,17 @@ Foe extends MovableAreaEntity implements Interactor {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+        health.draw(canvas);
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (health.isOff() ) {
+        if (health.isOff()) {
             deathAnimation.update(deltaTime);
-            if(deathAnimation.isCompleted()){
-            getOwnerArea().unregisterActor(this);}
+            if (deathAnimation.isCompleted()) {
+                getOwnerArea().unregisterActor(this);
+            }
         }
         if (immunite) {
             periodeImmunite -= (int) (deltaTime / 2);
@@ -87,7 +90,7 @@ Foe extends MovableAreaEntity implements Interactor {
     }
 
 
-    public boolean getImmunite(){
+    public boolean getImmunite() {
         return immunite;
     }
 
@@ -140,7 +143,7 @@ Foe extends MovableAreaEntity implements Interactor {
     }
 
     public void perteDegats(int degats, String type) {
-        for (int i =0; i<vulnerabilite.size(); i++) {
+        for (int i = 0; i < vulnerabilite.size(); i++) {
             if (vulnerabilite.get(i).equals(type)) {
                 health.decrease(degats);
             }

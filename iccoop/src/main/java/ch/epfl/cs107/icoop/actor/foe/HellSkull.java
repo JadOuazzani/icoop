@@ -45,20 +45,10 @@ public class HellSkull extends Foe {
                 getOwnerArea().registerActor(flammes);
             }
         }
-        if (health.isOff()) {
-            deathAnimation.update(deltaTime);
-        } else {
-            orientedAnimation.update(deltaTime);
-        }
-
-        if (health.isOff() && deathAnimation.isCompleted()) {
-            getOwnerArea().unregisterActor(this);
-        }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
         if (health.isOff()) {
             deathAnimation.draw(canvas);
         } else {

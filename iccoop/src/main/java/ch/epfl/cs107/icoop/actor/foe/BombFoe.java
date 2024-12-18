@@ -99,18 +99,7 @@ public class BombFoe extends Foe {
         } else {
             currentAnimation.reset();
         }
-
         behavior();
-
-        if (health.isOff()) {
-            deathAnimation.update(deltaTime);
-        } else {
-            orientedAnimation.update(deltaTime);
-        }
-
-        if (health.isOff() && deathAnimation.isCompleted()) {
-            getOwnerArea().unregisterActor(this);
-        }
     }
 
 

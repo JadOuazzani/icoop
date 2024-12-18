@@ -26,8 +26,6 @@ import static ch.epfl.cs107.play.math.Orientation.LEFT;
 
 public class DarkLord extends Foe {
 
-    private float tempsInaction;
-
     private enum darkLordEtat {
         idle("idle", 1),
         spell("spell", 2);
@@ -57,13 +55,14 @@ public class DarkLord extends Foe {
     private ICoopPlayer player;
     private final static int TIME_TRESHOLD = 50;
     private Orientation orientation;
+    private float tempsInaction;
 
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, int MAX_LIFE) {
         super(area, orientation, position, vulnerabilite, MAX_LIFE);
         etat = darkLordEtat.idle;
         this.orientation = orientation;
-        idleAnimation = new OrientedAnimation("icoop/darkLord", ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, true);
-        spellAnimation = new OrientedAnimation("icoop/darkLord.spell", ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, true);
+        idleAnimation = new OrientedAnimation("icoop/darkLord", ANIMATION_DURATION / 3, this, anchor, orders, 3, 2, 2, 32, 32, true);
+        spellAnimation = new OrientedAnimation("icoop/darkLord.spell", ANIMATION_DURATION / 3, this, anchor, orders, 3, 2, 2, 32, 32, true);
         currentAnimation = idleAnimation;
         handler = new darkLordInteractionHandler();
         randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);

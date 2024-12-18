@@ -23,7 +23,7 @@ public class Sanctum extends ICoopArea{
     @Override
     protected void createArea() {
         registerActor(new Background(this));
-        darkLord = new DarkLord(this, Orientation.DOWN, new DiscreteCoordinates(7, 9), List.of("physique"), 10);
+        darkLord = new DarkLord(this, Orientation.DOWN, new DiscreteCoordinates(7, 9), List.of("physique", "fire", "water"), 16);
         registerActor(darkLord);
     }
 
