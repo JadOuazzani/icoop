@@ -82,13 +82,17 @@ public class Coin extends ICoopCollectable implements Interactor {
     private class CoinInteractionHandler implements ICoopInteractionVisitor {
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
 
-                // Vérifie si la pièce n'est pas déjà collectée
-                if (!isCollected() && wantsCellInteraction()) {
-                    globalCoinCounter += 1;
-                    collect();
-                }
+            // Vérifie si la pièce n'est pas déjà collectée
+            if (!isCollected() && wantsCellInteraction()) {
+                globalCoinCounter += 1;
+                collect();
             }
         }
-        }
+    }
+
+
+public int getCoinCounter() {
+    return globalCoinCounter;
+}}
 
 

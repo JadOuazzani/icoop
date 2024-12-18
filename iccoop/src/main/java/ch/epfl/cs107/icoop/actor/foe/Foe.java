@@ -73,7 +73,8 @@ Foe extends MovableAreaEntity implements Interactor {
         if (health.isOff() ) {
             deathAnimation.update(deltaTime);
             if(deathAnimation.isCompleted()){
-            getOwnerArea().unregisterActor(this);}
+            getOwnerArea().unregisterActor(this);
+            isDead=true;}
         }
         if (immunite) {
             periodeImmunite -= (int) (deltaTime / 2);

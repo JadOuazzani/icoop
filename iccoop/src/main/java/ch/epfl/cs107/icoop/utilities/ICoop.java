@@ -151,6 +151,8 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             blueStatusGUI.draw(getWindow());
             redStatusGUI.draw(getWindow());
         }
+
+
     }
 
     private void initArea(String areaKey) {
