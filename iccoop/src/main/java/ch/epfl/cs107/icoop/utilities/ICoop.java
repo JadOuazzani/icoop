@@ -1,48 +1,46 @@
 package ch.epfl.cs107.icoop.utilities;
 
-
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.icoop.handler.ICoopPlayerStatusGUI;
+import ch.epfl.cs107.icoop.handler.MusicPlayer;
 import ch.epfl.cs107.play.areagame.AreaGame;
 import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.signal.logic.Logic;
+import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Window;
 
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
-
 public class ICoop extends AreaGame implements DialogHandler, Logic {
-    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Area", "SanctumEntrance", "Sanctum"};
+    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Arena", "SanctumEntrance", "Sanctum", "Accueil"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
     private Dialog dialogue;
     private static boolean ITS_INITIALIZED = false;
-    ICoopPlayerStatusGUI redStatusGUI;
-    ICoopPlayerStatusGUI blueStatusGUI;
-    private Spawn spawn ;
-    private Maze maze ;
-    private OrbWay orbWay ;
+    private ICoopPlayerStatusGUI redStatusGUI;
+    private ICoopPlayerStatusGUI blueStatusGUI;
+    private Spawn spawn;
+    private Maze maze;
+    private OrbWay orbWay;
     private Arena arena;
     private SanctumEntrance sanctumEntrance;
     private Sanctum sanctum;
-
+    private MusicPlayer musicPlayer;
 
     public void resetGame() {
         ITS_INITIALIZED = false;
         begin(getWindow(), getFileSystem());
-
     }
 
     public void resetArea() {
         initArea(getCurrentArea().getTitle());
     }
-
 
     @Override
     public String getTitle() {
@@ -56,12 +54,14 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         arena = new Arena();
         sanctumEntrance = new SanctumEntrance();
         sanctum = new Sanctum();
+        Accueil accueil = new Accueil();
         addArea(spawn);
         addArea(orbWay);
         addArea(maze);
         addArea(arena);
         addArea(sanctumEntrance);
         addArea(sanctum);
+        addArea(accueil);
     }
 
     @Override
@@ -78,7 +78,9 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 4;
+            musicPlayer = new MusicPlayer();
+//            musicPlayer.play(); // Chemin vers le fichier audio
+            areaIndex = 6; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
         }
@@ -86,7 +88,6 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     }
 
     @Override
-
     public void update(float deltaTime) {
         if (!ITS_INITIALIZED) {
             super.update(deltaTime);
@@ -94,7 +95,12 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             bluePlayer.resetMotion();
             redPlayer.resetMotion();
         }
-        if (!dialogActif(dialogue) || dialogue.isCompleted()) {
+
+        if (getCurrentArea().getTitle().equals("Accueil")) {
+            if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
+                initArea(areas[0]); // Par défaut, "Spawn"
+            }
+        } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             switchArea();
             bluePlayer.centerCamera(redPlayer, bluePlayer);
             super.update(deltaTime);
@@ -107,19 +113,22 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             if (getWindow().getKeyboard().get(RESET_AREA).isPressed()) {
                 resetArea();
             }
+
             if (bluePlayer.getHealth().isOff() || redPlayer.getHealth().isOff()) {
                 resetArea();
             }
         } else {
             dialogue.draw(getWindow());
-            if ((getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed())) {
+            if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
                 dialogue.update(deltaTime);
             }
         }
-        blueStatusGUI.draw(getWindow());
-        redStatusGUI.draw(getWindow());
-    }
 
+        if (!getCurrentArea().getTitle().equals("Accueil")) {
+            blueStatusGUI.draw(getWindow());
+            redStatusGUI.draw(getWindow());
+        }
+    }
 
     private void initArea(String areaKey) {
         ICoopArea area = (ICoopArea) setCurrentArea(areaKey, true);
@@ -132,9 +141,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         blueStatusGUI = new ICoopPlayerStatusGUI(bluePlayer, false);
         bluePlayer.enterArea(getCurrentArea(), coords2);
         bluePlayer.centerCamera(redPlayer, bluePlayer);
-
     }
-
 
     private void switchArea() {
         ICoopPlayer contactPlayer = redPlayer.isContactPorte() ? redPlayer : bluePlayer;
@@ -152,10 +159,16 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         return dialogue != null;
     }
 
-
     @Override
     public void publish(Dialog dialogue) {
         this.dialogue = dialogue;
     }
 
+    @Override
+    public void end() {
+        if (musicPlayer != null) {
+            musicPlayer.stop();
+        }
+        super.end();
+    }
 }

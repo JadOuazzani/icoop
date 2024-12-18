@@ -30,4 +30,5 @@ public interface ICoopInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(Key key, boolean isCellInteraction){}
     default void interactWith(Portail portail, boolean isCellInteraction) {}
     default void interactWith(Fleche fleche, boolean isCellInteraction) {}
+    default void interactWith(Coin coins,boolean isCellInteraction){}
 }
