@@ -48,6 +48,7 @@ public class Staff extends ElementalItem {
         super(area, orientation, position, staffType.getItem());
 
         sprites = new Sprite[NOMBRE_IMAGE];
+
         for (int i = 0; i < NOMBRE_IMAGE; i++) {
             sprites[i] = new RPGSprite(
                     staffType.getSpriteName(),

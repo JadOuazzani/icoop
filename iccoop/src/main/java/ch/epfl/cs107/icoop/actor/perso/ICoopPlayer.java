@@ -37,7 +37,7 @@ import static javax.print.attribute.standard.PrinterState.IDLE;
 
 public class ICoopPlayer extends MovableAreaEntity implements Interactor, ElementalEntity, Inventory.Holder {
 
-    private final static int MOVE_DURATION = 3;
+    private static int MOVE_DURATION; // final enleve pour etre modifie
     public String item;
     final Vector anchorIdle = new Vector(0, 0);
     final Vector anchorSword = new Vector(-.5f, -.20f);
@@ -68,7 +68,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     private final static int STAFF_ANIMATION_DURATION = 2;
     private boolean isAttacking;
     private boolean firsTime = true;
-    private  DiscreteCoordinates manoirPortailCoord;
+    private DiscreteCoordinates manoirPortailCoord;
 
 
     public ICoopPlayer(Area owner, Orientation orientation, DiscreteCoordinates coordinates, String prefixe, String item, KeyBindings.PlayerKeyBindings keys) {
@@ -92,8 +92,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         firestaffAnimation = new OrientedAnimation("player.staff_fire", STAFF_ANIMATION_DURATION, this,
                 anchorStaff, ordersFight, 4, 2, 2, 32, 32);
         animation = IdleAnimation;
-
-
+        MOVE_DURATION = 6;
     }
 
 
@@ -132,7 +131,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         } else {
             resetToIdle();
         }
-        if(!firsTime){
+        if (!firsTime) {
             firsTime = !getCurrentMainCellCoordinates().equals(manoirPortailCoord);
         }
     }
@@ -354,7 +353,6 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
     @Override
     public boolean possess(InventoryItem item) {
-
         return inventory.contains(item);
     }
 
@@ -381,6 +379,10 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
     @Override
     public void resetMotion() {
         super.resetMotion();
+    }
+
+    public static void setMoveDuration(int moveDuration) {
+        MOVE_DURATION = moveDuration;
     }
 
 
@@ -431,10 +433,15 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
 
         @Override
         public void interactWith(Orb orb, boolean isCellInteraction) {
-            if (wantsCellInteraction() && isCellInteraction) {
-                orb.getJeu().publish(orb.getDialog());
-                orb.collectBy(ICoopPlayer.this::getItem);
-                setInvulnerable(true);
+            if (isCellInteraction) {
+                if (orb.item().equals("water") || orb.item().equals("fire")) {
+                    orb.getJeu().publish(orb.getDialog());
+                    orb.collectBy(ICoopPlayer.this::getItem);
+                    setInvulnerable(true);
+                } else if (orb.item().equals("speed")) {
+                    orb.disparition();
+                    setMoveDuration(3);
+                }
             }
         }
 

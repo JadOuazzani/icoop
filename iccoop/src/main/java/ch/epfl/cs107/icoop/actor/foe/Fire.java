@@ -16,11 +16,17 @@ import java.util.List;
 public class Fire extends Projectile {
     private Animation animation;
     private FlammesInteractionHandler handler;
+    private String type;
 
-    public Fire(Area area, Orientation orientation, DiscreteCoordinates position, float vitesse, int distancemax) {
+    public Fire(Area area, Orientation orientation, DiscreteCoordinates position, float vitesse, int distancemax, String name, String type) {
         super(area, orientation, position, vitesse, distancemax);
-        animation = new Animation("icoop/fire", 7, 1, 1, this, 16, 16, 4, true);
+        this.type = type;
+        animation = new Animation(name, 7, 1, 1, this, 16, 16, 4, true);
         handler = new FlammesInteractionHandler();
+    }
+
+    public String getType() {
+        return type;
     }
 
     @Override
@@ -46,7 +52,7 @@ public class Fire extends Projectile {
 
     @Override
     public boolean wantsCellInteraction() {
-       return true;
+        return true;
     }
 
 
@@ -60,7 +66,7 @@ public class Fire extends Projectile {
 
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (isCellInteraction) {
-                player.perteDegats(1, "fire");
+                player.perteDegats(1, getType());
             }
         }
 
@@ -73,7 +79,7 @@ public class Fire extends Projectile {
         @Override
         public void interactWith(Foe foe, boolean isCellInteraction) {
             if (isCellInteraction) {
-                foe.perteDegats(1, "fire");
+                foe.perteDegats(1, getType());
             }
         }
     }

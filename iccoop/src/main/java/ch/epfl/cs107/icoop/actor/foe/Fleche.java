@@ -19,7 +19,11 @@ public class Fleche extends Projectile {
 
     public Fleche(Area area, Orientation orientation, DiscreteCoordinates position, float vitesse, int distancemax) {
         super(area, orientation, position, vitesse, distancemax);
-        animation = new Animation("icoop/arrow", 4, 1, 1, this, 32, 32, 4, true);
+        if (orientation == Orientation.RIGHT) {
+            animation = new Animation("icoop/arrowRight", 4, 1, 1, this, 32, 32, 4, true);
+        }else if (orientation == Orientation.LEFT){
+            animation = new Animation("icoop/arrowLeft", 4, 1, 1, this, 32, 32, 4, true);
+        }
         handler = new FlecheInteractionHandler();
     }
 
@@ -59,7 +63,7 @@ public class Fleche extends Projectile {
 
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (isCellInteraction) {
-                player.perteDegats(1, "physique");
+                player.perteDegats(3, "physique");
                 getOwnerArea().unregisterActor(Fleche.this);
 
             }

@@ -1,8 +1,5 @@
 package ch.epfl.cs107.icoop.actor.foe;
 
-import ch.epfl.cs107.icoop.actor.object.Door;
-import ch.epfl.cs107.icoop.actor.object.ElementalEntity;
-import ch.epfl.cs107.icoop.actor.perso.Health;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
@@ -12,11 +9,12 @@ import ch.epfl.cs107.play.engine.actor.Animation;
 import ch.epfl.cs107.play.engine.actor.OrientedAnimation;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
-import ch.epfl.cs107.play.math.Transform;
 import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.math.random.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class logMonster extends Foe {
@@ -24,15 +22,18 @@ public class logMonster extends Foe {
     private OrientedAnimation orientedAnimation;
     private float randomFloat;
     private Fleche fleches;
-    private static final int ANIMATION_DURATION = 12;
+    private static final int ANIMATION_DURATION = 24;
     private logMonsterInteractionHandler handler;
+    private OrientedAnimation animation;
+
 
     public logMonster(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite) {
-        super(area, orientation, position, vulnerabilite, 1);
-        orientedAnimation = new OrientedAnimation("icoop/logMonster", ANIMATION_DURATION / 3, this, new Vector(-0.5f, -0.5f), orders, 3, 2, 2, 32, 32, true);
+        super(area, orientation, position, vulnerabilite, 5);
         randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);
         handler = new logMonsterInteractionHandler();
+        animation = new OrientedAnimation("icoop/logMonster", ANIMATION_DURATION / 3, this, new Vector(-0.5f, -0.5f), orders, 9, 2, 2, 32, 32, true);
     }
+
 
     @Override
     public void update(float deltaTime) {
@@ -46,26 +47,28 @@ public class logMonster extends Foe {
             }
         }
 
-        if(health.isOff()){
+        if (isDisplacementOccurs()) {
+            animation.update(deltaTime);
+        } else {
+            animation.reset();
+        }
+        if (health.isOff()) {
             deathAnimation.update(deltaTime);
-        }else{
-            orientedAnimation.update(deltaTime);
+        } else {
+            animation.update(deltaTime);
         }
 
-        if ( health.isOff() && deathAnimation.isCompleted()) {
+        if (health.isOff() && deathAnimation.isCompleted()) {
             getOwnerArea().unregisterActor(this);
         }
+
+
     }
+
 
     @Override
     public void draw(Canvas canvas) {
-        super.draw(canvas);
-        if(health.isOff()){
-            deathAnimation.draw(canvas);
-        }else{
-            orientedAnimation.draw(canvas);
-        }
-
+        animation.draw(canvas);
     }
 
 
@@ -79,15 +82,6 @@ public class logMonster extends Foe {
         super.acceptInteraction(v, isCellInteraction);
     }
 
-    @Override
-    public boolean isViewInteractable() {
-        return true;
-    }
-
-    @Override
-    public boolean isCellInteractable() {
-        return true;
-    }
 
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {

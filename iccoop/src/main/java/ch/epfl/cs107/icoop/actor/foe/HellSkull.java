@@ -37,7 +37,7 @@ public class HellSkull extends Foe {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        flammes = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates().jump(getOrientation().toVector()), 3, 40);
+        flammes = new Fire(getOwnerArea(), getOrientation(), getCurrentMainCellCoordinates().jump(getOrientation().toVector()), 3, 40, "icoop/fire", "fire");
         randomFloat -= deltaTime;
         if (randomFloat <= 0) {
             randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);
@@ -78,15 +78,6 @@ public class HellSkull extends Foe {
         super.acceptInteraction(v, isCellInteraction);
     }
 
-    @Override
-    public boolean isViewInteractable() {
-        return true;
-    }
-
-    @Override
-    public boolean isCellInteractable() {
-        return true;
-    }
 
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {

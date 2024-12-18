@@ -34,7 +34,7 @@ public class Spawn extends ICoopArea {
     }
 
     @Override
-    protected void createArea() {
+    public void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));
         Door door = new Door("OrbWay", Logic.TRUE, List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5)), this, new DiscreteCoordinates(19, 15), Orientation.DOWN, new DiscreteCoordinates(19, 16));
@@ -49,7 +49,7 @@ public class Spawn extends ICoopArea {
         registerActor(rochers);
         Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));
         registerActor(door2);
-        portail = new Portail("Spawn", new Logic() {
+        portail = new Portail("SanctumEntrance", new Logic() {
             @Override
             public boolean isOn() {
                 return signalJeu.isOn();

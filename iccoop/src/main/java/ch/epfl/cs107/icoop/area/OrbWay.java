@@ -23,6 +23,7 @@ public class OrbWay extends ICoopArea {
 
 
     public OrbWay(DialogHandler jeu) {
+
         this.jeu = jeu;
     }
 

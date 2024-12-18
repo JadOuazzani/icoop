@@ -134,7 +134,6 @@ public class BombFoe extends Foe {
         if (!getImmunite() && tempsInaction <= 0) {
             switch (etat) {
                 case idle:
-                    //currentAnimation.reset();
                     setCurrentAnimation(orientedAnimation);
                     randomMoving();
                     break;

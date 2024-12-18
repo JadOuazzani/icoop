@@ -21,6 +21,7 @@ public class Arena extends ICoopArea {
     private Key redKey;
     private Key blueKey;
 
+
     @Override
     protected void createArea() {
         registerActor(new Background(this));

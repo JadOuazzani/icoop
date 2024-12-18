@@ -100,10 +100,6 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
         return false;
     }
 
-    @Override
-    public boolean isViewInteractable() {
-        return true;
-    }
 
     @Override
     public boolean takeCellSpace() {
