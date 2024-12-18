@@ -60,14 +60,14 @@ public class Spawn extends ICoopArea {
         portail = new Portail("SanctumEntrance", new Logic() {
             @Override
             public boolean isOn() {
-                return signalJeu.isOn();
+                return true;
             }
 
             @Override
             public boolean isOff() {
                 return signalJeu.isOff();
             }
-        }, getStartPositions(), this, new DiscreteCoordinates(6, 11), Orientation.DOWN, jeu);
+        }, List.of(new DiscreteCoordinates(2,1), new DiscreteCoordinates(2,2)), this, new DiscreteCoordinates(6, 11), Orientation.DOWN, jeu);
         registerActor(portail);
     }
 

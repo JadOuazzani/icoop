@@ -20,11 +20,27 @@ public class OrbWay extends ICoopArea {
     private DialogHandler jeu;
     private Orb orbeFeu1;
     private Orb orbeEau1;
+    private boolean isRegistered;
+
+
 
 
     public OrbWay(DialogHandler jeu) {
 
         this.jeu = jeu;
+        isRegistered=false;
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        if (this.isOn()&& !isRegistered){
+            Coin coin = new Coin(this,Orientation.DOWN,new DiscreteCoordinates(6,8));
+            registerActor(coin);
+            coin.update(deltaTime);
+            isRegistered=true;
+
+        }
     }
 
     @Override
@@ -92,7 +108,9 @@ public class OrbWay extends ICoopArea {
                 }
             }, ElementalWall.WallType.EAU);
             registerActor(murEau);
+
         }
+
 
 
     }

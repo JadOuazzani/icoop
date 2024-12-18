@@ -6,6 +6,7 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
+import ch.epfl.cs107.icoop.actor.object.Coin;
 import ch.epfl.cs107.icoop.actor.object.Door;
 import ch.epfl.cs107.icoop.actor.object.Key;
 import ch.epfl.cs107.icoop.actor.object.Teleportation;
@@ -20,7 +21,19 @@ import java.util.List;
 public class Arena extends ICoopArea {
     private Key redKey;
     private Key blueKey;
+    private boolean isRegistered;
 
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        if (this.isOn()&& !isRegistered){
+            Coin coin = new Coin(this,Orientation.DOWN,new DiscreteCoordinates(7, 9));
+            registerActor(coin);
+            coin.update(deltaTime);
+            isRegistered=true;
+
+        }
+    }
 
     @Override
     protected void createArea() {

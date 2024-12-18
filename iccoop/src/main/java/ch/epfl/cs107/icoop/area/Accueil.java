@@ -10,6 +10,7 @@ package ch.epfl.cs107.icoop.area;
 import ch.epfl.cs107.icoop.actor.foe.Fleche;
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
+import ch.epfl.cs107.icoop.handler.MusicPlayer;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.engine.actor.Foreground;

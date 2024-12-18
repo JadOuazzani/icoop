@@ -1,17 +1,19 @@
 package ch.epfl.cs107.icoop.handler;
 
+import ch.epfl.cs107.play.io.FileSystem;
+
 import javax.sound.sampled.*;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class MusicPlayer {
     private Clip clip;
 
-    public void play(String filePath) {
+    public void play(FileSystem fileSystem, String soundPath) {
         try {
-            InputStream audioSrc = getClass().getResourceAsStream(filePath);
+            InputStream audioSrc = fileSystem.read(soundPath);
             if (audioSrc == null) {
-                throw new FileNotFoundException("Fichier audio non trouvé : " + filePath);
+                System.err.println("Fichier audio non trouvé : " + soundPath);
+                return;
             }
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioSrc);
             clip = AudioSystem.getClip();
