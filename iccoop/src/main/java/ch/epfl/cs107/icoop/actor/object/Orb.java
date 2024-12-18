@@ -32,8 +32,8 @@ public class Orb extends ElementalItem {
 
     public enum OrbType {
         EAU("water", new Dialog("orb_water_msg"), 0),
-        VITESSE("speed", null, 32),
-        FEU("fire",new Dialog("orb_fire_msg"), 64);
+        VITESSE("speed", new Dialog("orb_speed_msg"), 32),
+        FEU("fire", new Dialog("orb_fire_msg"), 64);
 
         private final String element;
         private final int spriteYDelta;
@@ -55,7 +55,18 @@ public class Orb extends ElementalItem {
 
 
         public void resetDialogue() {
-            this.dialogue = getItem().equals("water") ? new Dialog("orb_water_msg") : new Dialog("orb_fire_msg");
+            switch (getItem()) {
+                case "water":
+                    this.dialogue = new Dialog("orb_water_msg");
+                    break;
+                case "fire":
+                    this.dialogue = new Dialog("orb_fire_msg");
+                    break;
+                case "speed":
+                    this.dialogue = new Dialog("orb_speed_msg");
+                    break;
+            }
+
         }
     }
 

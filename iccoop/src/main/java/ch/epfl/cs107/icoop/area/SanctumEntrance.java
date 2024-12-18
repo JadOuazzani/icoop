@@ -6,12 +6,10 @@ package ch.epfl.cs107.icoop.area;
  *	Date:
  */
 
-import ch.epfl.cs107.icoop.actor.foe.DarkLord;
 import ch.epfl.cs107.icoop.actor.foe.logMonster;
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
-import ch.epfl.cs107.play.engine.actor.Foreground;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.signal.logic.Logic;
@@ -19,6 +17,11 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 import java.util.List;
 
 public class SanctumEntrance extends ICoopArea {
+    private DialogHandler jeu;
+
+    public SanctumEntrance(DialogHandler jeu) {
+        this.jeu = jeu;
+    }
 
 
     @Override
@@ -36,7 +39,7 @@ public class SanctumEntrance extends ICoopArea {
         registerActor(monster5);
         Door door = new Door("Sanctum", Logic.TRUE, List.of(new DiscreteCoordinates(7, 0), new DiscreteCoordinates(8, 0)), this, new DiscreteCoordinates(9, 13), Orientation.DOWN, new DiscreteCoordinates(8, 13), new DiscreteCoordinates(10, 13), new DiscreteCoordinates(11, 13));
         registerActor(door);
-        Orb speedOrb = new Orb(this, Orientation.DOWN, new DiscreteCoordinates(10, 10), Orb.OrbType.VITESSE, null);
+        Orb speedOrb = new Orb(this, Orientation.DOWN, new DiscreteCoordinates(10, 10), Orb.OrbType.VITESSE, jeu);
         registerActor(speedOrb);
     }
 

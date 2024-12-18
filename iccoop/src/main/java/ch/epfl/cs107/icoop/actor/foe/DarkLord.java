@@ -26,9 +26,11 @@ import static ch.epfl.cs107.play.math.Orientation.LEFT;
 
 public class DarkLord extends Foe {
 
+    private float tempsInaction;
+
     private enum darkLordEtat {
-        idle("idle", 2),
-        spell("spell", 3);
+        idle("idle", 1),
+        spell("spell", 2);
 
         private String etat;
         private double speed;
@@ -53,16 +55,20 @@ public class DarkLord extends Foe {
     private float randomFloat;
     private int alternate;
     private ICoopPlayer player;
+    private final static int TIME_TRESHOLD = 50;
+    private Orientation orientation;
 
     public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, int MAX_LIFE) {
         super(area, orientation, position, vulnerabilite, MAX_LIFE);
         etat = darkLordEtat.idle;
+        this.orientation = orientation;
         idleAnimation = new OrientedAnimation("icoop/darkLord", ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, true);
         spellAnimation = new OrientedAnimation("icoop/darkLord.spell", ANIMATION_DURATION / 3, this, anchor, orders, 4, 2, 2, 32, 32, true);
         currentAnimation = idleAnimation;
         handler = new darkLordInteractionHandler();
         randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);
         alternate = 0;
+        tempsInaction = 0;
     }
 
     public void setEtat(darkLordEtat etat) {
@@ -72,7 +78,7 @@ public class DarkLord extends Foe {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (etat == darkLordEtat.spell || isDisplacementOccurs()) {
+        if (darkLordEtat.spell == etat || isDisplacementOccurs()) {
             currentAnimation.update(deltaTime);
         } else {
             currentAnimation.reset();
@@ -89,13 +95,13 @@ public class DarkLord extends Foe {
     private void behavior(float deltaTime) {
         if (etat == darkLordEtat.spell) {
             targetedMoving();
-            Fire flammes1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 15, "icoop/fireproj", "fire");
-            Fire flammes2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 20, "icoop/fireproj", "fire");
-            Fire flammes3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 15, "icoop/fireproj", "fire");
-            Fire flammes4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 15, "icoop/fireproj", "fire");
+            Fire flammes1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 30, "icoop/fireproj", "fire");
+            Fire flammes2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 30, "icoop/fireproj", "fire");
+            Fire flammes3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 30, "icoop/fireproj", "fire");
+            Fire flammes4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 30, "icoop/fireproj", "fire");
             List<Fire> flammes = List.of(flammes1, flammes2, flammes3, flammes4);
-            Fire eau1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 15, "icoop/waterproj", "water");
-            Fire eau2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 20, "icoop/waterproj", "water");
+            Fire eau1 = new Fire(getOwnerArea(), UP, getCurrentMainCellCoordinates().jump(UP.toVector()), 3, 30, "icoop/waterproj", "water");
+            Fire eau2 = new Fire(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(DOWN.toVector()), 3, 30, "icoop/waterproj", "water");
             Fire eau3 = new Fire(getOwnerArea(), LEFT, getCurrentMainCellCoordinates().jump(LEFT.toVector()), 3, 15, "icoop/waterproj", "water");
             Fire eau4 = new Fire(getOwnerArea(), RIGHT, getCurrentMainCellCoordinates().jump(RIGHT.toVector()), 3, 15, "icoop/waterproj", "water");
             List<Fire> eau = List.of(eau1, eau2, eau3, eau4);
@@ -111,6 +117,8 @@ public class DarkLord extends Foe {
                 }
                 alternate++;
             }
+        }else if (etat == darkLordEtat.idle){
+            randomMoving();
         }
     }
 
@@ -143,7 +151,7 @@ public class DarkLord extends Foe {
         if (orientate(newOrientation)) {
             move(getAdjustedSpeed());
         } else {
-            move(ANIMATION_DURATION / 4);
+            move(ANIMATION_DURATION);
         }
 
     }
@@ -177,6 +185,23 @@ public class DarkLord extends Foe {
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
+    }
+
+    private void randomMoving() {
+        if (!isDisplacementOccurs()) {
+            double randDouble = RandomGenerator.getInstance().nextDouble();
+            if (randDouble < 0.4) {
+                orientation = Orientation.fromInt(RandomGenerator.getInstance().nextInt(0, 4));
+                orientate(orientation);
+                setInactionBehavior();
+            }
+            move(getAdjustedSpeed());
+        }
+    }
+
+    private void setInactionBehavior() {
+        tempsInaction = RandomGenerator.getInstance().nextInt(0, TIME_TRESHOLD);
+        resetMotion();
     }
 
 

@@ -440,6 +440,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                     orb.collectBy(ICoopPlayer.this::getItem);
                     setInvulnerable(true);
                 } else if (orb.item().equals("speed")) {
+                    orb.getJeu().publish(orb.getDialog());
                     orb.disparition();
                     setMoveDuration(3);
                 }

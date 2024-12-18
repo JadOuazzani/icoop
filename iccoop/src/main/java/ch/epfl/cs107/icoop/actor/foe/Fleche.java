@@ -63,7 +63,7 @@ public class Fleche extends Projectile {
 
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (isCellInteraction) {
-                player.perteDegats(3, "physique");
+                player.perteDegats(2, "physique");
                 getOwnerArea().unregisterActor(Fleche.this);
 
             }

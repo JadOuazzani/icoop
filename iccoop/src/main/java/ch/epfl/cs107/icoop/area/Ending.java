@@ -7,15 +7,10 @@ package ch.epfl.cs107.icoop.area;
  */
 
 
-import ch.epfl.cs107.icoop.actor.foe.Fleche;
-import ch.epfl.cs107.icoop.actor.object.*;
-import ch.epfl.cs107.icoop.handler.DialogHandler;
-import ch.epfl.cs107.play.engine.actor.Background;
-import ch.epfl.cs107.play.engine.actor.Dialog;
+
 import ch.epfl.cs107.play.engine.actor.Foreground;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
-import ch.epfl.cs107.play.math.Orientation;
-import ch.epfl.cs107.play.signal.logic.Logic;
+
 
 import java.util.List;
 

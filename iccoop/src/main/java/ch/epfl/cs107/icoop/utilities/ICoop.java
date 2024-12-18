@@ -11,8 +11,10 @@ import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
+import ch.epfl.cs107.play.math.Vector;
 import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Keyboard;
+import ch.epfl.cs107.play.window.Mouse;
 import ch.epfl.cs107.play.window.Window;
 
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
@@ -55,7 +57,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         maze = new Maze(this);
         orbWay = new OrbWay(this);
         arena = new Arena();
-        sanctumEntrance = new SanctumEntrance();
+        sanctumEntrance = new SanctumEntrance(this);
         sanctum = new Sanctum();
         Accueil accueil = new Accueil();
         Ending ending = new Ending();
@@ -83,7 +85,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 6; // Index pour "Accueil"
+            areaIndex = 5; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
         }
@@ -101,22 +103,29 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
 
         Keyboard keyboard = getWindow().getKeyboard();
         String currentAreaTitle = getCurrentArea().getTitle();
+        Mouse mouse = getWindow().getMouse();
+
+        // Récupération de la position de la souris dans l'aire courante
+        Vector mousePos = getCurrentArea().getRelativeMousePosition();
+        // mousePos.x et mousePos.y correspondent aux coordonnées dans l'aire, assurez-vous que c'est cohérent
+        // avec l'emplacement où vous dessinez votre bouton.
+
+        boolean isMouseOverStartButton = (mousePos.x >= 8.0f && mousePos.x <= 8.0f + 3.0f) && (mousePos.y >= 2.0f && mousePos.y <= 2.0f + 1.0f);
+        boolean isMouseOverRestartButton = (mousePos.x >= 7.0f && mousePos.x <= 7.0f + 4.0f) && (mousePos.y >= 1.0f && mousePos.y <= 1.0f + 1.0f);
 
         if (currentAreaTitle.equals("Accueil")) {
-            if (keyboard.get(NEXT_DIALOG).isPressed()) {
+            if (isMouseOverStartButton && mouse.getLeftButton().isPressed()) {
                 initArea(areas[0]);
                 super.update(deltaTime);
             }
-        }
-        else if (currentAreaTitle.equals("Ending")) {
-            if (keyboard.get(NEXT_DIALOG).isPressed()) {
+        } else if (currentAreaTitle.equals("Ending")) {
+            if (isMouseOverRestartButton && mouse.getLeftButton().isPressed()) {
                 Coin.setGlobalCoinCounter(0);
                 dialogue = null; // Remettre le dialogue à zéro
                 initArea("Accueil");
                 super.update(deltaTime);
             }
-        }
-        else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
+        } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             // Vérifier le compteur global de pièces
             if (Coin.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
                 initArea("Ending");
