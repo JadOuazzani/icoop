@@ -79,7 +79,6 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         if (super.begin(window, fileSystem)) {
             createAreas();
             musicPlayer = new MusicPlayer();
-//            musicPlayer.play(); // Chemin vers le fichier audio
             areaIndex = 6; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
@@ -98,7 +97,8 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
 
         if (getCurrentArea().getTitle().equals("Accueil")) {
             if (getWindow().getKeyboard().get(KeyBindings.NEXT_DIALOG).isPressed()) {
-                initArea(areas[0]); // Par défaut, "Spawn"
+                initArea(areas[0]);
+                super.update(deltaTime);
             }
         } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
             switchArea();
