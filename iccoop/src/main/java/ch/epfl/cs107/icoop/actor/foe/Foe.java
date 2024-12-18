@@ -58,6 +58,10 @@ Foe extends MovableAreaEntity implements Interactor {
         handler=new FoeInteractionHandler();
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);

@@ -469,6 +469,9 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         public void interactWith(Portail portail, boolean isCellInteraction) {
             if (portail.getSignal().isOn() && isCellInteraction && firsTime) {
                 portail.getJeu().publish(portail.getVictoryDialog());
+                contactPorte = true;
+                joueurPosition = portail.getCoordArrive();
+                areaKey = portail.getAirTransitoire();
                 firsTime = false;
 
 

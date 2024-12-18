@@ -31,7 +31,6 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     private Arena arena;
     private SanctumEntrance sanctumEntrance;
     private Sanctum sanctum;
-    private MusicPlayer musicPlayer;
 
     public void resetGame() {
         ITS_INITIALIZED = false;
@@ -78,7 +77,6 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            musicPlayer = new MusicPlayer();
             areaIndex = 6; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
@@ -164,11 +162,4 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         this.dialogue = dialogue;
     }
 
-    @Override
-    public void end() {
-        if (musicPlayer != null) {
-            musicPlayer.stop();
-        }
-        super.end();
-    }
 }
