@@ -213,30 +213,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
                         bombe.setActiver(true);
                     }
                     break;
-                case FIRE_KEY:
-                    Key firekey = new Key(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()), "fire");
-                    if (getOwnerArea().canEnterAreaCells(firekey, firekey.getCurrentCells())) {
-                        getOwnerArea().registerActor(firekey);
-                        inventory.removePocketItem(ICoopItem.FIRE_KEY, 1);
-                        if (!possess(item)) {
-                            switchItem();
-                        }
-                    }
 
-                    break;
-                case WATER_KEY:
-                    Key waterkey = new Key(getOwnerArea(), DOWN, getCurrentMainCellCoordinates().jump(getOrientation().toVector()), "water");
-                    if (getOwnerArea().canEnterAreaCells(waterkey, waterkey.getCurrentCells())) {
-                        getOwnerArea().registerActor(waterkey);
-                        inventory.removePocketItem(ICoopItem.FIRE_KEY, 1);
-                        if (!possess(item)) {
-                            switchItem();
-                        }
-                    }
-                    break;
-
-
-                default:
+                        default:
                     isAttacking = false;
             }
         }
@@ -467,10 +445,12 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         @Override
         public void interactWith(Key key, boolean isCellInteraction) {
             if (wantsCellInteraction() && isCellInteraction) {
-                key.collectBy(ICoopPlayer.this::getItem);
-                if (key.getItem().equals("water")) {
+
+                if (key.getItem().equals("water")&&ICoopPlayer.this.getItem().equals("water")) {
+                    key.collectBy(ICoopPlayer.this::getItem);
                     inventory.addPocketItem(ICoopItem.WATER_KEY, 1);
-                } else if (key.getItem().equals("fire")) {
+                } else if (key.getItem().equals("fire")&&ICoopPlayer.this.getItem().equals("fire")) {
+                    key.collectBy(ICoopPlayer.this::getItem);
                     inventory.addPocketItem(ICoopItem.FIRE_KEY, 1);
                 }
             }
