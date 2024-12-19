@@ -54,7 +54,7 @@ public class Spawn extends ICoopArea {
         portal = new Portal("SanctumEntrance", new Logic() {
             @Override
             public boolean isOn() {
-                return true;
+                return signalJeu.isOn();
             }
 
             @Override
@@ -78,7 +78,7 @@ public class Spawn extends ICoopArea {
     /**
      * Retrieves the starting positions in the area.
      *
-     * @return (List<DiscreteCoordinates>): A list of starting coordinates.
+     * @return (List < DiscreteCoordinates >): A list of starting coordinates.
      */
     @Override
     public List<DiscreteCoordinates> getStartPositions() {

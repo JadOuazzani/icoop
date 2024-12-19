@@ -67,8 +67,8 @@
 - **Implémentation** : L’orbe est placé dans l’aire `SanctumEntrance`.
 
 ### Nouveaux dialogues
-- **Contexte** : Ajout de dialogues contextuels: 
-l'orb de vitesse et la mort du boss final 
+- **Contexte** : Ajout de dialogues contextuels : 
+l'orb de vitesse `orb_speed_msg` et la mort du boss final `final_boss_dead` 
 - **Implémentation** : Ces dialogues sont activés dans l’aire `SanctumEntrance` et `Sanctum`
 
 ### Compteur de pièces
