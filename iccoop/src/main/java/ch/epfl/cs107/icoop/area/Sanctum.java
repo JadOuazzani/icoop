@@ -2,6 +2,7 @@ package ch.epfl.cs107.icoop.area;
 
 import ch.epfl.cs107.icoop.actor.foe.DarkLord;
 import ch.epfl.cs107.icoop.actor.object.Coin;
+import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
@@ -12,8 +13,18 @@ import java.util.List;
  * The Sanctum class represents a boss area featuring the Dark Lord as the final challenge.
  */
 public class Sanctum extends ICoopArea {
+    private DialogHandler game;// Handler for managing in-game dialogs
     private boolean isRegistered = false;// Tracks if the coin has been registered
     private DarkLord darkLord;// The boss of the area
+
+    /**
+     * Constructor for the Sanctum class.
+     *
+     * @param game (DialogHandler): Handler for in-game dialogs.
+     */
+    public Sanctum(DialogHandler game){
+        this.game = game;
+    }
 
     /**
      * Creates the area by registering its elements, including the Dark Lord.
@@ -21,7 +32,7 @@ public class Sanctum extends ICoopArea {
     @Override
     protected void createArea() {
         registerActor(new Background(this));
-        darkLord = new DarkLord(this, Orientation.DOWN, new DiscreteCoordinates(7, 9), List.of("physical", "fire", "water"), 16);
+        darkLord = new DarkLord(this, Orientation.DOWN, new DiscreteCoordinates(7, 9), List.of("physical", "fire", "water"), 16, game);
         registerActor(darkLord);
     }
 

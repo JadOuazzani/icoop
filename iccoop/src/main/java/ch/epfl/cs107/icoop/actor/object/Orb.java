@@ -44,11 +44,10 @@ import java.util.List;
     /** Animation for the orb's appearance. */
 
     private final Animation animation = new Animation(ANIMATION_DURATION / ANIMATION_FRAMES, sprites);
-    /** Handler for managing in-game dialogues. */
 
+    /** Handler for managing in-game dialogues. */
     private final DialogHandler game;
     /** Dialogue associated with this orb. */
-
     private final Dialog dialog;
 
     /**
