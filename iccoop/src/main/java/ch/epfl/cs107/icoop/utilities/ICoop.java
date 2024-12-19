@@ -151,7 +151,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 4; // Index pour "Accueil"
+            areaIndex = 7; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
         }
@@ -187,7 +187,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
         // avec l'emplacement où vous dessinez votre bouton.
 
         boolean isMouseOverStartButton = (mousePos.x >= 8.0f && mousePos.x <= 8.0f + 4.0f) && (mousePos.y >= 1.5f && mousePos.y <= 1.5f + 2.0f);
-        boolean isMouseOverRestartButton = (mousePos.x >= 7.0f && mousePos.x <= 7.0f + 4.0f) && (mousePos.y >= 1.0f && mousePos.y <= 1.0f + 1.0f);
+        boolean isMouseOverRestartButton = (mousePos.x >= 8.0f && mousePos.x <= 8.0f + 4.0f) && (mousePos.y >= 1.0f && mousePos.y <= 1.0f + 1.0f);
         // Area-specific logic
         if (currentAreaTitle.equals("Starting")) {
             if (isMouseOverStartButton && mouse.getLeftButton().isPressed()) {
