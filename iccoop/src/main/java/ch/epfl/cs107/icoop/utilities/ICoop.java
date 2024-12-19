@@ -98,7 +98,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
         orbWay = new OrbWay(this);
         arena = new Arena();
         sanctumEntrance = new SanctumEntrance(this);
-        sanctum = new Sanctum();
+        sanctum = new Sanctum(this);
         Starting starting = new Starting();
         Ending ending = new Ending();
         addArea(spawn);
@@ -151,7 +151,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 7; // Index pour "Accueil"
+            areaIndex = 5; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
         }

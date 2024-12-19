@@ -7,9 +7,11 @@ package ch.epfl.cs107.icoop.actor.foe;
  */
 
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
+import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.Area;
+import ch.epfl.cs107.play.engine.actor.Dialog;
 import ch.epfl.cs107.play.engine.actor.OrientedAnimation;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
@@ -68,17 +70,26 @@ public class DarkLord extends Foe {
     private final static int TIME_TRESHOLD = 50;
     private Orientation orientation;
     private float inactionTime;
+    /**
+     * Handler for managing in-game dialogues.
+     */
+    private final DialogHandler game;
+    /**
+     * Dialogue associated with this orb.
+     */
+    private Dialog dialog;
 
     /**
      * Constructor for the DarkLord class.
      *
-     * @param area (Area): The area where the DarkLord exists.
-     * @param orientation (Orientation): The initial orientation of the DarkLord.
-     * @param position (DiscreteCoordinates): The initial position of the DarkLord.
+     * @param area          (Area): The area where the DarkLord exists.
+     * @param orientation   (Orientation): The initial orientation of the DarkLord.
+     * @param position      (DiscreteCoordinates): The initial position of the DarkLord.
      * @param vulnerabilite (List<String>): List of vulnerabilities of the DarkLord.
-     * @param MAX_LIFE (int): Maximum health points of the DarkLord.
+     * @param MAX_LIFE      (int): Maximum health points of the DarkLord.
+     * @param game          (DialogHandler): The handler for managing dialogues.
      */
-    public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, int MAX_LIFE) {
+    public DarkLord(Area area, Orientation orientation, DiscreteCoordinates position, List<String> vulnerabilite, int MAX_LIFE, DialogHandler game) {
         super(area, orientation, position, vulnerabilite, MAX_LIFE);
         state = darkLordState.idle;
         this.orientation = orientation;
@@ -89,6 +100,14 @@ public class DarkLord extends Foe {
         randomFloat = RandomGenerator.getInstance().nextFloat(0.5f, 2f);
         alternate = 0;
         inactionTime = 0;
+        this.game = game;
+        resetDialogue();
+        dialog = new Dialog("final_boss_dead");
+    }
+
+
+    private void resetDialogue() {
+        dialog = new Dialog("final_boss_dead");
     }
 
     public void setState(darkLordState state) {
@@ -104,12 +123,15 @@ public class DarkLord extends Foe {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (darkLordState.spell == state || isDisplacementOccurs()) {
+        if (state == darkLordState.spell || isDisplacementOccurs()) {
             currentAnimation.update(deltaTime);
         } else {
             currentAnimation.reset();
         }
         behavior(deltaTime);
+        if (isDead() && deathAnimation.isCompleted()) {
+            getGame().publish(getDialog());
+        }
     }
 
     /**
@@ -120,8 +142,13 @@ public class DarkLord extends Foe {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        currentAnimation.draw(canvas);
+        if (health.isOff()) {
+            deathAnimation.draw(canvas);
+        } else {
+            currentAnimation.draw(canvas);
+        }
     }
+
 
     /**
      * Defines the DarkLord's behavior based on its state:
@@ -155,7 +182,7 @@ public class DarkLord extends Foe {
                 }
                 alternate++;
             }
-        }else if (state == darkLordState.idle){
+        } else if (state == darkLordState.idle) {
             randomMoving();
         }
     }
@@ -245,7 +272,7 @@ public class DarkLord extends Foe {
     /**
      * Retrieves the list of cells currently occupied by the DarkLord.
      *
-     * @return (List<DiscreteCoordinates>): A singleton list containing the current main cell coordinates.
+     * @return (List < DiscreteCoordinates >): A singleton list containing the current main cell coordinates.
      */
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
@@ -279,13 +306,31 @@ public class DarkLord extends Foe {
     /**
      * Interacts with another interactable object.
      *
-     * @param other (Interactable): The object to interact with.
+     * @param other             (Interactable): The object to interact with.
      * @param isCellInteraction (boolean): True if it is a cell interaction.
      */
 
     @Override
     public void interactWith(Interactable other, boolean isCellInteraction) {
         other.acceptInteraction(handler, isCellInteraction);
+    }
+
+    /**
+     * Gets the dialogue handler associated with the DarkLord.
+     *
+     * @return (DialogHandler): The handler for managing dialogues.
+     */
+    public DialogHandler getGame() {
+        return game;
+    }
+
+    /**
+     * Gets the dialogue associated with this DarkLord.
+     *
+     * @return (Dialog): The dialogue of the DarkLord.
+     */
+    public Dialog getDialog() {
+        return dialog;
     }
 
 
@@ -298,7 +343,7 @@ public class DarkLord extends Foe {
          * Handles interaction with a player:
          * if presence of a player, darkLord's state switch to Spell
          *
-         * @param player (ICoopPlayer): The player to interact with.
+         * @param player            (ICoopPlayer): The player to interact with.
          * @param isCellInteraction (boolean): True if it is a cell interaction.
          */
         @Override
