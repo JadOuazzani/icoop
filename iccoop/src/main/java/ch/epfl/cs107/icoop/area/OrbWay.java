@@ -100,7 +100,7 @@ public class OrbWay extends ICoopArea {
                 public boolean isOff() {
                     return firePressurePlate.isOn();
                 }
-            }, ElementalWall.WallType.FEU);
+            }, ElementalWall.WallType.FIRE);
             registerActor(fireWall);
 
             ElementalWall waterWall = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 4 + i), new Logic() {
@@ -113,7 +113,7 @@ public class OrbWay extends ICoopArea {
                 public boolean isOff() {
                     return waterPressurePlate.isOn();
                 }
-            }, ElementalWall.WallType.EAU);
+            }, ElementalWall.WallType.WATER);
             registerActor(waterWall);
 
         }

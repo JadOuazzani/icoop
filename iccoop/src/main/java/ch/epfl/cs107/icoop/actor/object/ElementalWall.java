@@ -56,8 +56,8 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
      */
 
     public enum WallType {
-        EAU("water", "water_wall"),
-        FEU("fire", "fire_wall");
+        WATER("water", "water_wall"),
+        FIRE("fire", "fire_wall");
 
         /** The name of the sprite for this wall type. */
 

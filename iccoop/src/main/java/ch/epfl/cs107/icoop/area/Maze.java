@@ -37,23 +37,23 @@ public class Maze extends ICoopArea {
         registerActor(new Foreground(this));
 
         // Register HellSkull enemies
-        HellSkull hellSkull1 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 33), List.of("physical", "eau"));
+        HellSkull hellSkull1 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 33), List.of("physical", "water"));
         registerActor(hellSkull1);
-        HellSkull hellSkull2 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 31), List.of("physical", "eau"));
+        HellSkull hellSkull2 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 31), List.of("physical", "water"));
         registerActor(hellSkull2);
-        HellSkull hellSkull3 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 29), List.of("physical", "eau"));
+        HellSkull hellSkull3 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 29), List.of("physical", "water"));
         registerActor(hellSkull3);
-        HellSkull hellSkull4 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 27), List.of("physical", "eau"));
+        HellSkull hellSkull4 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 27), List.of("physical", "water"));
         registerActor(hellSkull4);
-        HellSkull hellSkull5 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 25), List.of("physical", "eau"));
+        HellSkull hellSkull5 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 25), List.of("physical", "water"));
         registerActor(hellSkull5);
-        HellSkull hellSkull7 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 32), List.of("physical", "eau"));
+        HellSkull hellSkull7 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 32), List.of("physical", "water"));
         registerActor(hellSkull7);
-        HellSkull hellSkull8 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 30), List.of("physical", "eau"));
+        HellSkull hellSkull8 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 30), List.of("physical", "water"));
         registerActor(hellSkull8);
-        HellSkull hellSkull9 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 28), List.of("physical", "eau"));
+        HellSkull hellSkull9 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 28), List.of("physical", "water"));
         registerActor(hellSkull9);
-        HellSkull hellSkull10 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 26), List.of("physical", "eau"));
+        HellSkull hellSkull10 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 26), List.of("physical", "water"));
         registerActor(hellSkull10);
 
         // Register an explosive object
@@ -83,7 +83,7 @@ public class Maze extends ICoopArea {
             public boolean isOff() {
                 return plate1.isOn();
             }
-        }, ElementalWall.WallType.FEU);
+        }, ElementalWall.WallType.FIRE);
         registerActor(fireWallP1);
 
         ElementalWall fireWallP2 = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(6, 36), new Logic() {
@@ -96,7 +96,7 @@ public class Maze extends ICoopArea {
             public boolean isOff() {
                 return plate1.isOn();
             }
-        }, ElementalWall.WallType.FEU);
+        }, ElementalWall.WallType.FIRE);
         registerActor(fireWallP2);
 
         PressurePlate plate2 = new PressurePlate(this, new DiscreteCoordinates(9, 25), Orientation.DOWN);
@@ -112,26 +112,26 @@ public class Maze extends ICoopArea {
             public boolean isOff() {
                 return plate2.isOn();
             }
-        }, ElementalWall.WallType.FEU);
+        }, ElementalWall.WallType.FIRE);
         registerActor(fireWallP3);
 
-        ElementalWall waterWallactif1 = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(4, 35), Logic.TRUE, ElementalWall.WallType.EAU);
+        ElementalWall waterWallactif1 = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(4, 35), Logic.TRUE, ElementalWall.WallType.WATER);
         registerActor(waterWallactif1);
-        ElementalWall waterWallactif2 = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(4, 36), Logic.TRUE, ElementalWall.WallType.EAU);
+        ElementalWall waterWallactif2 = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(4, 36), Logic.TRUE, ElementalWall.WallType.WATER);
         registerActor(waterWallactif2);
-        ElementalWall waterWallactif3 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(5, 24), Logic.TRUE, ElementalWall.WallType.EAU);
+        ElementalWall waterWallactif3 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(5, 24), Logic.TRUE, ElementalWall.WallType.WATER);
         registerActor(waterWallactif3);
-        ElementalWall waterWallactif4 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(6, 24), Logic.TRUE, ElementalWall.WallType.EAU);
+        ElementalWall waterWallactif4 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(6, 24), Logic.TRUE, ElementalWall.WallType.WATER);
         registerActor(waterWallactif4);
-        ElementalWall waterWallactif5 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(8, 4), Logic.TRUE, ElementalWall.WallType.EAU);
+        ElementalWall waterWallactif5 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(8, 4), Logic.TRUE, ElementalWall.WallType.WATER);
         registerActor(waterWallactif5);
 
 
-        ElementalWall fireWall1 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(2, 34), Logic.TRUE, ElementalWall.WallType.FEU);
+        ElementalWall fireWall1 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(2, 34), Logic.TRUE, ElementalWall.WallType.FIRE);
         registerActor(fireWall1);
-        ElementalWall fireWall2 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(3, 34), Logic.TRUE, ElementalWall.WallType.FEU);
+        ElementalWall fireWall2 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(3, 34), Logic.TRUE, ElementalWall.WallType.FIRE);
         registerActor(fireWall2);
-        ElementalWall fireWall3 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(13, 4), Logic.TRUE, ElementalWall.WallType.FEU);
+        ElementalWall fireWall3 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(13, 4), Logic.TRUE, ElementalWall.WallType.FIRE);
         registerActor(fireWall3);
 
         BombFoe bombFoe1 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 15), List.of("physical", "fire"));
