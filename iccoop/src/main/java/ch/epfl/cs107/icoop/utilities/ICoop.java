@@ -136,13 +136,13 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             }
         } else if (currentAreaTitle.equals("Ending")) {
             if (isMouseOverRestartButton && mouse.getLeftButton().isPressed()) {
-                redPlayer.setGlobalCoinCounter(0);
+                ICoopPlayer.setGlobalCoinCounter(0);
                 dialogue = null;
                 initArea("Starting");
                 super.update(deltaTime);
             }
         } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
-            if (redPlayer.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
+            if (ICoopPlayer.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
                 initArea("Ending");
                 super.update(deltaTime);
             } else {
