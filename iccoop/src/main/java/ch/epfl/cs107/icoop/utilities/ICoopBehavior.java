@@ -11,7 +11,7 @@ import ch.epfl.cs107.icoop.actor.foe.BombFoe;
 import ch.epfl.cs107.icoop.actor.foe.DarkLord;
 import ch.epfl.cs107.icoop.actor.foe.Unstoppable;
 import ch.epfl.cs107.icoop.actor.object.ElementalWall;
-import ch.epfl.cs107.icoop.actor.object.Explosif;
+import ch.epfl.cs107.icoop.actor.object.Explosive;
 import ch.epfl.cs107.icoop.actor.object.Obstacle;
 import ch.epfl.cs107.icoop.actor.object.Rochers;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
@@ -127,7 +127,7 @@ public class ICoopBehavior extends AreaBehavior {
             }
 
             for (Interactable other : entities) {
-                if (entity instanceof Explosif || entity instanceof BombFoe || entity instanceof DarkLord) {
+                if (entity instanceof Explosive || entity instanceof BombFoe || entity instanceof DarkLord) {
                     return false;
                 }
                 if (other.takeCellSpace()) {

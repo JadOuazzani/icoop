@@ -22,7 +22,7 @@ public abstract class ElementalItem extends ICoopCollectable implements Elementa
 
     public void collectBy(ElementalEntity item) {
         if (getItem().equals(item.item())) {
-            disparition();
+            disappears();
         }
     }
 

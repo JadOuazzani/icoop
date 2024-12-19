@@ -65,7 +65,7 @@ public class Heart extends ICoopCollectable implements Interactor {
     public void update(float deltaTime) {
         animation.update(deltaTime);
         if (isCollected()) {
-            disparition();
+            disappears();
         }
     }
 

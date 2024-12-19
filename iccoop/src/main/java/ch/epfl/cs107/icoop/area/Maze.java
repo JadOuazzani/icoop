@@ -45,8 +45,8 @@ public class Maze extends ICoopArea {
         HellSkull hellSkull10 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 26), List.of("physique", "eau"));
         registerActor(hellSkull10);
 
-        Explosif explosif = new Explosif(this, Orientation.DOWN, new DiscreteCoordinates(6, 25));
-        registerActor(explosif);
+        Explosive explosive = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(6, 25));
+        registerActor(explosive);
 
         Heart coeur1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(15, 18));
         registerActor(coeur1);

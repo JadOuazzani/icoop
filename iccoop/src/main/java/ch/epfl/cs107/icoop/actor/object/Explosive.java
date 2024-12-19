@@ -21,7 +21,7 @@ import ch.epfl.cs107.play.window.Canvas;
 import java.util.Collections;
 import java.util.List;
 
-public class Explosif extends ICoopCollectable implements Interactor {
+public class Explosive extends ICoopCollectable implements Interactor {
     private float retardateur;
     private boolean activer;
     private boolean etatExplosion;
@@ -30,7 +30,7 @@ public class Explosif extends ICoopCollectable implements Interactor {
     private final ExplosifInteractionHandler handler;
     private static final int DEGATS_PERDUE = 2;
 
-    public Explosif(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Explosive(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         retardateur = 2f;
         activer = false;
@@ -130,7 +130,7 @@ public class Explosif extends ICoopCollectable implements Interactor {
         @Override
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (!isCellInteraction) {
-                player.perteDegats(DEGATS_PERDUE, "physique");
+                player.looseHp(DEGATS_PERDUE, "physique");
             }
         }
 
@@ -142,9 +142,9 @@ public class Explosif extends ICoopCollectable implements Interactor {
         }
 
         @Override
-        public void interactWith(Explosif explosif, boolean isCellInteraction) {
+        public void interactWith(Explosive explosive, boolean isCellInteraction) {
             if (!isCellInteraction) {
-                explosif.setRetardateur(0);
+                explosive.setRetardateur(0);
             }
         }
 

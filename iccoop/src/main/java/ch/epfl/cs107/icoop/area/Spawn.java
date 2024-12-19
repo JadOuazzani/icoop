@@ -7,7 +7,6 @@ package ch.epfl.cs107.icoop.area;
  */
 
 
-import ch.epfl.cs107.icoop.actor.foe.Fleche;
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
@@ -47,12 +46,12 @@ public class Spawn extends ICoopArea {
 
         Door door = new Door("OrbWay", Logic.TRUE, List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5)), this, new DiscreteCoordinates(19, 15), Orientation.DOWN, new DiscreteCoordinates(19, 16));
         registerActor(door);
-        Explosif explosif1 = new Explosif(this, Orientation.DOWN, new DiscreteCoordinates(11, 10));
-        registerActor(explosif1);
-        Explosif explosif2 = new Explosif(this, Orientation.DOWN, new DiscreteCoordinates(6, 7));
-        registerActor(explosif2);
-        Explosif explosif3 = new Explosif(this, Orientation.DOWN, new DiscreteCoordinates(14, 4));
-        registerActor(explosif3);
+        Explosive explosive1 = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(11, 10));
+        registerActor(explosive1);
+        Explosive explosive2 = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(6, 7));
+        registerActor(explosive2);
+        Explosive explosive3 = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(14, 4));
+        registerActor(explosive3);
         Rochers rochers = new Rochers(this, Orientation.DOWN, new DiscreteCoordinates(10, 10));
         registerActor(rochers);
         Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));

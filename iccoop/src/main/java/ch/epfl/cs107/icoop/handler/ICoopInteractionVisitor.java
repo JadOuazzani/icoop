@@ -16,7 +16,7 @@ public interface ICoopInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(ICoopBehavior.ICoopCell cell, boolean isCellInteraction) {}
     default void interactWith(Obstacle obstacle, boolean isCellInteraction){}
     default void interactWith(Rochers rochers, boolean isCellInteraction){}
-    default void interactWith(Explosif explosif, boolean isCellInteraction){}
+    default void interactWith(Explosive explosive, boolean isCellInteraction){}
     default void interactWith(Orb orb, boolean isCellInteraction){};
     default void interactWith(ElementalWall wall, boolean isCellInteraction){};
     default void interactWith(Heart heart, boolean isCellInteraction){}
@@ -29,6 +29,6 @@ public interface ICoopInteractionVisitor extends AreaInteractionVisitor {
     default void interactWith(WaterBall waterBall, boolean isCellInteraction) {}
     default void interactWith(Key key, boolean isCellInteraction){}
     default void interactWith(Portail portail, boolean isCellInteraction) {}
-    default void interactWith(Fleche fleche, boolean isCellInteraction) {}
+    default void interactWith(Arrow arrow, boolean isCellInteraction) {}
     default void interactWith(Coin coins,boolean isCellInteraction){}
 }

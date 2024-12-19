@@ -17,7 +17,7 @@ public abstract class ICoopCollectable extends CollectableAreaEntity {
         super(area, orientation, position);
     }
 
-    public void disparition() {
+    public void disappears() {
         this.collect();
         if (this.isCollected()) {
             this.getOwnerArea().unregisterActor(this);

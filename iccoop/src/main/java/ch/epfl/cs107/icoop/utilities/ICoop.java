@@ -1,14 +1,11 @@
 package ch.epfl.cs107.icoop.utilities;
 
-import ch.epfl.cs107.icoop.actor.object.Coin;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.icoop.handler.ICoopPlayerStatusGUI;
-import ch.epfl.cs107.icoop.handler.MusicPlayer;
 import ch.epfl.cs107.play.areagame.AreaGame;
 import ch.epfl.cs107.play.engine.actor.Dialog;
-import ch.epfl.cs107.play.engine.actor.TextGraphics;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
@@ -17,8 +14,6 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Mouse;
 import ch.epfl.cs107.play.window.Window;
-
-import java.awt.*;
 
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
@@ -184,14 +179,14 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     }
 
     private void switchArea() {
-        ICoopPlayer contactPlayer = redPlayer.isContactPorte() ? redPlayer : bluePlayer;
-        ICoopPlayer nonContactPlayer = !redPlayer.isContactPorte() ? redPlayer : bluePlayer;
-        if (contactPlayer.isContactPorte()) {
+        ICoopPlayer contactPlayer = redPlayer.isDoorInContact() ? redPlayer : bluePlayer;
+        ICoopPlayer nonContactPlayer = !redPlayer.isDoorInContact() ? redPlayer : bluePlayer;
+        if (contactPlayer.isDoorInContact()) {
             contactPlayer.leaveArea();
             nonContactPlayer.leaveArea();
             setCurrentArea(contactPlayer.getAreaKey(), false);
-            redPlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().getFirst());
-            bluePlayer.enterArea(getCurrentArea(), contactPlayer.getJoueurPosition().get(1));
+            redPlayer.enterArea(getCurrentArea(), contactPlayer.getPlayerPosition().getFirst());
+            bluePlayer.enterArea(getCurrentArea(), contactPlayer.getPlayerPosition().get(1));
         }
     }
 

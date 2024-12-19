@@ -128,7 +128,7 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             setTakeCellSpace(!player.getItem().equals(item) && actif.isOn());
             if (isCellInteraction && actif.isOn()) {
-                player.perteDegats(1, item);
+                player.looseHp(1, item);
             }
         }
     }
