@@ -121,9 +121,9 @@ public class Explosive extends ICoopCollectable implements Interactor {
     private class ExplosifInteractionHandler implements ICoopInteractionVisitor {
 
         @Override
-        public void interactWith(Rochers rochers, boolean isCellInteraction) {
+        public void interactWith(Rock rock, boolean isCellInteraction) {
             if (!isCellInteraction) {
-                rochers.setDetruit(true);
+                rock.setDestroyed(true);
             }
         }
 
@@ -137,7 +137,7 @@ public class Explosive extends ICoopCollectable implements Interactor {
         @Override
         public void interactWith(ElementalWall wall, boolean isCellInteraction) {
             if (!isCellInteraction) {
-                wall.setDetruit(true);
+                wall.setDestroyed(true);
             }
         }
 

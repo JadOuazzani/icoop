@@ -20,7 +20,7 @@ import static java.awt.ComponentOrientation.getOrientation;
 public class Spawn extends ICoopArea {
     private DialogHandler jeu;// Handler for managing in-game dialogs
     private Dialog welcome = new Dialog("Welcome");
-    private Portail portail;// Welcome dialog displayed to players
+    private Portal portal;// Welcome dialog displayed to players
     private Logic signalJeu; // Signal controlling the state of the game
 
     public Spawn(DialogHandler jeu, Logic signalJeu) {
@@ -47,11 +47,11 @@ public class Spawn extends ICoopArea {
         registerActor(explosive2);
         Explosive explosive3 = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(14, 4));
         registerActor(explosive3);
-        Rochers rochers = new Rochers(this, Orientation.DOWN, new DiscreteCoordinates(10, 10));
+        Rock rochers = new Rock(this, Orientation.DOWN, new DiscreteCoordinates(10, 10));
         registerActor(rochers);
         Door door2 = new Door("Maze", Logic.TRUE, List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39)), this, new DiscreteCoordinates(4, 0), Orientation.DOWN, new DiscreteCoordinates(5, 0));
         registerActor(door2);
-        portail = new Portail("SanctumEntrance", new Logic() {
+        portal = new Portal("SanctumEntrance", new Logic() {
             @Override
             public boolean isOn() {
                 return true;
@@ -62,7 +62,7 @@ public class Spawn extends ICoopArea {
                 return signalJeu.isOff();
             }
         }, List.of(new DiscreteCoordinates(2, 1), new DiscreteCoordinates(2, 2)), this, new DiscreteCoordinates(6, 11), Orientation.DOWN, jeu);
-        registerActor(portail);
+        registerActor(portal);
     }
 
     /**

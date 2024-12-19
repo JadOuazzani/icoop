@@ -1,7 +1,7 @@
 package ch.epfl.cs107.icoop.actor.foe;
 
 import ch.epfl.cs107.icoop.actor.object.Explosive;
-import ch.epfl.cs107.icoop.actor.object.Rochers;
+import ch.epfl.cs107.icoop.actor.object.Rock;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
 import ch.epfl.cs107.play.areagame.actor.Interactable;
 import ch.epfl.cs107.play.areagame.area.Area;
@@ -146,9 +146,9 @@ public class FireBall extends Projectile{
          * @param rochers (Rochers): The rock to interact with.
          * @param isCellInteraction (boolean): True if the interaction occurs at the cell level.
          */
-        public void interactWith(Rochers rochers, boolean isCellInteraction) {
+        public void interactWith(Rock rocks, boolean isCellInteraction) {
             if (isCellInteraction) {
-                rochers.setDetruit(true);
+                rocks.setDestroyed(true);
                 getOwnerArea().unregisterActor(FireBall.this);
             }
         }

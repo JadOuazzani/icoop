@@ -558,8 +558,8 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         public void interactWith(Door door, boolean isCellInteraction) {
             if (door.getSignal().isOn()) {
                 isDoorInContact = true;
-                playerPosition = door.getCoordArrive();
-                areaKey = door.getAirTransitoire();
+                playerPosition = door.getArrivalCoords();
+                areaKey = door.getTransitoryArea();
             }
         }
 
@@ -630,11 +630,11 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         public void interactWith(Orb orb, boolean isCellInteraction) {
             if (isCellInteraction) {
                 if (orb.item().equals("water") || orb.item().equals("fire")) {
-                    orb.getJeu().publish(orb.getDialog());
+                    orb.getGame().publish(orb.getDialog());
                     orb.collectBy(ICoopPlayer.this::getItem);
                     setInvulnerable(true);
                 } else if (orb.item().equals("speed")) {
-                    orb.getJeu().publish(orb.getDialog());
+                    orb.getGame().publish(orb.getDialog());
                     orb.disappears();
                     setMoveDuration(3);
                 }
@@ -680,24 +680,24 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         /**
          * Handles interaction with a Portail object.
          *
-         * @param portail           (Portail): The portal to interact with.
+         * @param portal           (Portail): The portal to interact with.
          * @param isCellInteraction (boolean): True if it is a cell interaction.
          */
         @Override
-        public void interactWith(Portail portail, boolean isCellInteraction) {
-            if (portail.getSignal().isOn() && isCellInteraction && firsTime) {
-                portail.getJeu().publish(portail.getVictoryDialog());
+        public void interactWith(Portal portal, boolean isCellInteraction) {
+            if (portal.getSignal().isOn() && isCellInteraction && firsTime) {
+                portal.getGame().publish(portal.getVictoryDialog());
                 isDoorInContact = true;
-                playerPosition = portail.getCoordArrive();
-                areaKey = portail.getAirTransitoire();
+                playerPosition = portal.getArrivalCoords();
+                areaKey = portal.getTransitoryArea();
                 firsTime = false;
 
 
-            } else if (portail.getSignal().isOff() && isCellInteraction && firsTime) {
-                portail.getJeu().publish(portail.getRequiredDialog());
+            } else if (portal.getSignal().isOff() && isCellInteraction && firsTime) {
+                portal.getGame().publish(portal.getRequiredDialog());
                 firsTime = false;
             }
-            manoirPortailCoord = portail.getCurrentMainCellCoordinates();
+            manoirPortailCoord = portal.getCurrentMainCellCoordinates();
         }
     }
 

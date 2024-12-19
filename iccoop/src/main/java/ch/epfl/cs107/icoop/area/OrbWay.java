@@ -70,9 +70,9 @@ public class OrbWay extends ICoopArea {
                 Orientation.DOWN,
                 new DiscreteCoordinates(0, 7), new DiscreteCoordinates(0, 6), new DiscreteCoordinates(0, 5), new DiscreteCoordinates(0, 4));
         registerActor(door2);
-        fireOrb1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FEU, game);
+        fireOrb1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FIRE, game);
         registerActor(fireOrb1);
-        waterOrb1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, game);
+        waterOrb1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.WATER, game);
         registerActor(waterOrb1);
 
         Heart heart1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));

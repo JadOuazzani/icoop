@@ -13,7 +13,7 @@ import ch.epfl.cs107.icoop.actor.foe.Unstoppable;
 import ch.epfl.cs107.icoop.actor.object.ElementalWall;
 import ch.epfl.cs107.icoop.actor.object.Explosive;
 import ch.epfl.cs107.icoop.actor.object.Obstacle;
-import ch.epfl.cs107.icoop.actor.object.Rochers;
+import ch.epfl.cs107.icoop.actor.object.Rock;
 import ch.epfl.cs107.icoop.actor.perso.ICoopPlayer;
 import ch.epfl.cs107.icoop.area.ICoopArea;
 import ch.epfl.cs107.icoop.handler.ICoopInteractionVisitor;
@@ -24,7 +24,22 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Orientation;
 import ch.epfl.cs107.play.window.Window;
 
-public class ICoopBehavior extends AreaBehavior {
+/**
+ * ICoopBehavior defines the behavior of an area in the ICoop game.
+ *
+ * <p>This class extends `AreaBehavior` and uses a grid-based system to define the properties
+ * and behaviors of cells within the area. It also supports the creation of actors (e.g., rocks, obstacles)
+ * based on cell types.</p>
+ */
+
+ public class ICoopBehavior extends AreaBehavior {
+
+    /**
+     * Constructor for the ICoopBehavior.
+     *
+     * @param window (Window): The window used to load the area image.
+     * @param name   (String): The name of the area behavior to be loaded.
+     */
 
     public ICoopBehavior(Window window, String name) {
         super(window, name);
@@ -38,6 +53,11 @@ public class ICoopBehavior extends AreaBehavior {
         }
     }
 
+    /**
+     * Enumeration of cell types in the ICoop game.
+     *
+     * <p>Each cell type defines properties such as whether it can be walked on or flown over.</p>
+     */
 
     public enum ICoopCellType {
         NULL(0, false, false),
@@ -53,13 +73,24 @@ public class ICoopBehavior extends AreaBehavior {
         final boolean canWalk;
         final boolean canFly;
 
-
+        /**
+         * Constructor for ICoopCellType.
+         *
+         * @param type    (int): The RGB value associated with the cell type.
+         * @param canWalk (boolean): True if the cell can be walked on, false otherwise.
+         * @param canFly  (boolean): True if the cell can be flown over, false otherwise.
+         */
         ICoopCellType(int type, boolean canWalk, boolean canFly) {
             this.type = type;
             this.canWalk = canWalk;
             this.canFly = canFly;
         }
-
+        /**
+         * Converts an RGB value to the corresponding cell type.
+         *
+         * @param type (int): The RGB value of the cell.
+         * @return (ICoopCellType): The corresponding cell type.
+         */
         public static ICoopCellType toType(int type) {
             for (ICoopCellType ict : ICoopCellType.values()) {
                 if (ict.type == type)
@@ -72,14 +103,18 @@ public class ICoopBehavior extends AreaBehavior {
 
 
     }
-
+    /**
+     * Creates actors in the specified area based on cell types.
+     *
+     * @param area (ICoopArea): The area in which to create actors.
+     */
     public void createYourActors(ICoopArea area) {
         if (area.getTitle().equals("Arena")) {
             for (int i = 0; i < area.getHeight(); i++) {
                 for (int j = 0; j < area.getWidth(); j++) {
                     ICoopCell cell = (ICoopCell) (getCell(i, j));
                     if (cell.type == ICoopCellType.ROCK) {
-                        Rochers rock = new Rochers(area, Orientation.DOWN , new DiscreteCoordinates(i, j));
+                        Rock rock = new Rock(area, Orientation.DOWN , new DiscreteCoordinates(i, j));
                         area.registerActor(rock);
                     }
 
@@ -93,6 +128,12 @@ public class ICoopBehavior extends AreaBehavior {
         }
 
     }
+
+    /**
+     * ICoopCell represents an individual cell in the ICoop game's grid.
+     *
+     * <p>Each cell has properties defined by its type and determines the behavior of entities entering or leaving it.</p>
+     */
 
     public class ICoopCell extends AreaBehavior.Cell {
         /// Type of the cell following the enum
@@ -112,11 +153,23 @@ public class ICoopBehavior extends AreaBehavior {
         }
 
         @Override
+        /**
+         * Determines whether an entity can leave this cell.
+         *
+         * @param entity (Interactable): The entity attempting to leave.
+         * @return (boolean): Always returns true in this implementation.
+         */
         protected boolean canLeave(Interactable entity) {
             return true;
         }
 
         @Override
+        /**
+         * Determines whether an entity can enter this cell.
+         *
+         * @param entity (Interactable): The entity attempting to enter.
+         * @return (boolean): True if the entity is allowed to enter, false otherwise.
+         */
         protected boolean canEnter(Interactable entity) {
 
             if (entity instanceof Unstoppable) {

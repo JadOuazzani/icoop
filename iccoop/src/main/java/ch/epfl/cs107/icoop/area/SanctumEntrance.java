@@ -47,7 +47,7 @@ public class SanctumEntrance extends ICoopArea {
         Door door = new Door("Sanctum", Logic.TRUE, List.of(new DiscreteCoordinates(7, 0), new DiscreteCoordinates(8, 0)), this,
                 new DiscreteCoordinates(9, 13), Orientation.DOWN, new DiscreteCoordinates(8, 13), new DiscreteCoordinates(10, 13), new DiscreteCoordinates(11, 13));
         registerActor(door);
-        Orb speedOrb = new Orb(this, Orientation.DOWN, new DiscreteCoordinates(10, 10), Orb.OrbType.VITESSE, game);
+        Orb speedOrb = new Orb(this, Orientation.DOWN, new DiscreteCoordinates(10, 10), Orb.OrbType.SPEED, game);
         registerActor(speedOrb);
     }
 

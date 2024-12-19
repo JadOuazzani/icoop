@@ -15,13 +15,25 @@ import java.awt.*;
  * A GUI that shows information about the player on the screen.
  */
 public class ICoopPlayerStatusGUI implements Graphics {
+    /** Rendering depth for the GUI elements. */
 
     private final static int DEPTH = 2000;
+    /** The player whose status is being displayed. */
+
     private final ICoopPlayer player;
+    /** Indicates whether the GUI should be flipped for screen layout. */
+
     private final boolean flipped;
+    /** The name of the sprite representing the player's currently selected item. */
+
     private String sprite_name;
 
-
+    /**
+     * Constructor for the ICoopPlayerStatusGUI.
+     *
+     * @param player  (ICoopPlayer): The player whose status will be displayed.
+     * @param flipped (boolean): True if the GUI should be flipped, false otherwise.
+     */
     public ICoopPlayerStatusGUI(ICoopPlayer player, boolean flipped) {
         this.player = player;
         this.flipped = flipped;
@@ -29,6 +41,11 @@ public class ICoopPlayerStatusGUI implements Graphics {
     }
 
     @Override
+    /**
+     * Draws the player's status on the canvas, including selected gear and total coins.
+     *
+     * @param canvas (Canvas): The canvas on which to draw the GUI.
+     */
     public void draw(Canvas canvas) {
         // Compute width, height and anchor
         float width = canvas.getTransform().getX().getX();
@@ -49,6 +66,8 @@ public class ICoopPlayerStatusGUI implements Graphics {
         gearDisplay.draw(canvas);
         ImageGraphics currentItem = new ImageGraphics(ResourcePath.getSprite(sprite_name), 0.5f, 0.5f, new RegionOfInterest(0, 0, 16, 16), anchor.add(new Vector(0.5f, height - 1.25f)), 1, DEPTH);
         currentItem.draw(canvas);
+        // Draw total coin count
+
         TextGraphics coinText = new TextGraphics("    "+Integer.toString(player.getGlobalCoinCount()), 0.5f, Color.YELLOW);
         coinText.setFontName("Dragonfly");
         coinText.setFontSize(1.1f);
