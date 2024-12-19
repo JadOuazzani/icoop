@@ -124,7 +124,7 @@ public class ElementalWall extends Obstacle implements ElementalEntity, Interact
      * @return (Logic): The logic controlling the wall's activation.
      */
 
-    public Logic getActif() {
+    public Logic getActive() {
         return active;
     }
 

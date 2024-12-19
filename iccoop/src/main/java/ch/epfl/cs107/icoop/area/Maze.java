@@ -134,13 +134,13 @@ public class Maze extends ICoopArea {
         ElementalWall fireWall3 = new ElementalWall(this, Orientation.DOWN, new DiscreteCoordinates(13, 4), Logic.TRUE, ElementalWall.WallType.FEU);
         registerActor(fireWall3);
 
-        BombFoe bombFoe1 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 15), List.of("physique", "feu"));
+        BombFoe bombFoe1 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 15), List.of("physical", "fire"));
         registerActor(bombFoe1);
-        BombFoe bombFoe2 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(6, 17), List.of("physique", "feu"));
+        BombFoe bombFoe2 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(6, 17), List.of("physical", "fire"));
         registerActor(bombFoe2);
-        BombFoe bombFoe3 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(10, 17), List.of("physique", "feu"));
+        BombFoe bombFoe3 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(10, 17), List.of("physical", "fire"));
         registerActor(bombFoe3);
-        BombFoe bombFoe4 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 14), List.of("physique", "feu"));
+        BombFoe bombFoe4 = new BombFoe(this, Orientation.DOWN, new DiscreteCoordinates(5, 14), List.of("physical", "fire"));
         registerActor(bombFoe4);
 
         Door doorArena = new Door("Arena", Logic.TRUE, List.of(new DiscreteCoordinates(4, 5), new DiscreteCoordinates(14, 15)), this, new DiscreteCoordinates(19, 6), Orientation.DOWN, new DiscreteCoordinates(19, 7));

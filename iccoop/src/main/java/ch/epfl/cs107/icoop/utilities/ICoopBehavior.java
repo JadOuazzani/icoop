@@ -190,7 +190,7 @@ import ch.epfl.cs107.play.window.Window;
                 if (other instanceof ElementalWall && entity instanceof ICoopPlayer) {
                     String itemPlayer = ((ICoopPlayer) entity).getItem();
                     String itemWall = ((ElementalWall) other).item();
-                    return itemWall.equals(itemPlayer) || ((ElementalWall) other).getActif().isOff();
+                    return itemWall.equals(itemPlayer) || ((ElementalWall) other).getActive().isOff();
                 }
             }
 
