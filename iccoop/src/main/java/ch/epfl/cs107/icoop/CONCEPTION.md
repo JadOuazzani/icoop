@@ -67,8 +67,9 @@
 - **Implémentation** : L’orbe est placé dans l’aire `SanctumEntrance`.
 
 ### Nouveaux dialogues
-- **Contexte** : Ajout de dialogues contextuels, notamment lors de la récupération de l’orbe.
-- **Implémentation** : Ces dialogues sont activés dans l’aire `SanctumEntrance`.
+- **Contexte** : Ajout de dialogues contextuels: 
+l'orb de vitesse et la mort du boss final 
+- **Implémentation** : Ces dialogues sont activés dans l’aire `SanctumEntrance` et `Sanctum`
 
 ### Compteur de pièces
 - **Contexte** : Permet au joueur de suivre les pièces collectées.
