@@ -18,7 +18,7 @@ import ch.epfl.cs107.play.window.Window;
 import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
 
 public class ICoop extends AreaGame implements DialogHandler, Logic {
-    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Arena", "SanctumEntrance", "Sanctum", "Accueil", "Ending"};
+    private final String[] areas = {"Spawn", "OrbWay", "Maze", "Arena", "SanctumEntrance", "Sanctum", "Starting", "Ending"};
     private int areaIndex;
     private ICoopPlayer bluePlayer;
     private ICoopPlayer redPlayer;
@@ -112,7 +112,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         boolean isMouseOverStartButton = (mousePos.x >= 8.0f && mousePos.x <= 8.0f + 3.0f) && (mousePos.y >= 2.0f && mousePos.y <= 2.0f + 1.0f);
         boolean isMouseOverRestartButton = (mousePos.x >= 7.0f && mousePos.x <= 7.0f + 4.0f) && (mousePos.y >= 1.0f && mousePos.y <= 1.0f + 1.0f);
 
-        if (currentAreaTitle.equals("Accueil")) {
+        if (currentAreaTitle.equals("Starting")) {
             if (isMouseOverStartButton && mouse.getLeftButton().isPressed()) {
                 initArea(areas[0]);
                 super.update(deltaTime);
@@ -121,7 +121,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
             if (isMouseOverRestartButton && mouse.getLeftButton().isPressed()) {
                 redPlayer.setGlobalCoinCounter(0);
                 dialogue = null; // Remettre le dialogue à zéro
-                initArea("Accueil");
+                initArea("Starting");
                 super.update(deltaTime);
             }
         } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
@@ -155,7 +155,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         }
 
         // N'affiche l'inventaire que si on n'est ni dans Accueil, ni dans Ending
-        if (!currentAreaTitle.equals("Accueil") && !currentAreaTitle.equals("Ending")) {
+        if (!currentAreaTitle.equals("Starting") && !currentAreaTitle.equals("Ending")) {
             blueStatusGUI.draw(getWindow());
             redStatusGUI.draw(getWindow());
         }
