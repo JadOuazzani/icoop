@@ -27,14 +27,15 @@
 - **Objectif** :
   Modélise différentes zones du jeu, chacune ayant des objets et des caractéristiques spécifiques.
 
-## Interfaces
-
 ### Gestion des coeurs
 - **Description** : Les coeurs ne sont récupérables que si la vie du joueur n’est pas pleine, rendant leur gestion plus stratégique.ps: SanctumEntrance Behavior a du être redéssiné car mauvais Behavior fourni.
 
 ### Compteur de pièces global
 - **Description** : Ajout d’un compteur global pour suivre les pièces collectées.
 - **Modifications** : La classe `ICoopPlayer` a été modifiée pour inclure un attribut dédié et une méthode d’incrémentation.
+
+### Retardateur de l'explosif 
+- **int en float** : Nous avons fait le choix d'attribuer au retardateur un type float à la place d'un int car le délai doit être exprimé avec une précision supérieure à l'unité entière. 
 
 ## Extensions Ajoutées
 
