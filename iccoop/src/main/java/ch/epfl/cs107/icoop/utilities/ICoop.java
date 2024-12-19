@@ -64,7 +64,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
      */
     public void resetGame() {
         ITS_INITIALIZED = false;
-        redPlayer.setGlobalCoinCounter(0); // Réinitialise le compteur de pièces
+        ICoopPlayer.setGlobalCoinCounter(0); // Réinitialise le compteur de pièces
         dialogue = null; // Remet à zéro les dialogues
         begin(getWindow(), getFileSystem());
     }
