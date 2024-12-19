@@ -58,7 +58,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         arena = new Arena();
         sanctumEntrance = new SanctumEntrance(this);
         sanctum = new Sanctum();
-        Accueil accueil = new Accueil();
+        Starting starting = new Starting();
         Ending ending = new Ending();
         addArea(spawn);
         addArea(orbWay);
@@ -66,7 +66,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         addArea(arena);
         addArea(sanctumEntrance);
         addArea(sanctum);
-        addArea(accueil);
+        addArea(starting);
         addArea(ending);
     }
 

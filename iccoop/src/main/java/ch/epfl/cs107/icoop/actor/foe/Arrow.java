@@ -118,7 +118,7 @@ public class Arrow extends Projectile {
          */
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (isCellInteraction) {
-                player.looseHp(2, "physique");
+                player.looseHp(2, "physical");
                 getOwnerArea().unregisterActor(Arrow.this);
 
             }
@@ -150,7 +150,7 @@ public class Arrow extends Projectile {
         @Override
         public void interactWith(Foe foe, boolean isCellInteraction) {
             if (isCellInteraction) {
-                foe.looseHp(1, "physique");
+                foe.looseHp(1, "physical");
                 getOwnerArea().unregisterActor(Arrow.this);
             }
         }

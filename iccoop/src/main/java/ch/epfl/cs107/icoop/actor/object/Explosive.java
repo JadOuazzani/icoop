@@ -130,7 +130,7 @@ public class Explosive extends ICoopCollectable implements Interactor {
         @Override
         public void interactWith(ICoopPlayer player, boolean isCellInteraction) {
             if (!isCellInteraction) {
-                player.looseHp(DEGATS_PERDUE, "physique");
+                player.looseHp(DEGATS_PERDUE, "physical");
             }
         }
 

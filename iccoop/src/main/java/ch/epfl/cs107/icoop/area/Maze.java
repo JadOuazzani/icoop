@@ -12,39 +12,51 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 
 import java.util.List;
 
+/**
+ * Maze class represents an area in the game featuring various actors like enemies and objects.
+ */
 public class Maze extends ICoopArea {
-    private DialogHandler jeu;
+    private DialogHandler game;
     private Staff waterStaff;
     private Staff fireStaff;
 
-
-    public Maze(DialogHandler jeu) {
-        this.jeu = jeu;
+    /**
+     * Constructor for the Maze class.
+     *
+     * @param game (DialogHandler): The dialog handler for this area.
+     */
+    public Maze(DialogHandler game) {
+        this.game = game;
     }
 
-
+    /**
+     * Creates and registers all actors in the maze area.
+     */
     protected void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));
-        HellSkull hellSkull1 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 33), List.of("physique", "eau"));
+
+        // Register HellSkull enemies
+        HellSkull hellSkull1 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 33), List.of("physical", "eau"));
         registerActor(hellSkull1);
-        HellSkull hellSkull2 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 31), List.of("physique", "eau"));
+        HellSkull hellSkull2 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 31), List.of("physical", "eau"));
         registerActor(hellSkull2);
-        HellSkull hellSkull3 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 29), List.of("physique", "eau"));
+        HellSkull hellSkull3 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 29), List.of("physical", "eau"));
         registerActor(hellSkull3);
-        HellSkull hellSkull4 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 27), List.of("physique", "eau"));
+        HellSkull hellSkull4 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 27), List.of("physical", "eau"));
         registerActor(hellSkull4);
-        HellSkull hellSkull5 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 25), List.of("physique", "eau"));
+        HellSkull hellSkull5 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(12, 25), List.of("physical", "eau"));
         registerActor(hellSkull5);
-        HellSkull hellSkull7 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 32), List.of("physique", "eau"));
+        HellSkull hellSkull7 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 32), List.of("physical", "eau"));
         registerActor(hellSkull7);
-        HellSkull hellSkull8 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 30), List.of("physique", "eau"));
+        HellSkull hellSkull8 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 30), List.of("physical", "eau"));
         registerActor(hellSkull8);
-        HellSkull hellSkull9 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 28), List.of("physique", "eau"));
+        HellSkull hellSkull9 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 28), List.of("physical", "eau"));
         registerActor(hellSkull9);
-        HellSkull hellSkull10 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 26), List.of("physique", "eau"));
+        HellSkull hellSkull10 = new HellSkull(this, Orientation.RIGHT, new DiscreteCoordinates(10, 26), List.of("physical", "eau"));
         registerActor(hellSkull10);
 
+        // Register an explosive object
         Explosive explosive = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(6, 25));
         registerActor(explosive);
 
@@ -57,6 +69,7 @@ public class Maze extends ICoopArea {
         Heart coeur4 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(14, 17));
         registerActor(coeur4);
 
+        // Register pressure plates and their corresponding elemental walls
         PressurePlate plate1 = new PressurePlate(this, new DiscreteCoordinates(6, 33), Orientation.DOWN);
         registerActor(plate1);
 
@@ -140,19 +153,40 @@ public class Maze extends ICoopArea {
 
     }
 
+    /**
+     * Retrieves the title of the maze area.
+     *
+     * @return (String): The title of the maze area.
+     */
     public String getTitle() {
         return "Maze";
     }
 
+    /**
+     * Retrieves the start positions for players in the maze.
+     *
+     * @return (List < DiscreteCoordinates >): A list of start positions.
+     */
     public List<DiscreteCoordinates> getStartPositions() {
         return List.of(new DiscreteCoordinates(2, 39), new DiscreteCoordinates(3, 39));
     }
+
+    /**
+     * Determines if the maze area is considered "on" (both staffs are collected).
+     *
+     * @return (boolean): True if both staffs are collected, false otherwise.
+     */
 
     @Override
     public boolean isOn() {
         return (waterStaff.isOn() && fireStaff.isOn());
     }
 
+    /**
+     * Determines if the maze area is considered "off" (at least one staff is not collected).
+     *
+     * @return (boolean): True if at least one staff is not collected, false otherwise.
+     */
     @Override
     public boolean isOff() {
         return (waterStaff.isOff() || fireStaff.isOff());

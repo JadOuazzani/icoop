@@ -434,7 +434,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
      * Decreases the player's health points based on the type of damage received.
      *
      * @param damage     (int): The amount of damage.
-     * @param damageType (String): The type of damage (e.g., "physique", "fire").
+     * @param damageType (String): The type of damage (e.g., "physical", "fire").
      */
     public void looseHp(int damage, String damageType) {
         if (damageType.equals("physical")) {
@@ -573,7 +573,7 @@ public class ICoopPlayer extends MovableAreaEntity implements Interactor, Elemen
         @Override
         public void interactWith(Foe foe, boolean isCellInteraction) {
             if (animation == swordAnimation && wantsViewInteraction()) {
-                foe.looseHp(1, "physique");
+                foe.looseHp(1, "physical");
             }
         }
 

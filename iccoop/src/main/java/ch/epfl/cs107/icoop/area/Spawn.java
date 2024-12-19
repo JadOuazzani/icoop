@@ -1,12 +1,5 @@
 package ch.epfl.cs107.icoop.area;
 
-
-/*
- *	Author:      Jad Ouazzani
- *	Date:
- */
-
-
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
@@ -20,11 +13,15 @@ import java.util.List;
 
 import static java.awt.ComponentOrientation.getOrientation;
 
+/**
+ * The Spawn class represents the starting area of the game.
+ * It introduces players to the game with initial objects and portals.
+ */
 public class Spawn extends ICoopArea {
-    private DialogHandler jeu;
+    private DialogHandler jeu;// Handler for managing in-game dialogs
     private Dialog welcome = new Dialog("Welcome");
-    private Portail portail;
-    private Logic signalJeu;
+    private Portail portail;// Welcome dialog displayed to players
+    private Logic signalJeu; // Signal controlling the state of the game
 
     public Spawn(DialogHandler jeu, Logic signalJeu) {
         this.jeu = jeu;
@@ -32,17 +29,15 @@ public class Spawn extends ICoopArea {
         this.signalJeu = signalJeu;
     }
 
+
+    /**
+     * Creates the area by registering its elements, such as doors, explosives, rocks, and a portal.
+     */
+
     @Override
     public void createArea() {
         registerActor(new Background(this));
         registerActor(new Foreground(this));
-//        Coin coin1 = new Coin(this,Orientation.DOWN, new DiscreteCoordinates(8,8));
-//        Coin coin2 = new Coin(this,Orientation.DOWN, new DiscreteCoordinates(7,8));
-//        Coin coin3 = new Coin(this,Orientation.DOWN, new DiscreteCoordinates(6,8));
-//        registerActor(coin1);
-//        registerActor(coin2);
-//        registerActor(coin3);
-
 
         Door door = new Door("OrbWay", Logic.TRUE, List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5)), this, new DiscreteCoordinates(19, 15), Orientation.DOWN, new DiscreteCoordinates(19, 16));
         registerActor(door);
@@ -66,25 +61,45 @@ public class Spawn extends ICoopArea {
             public boolean isOff() {
                 return signalJeu.isOff();
             }
-        }, List.of(new DiscreteCoordinates(2,1), new DiscreteCoordinates(2,2)), this, new DiscreteCoordinates(6, 11), Orientation.DOWN, jeu);
+        }, List.of(new DiscreteCoordinates(2, 1), new DiscreteCoordinates(2, 2)), this, new DiscreteCoordinates(6, 11), Orientation.DOWN, jeu);
         registerActor(portail);
     }
 
+    /**
+     * Retrieves the title of the area.
+     *
+     * @return (String): The title of the area.
+     */
     @Override
     public String getTitle() {
         return "Spawn";
     }
 
+    /**
+     * Retrieves the starting positions in the area.
+     *
+     * @return (List<DiscreteCoordinates>): A list of starting coordinates.
+     */
     @Override
     public List<DiscreteCoordinates> getStartPositions() {
         return List.of(new DiscreteCoordinates(13, 6), new DiscreteCoordinates(14, 6));
     }
 
+    /**
+     * Checks if the area is "on," which is determined by the game signal.
+     *
+     * @return (boolean): True if the game signal is on.
+     */
     @Override
     public boolean isOn() {
         return signalJeu.isOn();
     }
 
+    /**
+     * Checks if the area is "off," which is determined by the game signal.
+     *
+     * @return (boolean): True if the game signal is off.
+     */
     @Override
     public boolean isOff() {
         return signalJeu.isOff();

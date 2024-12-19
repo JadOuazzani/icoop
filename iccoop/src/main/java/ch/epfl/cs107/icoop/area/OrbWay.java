@@ -1,11 +1,6 @@
 package ch.epfl.cs107.icoop.area;
 
 
-/*
- *	Author:      Jad Ouazzani
- *	Date:
- */
-
 import ch.epfl.cs107.icoop.actor.object.*;
 import ch.epfl.cs107.icoop.handler.DialogHandler;
 import ch.epfl.cs107.play.engine.actor.Background;
@@ -16,32 +11,45 @@ import ch.epfl.cs107.play.signal.logic.Logic;
 
 import java.util.List;
 
+/**
+ * The OrbWay class represents a game area with elemental puzzles involving orbs and walls.
+ */
 public class OrbWay extends ICoopArea {
-    private DialogHandler jeu;
-    private Orb orbeFeu1;
-    private Orb orbeEau1;
-    private boolean isRegistered;
+    private DialogHandler game;// Handler for managing in-game dialogs
+    private Orb fireOrb1;// Fire orb in the area
+    private Orb waterOrb1;// Water orb in the area
+    private boolean isRegistered;// Tracks if coins are already registered
 
-
-
-
-    public OrbWay(DialogHandler jeu) {
-        this.jeu = jeu;
-        isRegistered=false;
+    /**
+     * Constructor for the OrbWay class.
+     *
+     * @param game (DialogHandler): Handler for in-game dialogs.
+     */
+    public OrbWay(DialogHandler game) {
+        this.game = game;
+        isRegistered = false;
     }
 
+    /**
+     * Updates the area, adding a coin once both orbs are active.
+     *
+     * @param deltaTime (float): Time elapsed since the last update.
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (this.isOn()&& !isRegistered){
-            Coin coin = new Coin(this,Orientation.DOWN,new DiscreteCoordinates(6,8));
+        if (this.isOn() && !isRegistered) {
+            Coin coin = new Coin(this, Orientation.DOWN, new DiscreteCoordinates(6, 8));
             registerActor(coin);
             coin.update(deltaTime);
-            isRegistered=true;
+            isRegistered = true;
 
         }
     }
 
+    /**
+     * Creates the area by registering its elements, including orbs, walls, and pressure plates.
+     */
     @Override
     protected void createArea() {
         registerActor(new Background(this));
@@ -62,10 +70,10 @@ public class OrbWay extends ICoopArea {
                 Orientation.DOWN,
                 new DiscreteCoordinates(0, 7), new DiscreteCoordinates(0, 6), new DiscreteCoordinates(0, 5), new DiscreteCoordinates(0, 4));
         registerActor(door2);
-        orbeFeu1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FEU, jeu);
-        registerActor(orbeFeu1);
-        orbeEau1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, jeu);
-        registerActor(orbeEau1);
+        fireOrb1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 12), Orb.OrbType.FEU, game);
+        registerActor(fireOrb1);
+        waterOrb1 = new Orb(this, Orientation.UP, new DiscreteCoordinates(17, 6), Orb.OrbType.EAU, game);
+        registerActor(waterOrb1);
 
         Heart heart1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(8, 4));
         registerActor(heart1);
@@ -82,7 +90,7 @@ public class OrbWay extends ICoopArea {
         registerActor(waterPressurePlate);
 
         for (int i = 0; i <= 4; i++) {
-            ElementalWall murFeu = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10 + i), new Logic() {
+            ElementalWall fireWall = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 10 + i), new Logic() {
                 @Override
                 public boolean isOn() {
                     return firePressurePlate.isOff();
@@ -93,9 +101,9 @@ public class OrbWay extends ICoopArea {
                     return firePressurePlate.isOn();
                 }
             }, ElementalWall.WallType.FEU);
-            registerActor(murFeu);
+            registerActor(fireWall);
 
-            ElementalWall murEau = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 4 + i), new Logic() {
+            ElementalWall waterWall = new ElementalWall(this, Orientation.LEFT, new DiscreteCoordinates(12, 4 + i), new Logic() {
                 @Override
                 public boolean isOn() {
                     return waterPressurePlate.isOff();
@@ -106,30 +114,49 @@ public class OrbWay extends ICoopArea {
                     return waterPressurePlate.isOn();
                 }
             }, ElementalWall.WallType.EAU);
-            registerActor(murEau);
+            registerActor(waterWall);
 
         }
 
 
-
     }
 
+    /**
+     * Retrieves the title of the area.
+     *
+     * @return (String): The title of the area.
+     */
     @Override
     public String getTitle() {
         return "OrbWay";
     }
 
+    /**
+     * Retrieves the starting positions in the area.
+     *
+     * @return (List < DiscreteCoordinates >): A list of starting coordinates.
+     */
     @Override
     public List<DiscreteCoordinates> getStartPositions() {
         return List.of(new DiscreteCoordinates(1, 12), new DiscreteCoordinates(1, 5));
     }
 
 
+    /**
+     * Checks if the area is "on," based on the state of the orbs.
+     *
+     * @return (boolean): True if both orbs are active.
+     */
     @Override
     public boolean isOn() {
-        return (orbeEau1.isOn() && orbeFeu1.isOn());
+        return (waterOrb1.isOn() && fireOrb1.isOn());
     }
 
+    /**
+     * Checks if the area is "off." This area is never "off."
+     *
+     * @return (boolean): Always false.
+     */
     @Override
     public boolean isOff() {
         return false;
