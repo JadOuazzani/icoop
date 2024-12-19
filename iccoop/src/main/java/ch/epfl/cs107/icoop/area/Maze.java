@@ -60,14 +60,14 @@ public class Maze extends ICoopArea {
         Explosive explosive = new Explosive(this, Orientation.DOWN, new DiscreteCoordinates(6, 25));
         registerActor(explosive);
 
-        Heart coeur1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(15, 18));
-        registerActor(coeur1);
-        Heart coeur2 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(16, 19));
-        registerActor(coeur2);
-        Heart coeur3 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(14, 19));
-        registerActor(coeur3);
-        Heart coeur4 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(14, 17));
-        registerActor(coeur4);
+        Heart heart1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(15, 18));
+        registerActor(heart1);
+        Heart heart2 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(16, 19));
+        registerActor(heart2);
+        Heart heart3 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(14, 19));
+        registerActor(heart3);
+        Heart heart4 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(14, 17));
+        registerActor(heart4);
 
         // Register pressure plates and their corresponding elemental walls
         PressurePlate plate1 = new PressurePlate(this, new DiscreteCoordinates(6, 33), Orientation.DOWN);

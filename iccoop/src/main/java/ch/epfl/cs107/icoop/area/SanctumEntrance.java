@@ -49,6 +49,14 @@ public class SanctumEntrance extends ICoopArea {
         registerActor(door);
         Orb speedOrb = new Orb(this, Orientation.DOWN, new DiscreteCoordinates(10, 10), Orb.OrbType.SPEED, game);
         registerActor(speedOrb);
+        Heart heart1 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(10, 2));
+        registerActor(heart1);
+        Heart heart2 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(10, 3));
+        registerActor(heart2);
+        Heart heart3 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(9, 3));
+        registerActor(heart3);
+        Heart heart4 = new Heart(this, Orientation.DOWN, new DiscreteCoordinates(9, 2));
+        registerActor(heart4);
     }
 
     /**

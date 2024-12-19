@@ -84,7 +84,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 6; // Index pour "Accueil"
+            areaIndex = 4; // Index pour "Accueil"
             initArea(areas[areaIndex]);
             return true;
         }
