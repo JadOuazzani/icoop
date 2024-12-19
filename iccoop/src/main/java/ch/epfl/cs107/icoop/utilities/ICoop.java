@@ -43,7 +43,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
 
     public void resetGame() {
         ITS_INITIALIZED = false;
-        redPlayer.setGlobalCoinCounter(0);
+        ICoopPlayer.setGlobalCoinCounter(0);
         dialogue = null;
         begin(getWindow(), getFileSystem());
     }
@@ -105,7 +105,7 @@ public class ICoop extends AreaGame implements DialogHandler, Logic {
         Keyboard keyboard = getWindow().getKeyboard();
 
         // Toggle pause state when the PAUSE key is pressed
-        if (keyboard.get(keyboard.TAB ).isPressed()) {
+        if (keyboard.get(Keyboard.TAB ).isPressed()) {
             isPaused = !isPaused;
         }
 
