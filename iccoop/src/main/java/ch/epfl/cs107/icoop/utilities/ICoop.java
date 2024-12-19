@@ -201,7 +201,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
                 initArea("Starting");
                 super.update(deltaTime);
             }
-        } else if (!dialogActif(dialogue) || dialogue.isCompleted()) {
+        } else if (!dialogActive(dialogue) || dialogue.isCompleted()) {
             // Vérifier le compteur global de pièces
             if (redPlayer.getGlobalCoinCount() >= 3 && !currentAreaTitle.equals("Ending")) {
                 initArea("Ending");
@@ -281,7 +281,7 @@ import static ch.epfl.cs107.icoop.utilities.KeyBindings.*;
      * @param dialogue (Dialog): The dialogue to check.
      * @return (boolean): True if the dialogue is active, false otherwise.
      */
-    private boolean dialogActif(Dialog dialogue) {
+    private boolean dialogActive(Dialog dialogue) {
         return dialogue != null;
     }
 
