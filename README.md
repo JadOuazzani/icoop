@@ -1,6 +1,6 @@
 # ICoop
 
-A two-player cooperative 2D adventure game in Java, inspired by *Fireboy and Watergirl*, built for EPFL's CS-107 course (*Introduction à la programmation*, fall 2024) by Jad Chahed Ouazzani and Riad Elhariry.
+A two-player cooperative 2D adventure game in Java, inspired by *Fireboy and Watergirl*, built for EPFL's CS-107 course (*Introduction à la programmation*, fall 2024) by Jad Chahed Ouazzani and Riad Elhariry
 
 Two complementary heroes, **Red** (fire) and **Blue** (water), play on the same keyboard. They solve puzzles together, fight enemies and avoid traps to collect three gold coins and defeat the final boss.
 
